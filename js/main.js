@@ -12,6 +12,7 @@
     injectCatalogMediaPlaceholders();
     setupCatalogWhatsAppCart();
     setupRevealAnimation();
+    injectLinksFloat();
     injectWhatsAppFloat();
     updateFooterYear();
   });
@@ -224,6 +225,48 @@
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
+    const brlFormatter = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    const parsePriceValue = (priceText) => {
+      if (typeof priceText !== "string") {
+        return null;
+      }
+
+      const normalized = priceText
+        .replace(/\s/g, "")
+        .replace(/R\$/gi, "")
+        .replace(/\./g, "")
+        .replace(",", ".");
+
+      const match = normalized.match(/-?\d+(\.\d+)?/);
+      if (!match) {
+        return null;
+      }
+
+      const value = Number.parseFloat(match[0]);
+      return Number.isFinite(value) ? value : null;
+    };
+
+    const formatCurrency = (value) => brlFormatter.format(value);
+
+    const getCartTotals = () =>
+      cartItems.reduce(
+        (summary, item) => {
+          const unitPrice = parsePriceValue(item.price);
+          if (unitPrice === null) {
+            summary.hasUnpricedItems = true;
+            return summary;
+          }
+
+          summary.totalValue += unitPrice * item.qty;
+          return summary;
+        },
+        { totalValue: 0, hasUnpricedItems: false }
+      );
+
     const saveCartItems = () => {
       try {
         window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
@@ -259,6 +302,7 @@
 
     const renderCart = () => {
       const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
+      const cartTotals = getCartTotals();
       counters.forEach((counter) => {
         counter.textContent = String(totalItems);
       });
@@ -266,14 +310,16 @@
       if (!cartItems.length) {
         itemsList.innerHTML = "";
         emptyMessage.hidden = false;
-        totalLabel.textContent = "0 item(ns)";
+        totalLabel.textContent = `0 item(ns) | Total: ${formatCurrency(0)}`;
         submitButton.setAttribute("aria-disabled", "true");
         return;
       }
 
       emptyMessage.hidden = true;
       submitButton.removeAttribute("aria-disabled");
-      totalLabel.textContent = `${cartItems.length} produto(s), ${totalItems} item(ns)`;
+      totalLabel.textContent = cartTotals.hasUnpricedItems
+        ? `${cartItems.length} produto(s), ${totalItems} item(ns) | Total parcial: ${formatCurrency(cartTotals.totalValue)}`
+        : `${cartItems.length} produto(s), ${totalItems} item(ns) | Total: ${formatCurrency(cartTotals.totalValue)}`;
 
       itemsList.innerHTML = cartItems
         .map(
@@ -303,6 +349,7 @@
       }
       saveCartItems();
       renderCart();
+      openCart();
     };
 
     cartOpenButton?.addEventListener("click", openCart);
@@ -359,12 +406,28 @@
         return;
       }
 
-      const lines = cartItems.map((item) => `- ${item.name}: ${item.qty}x`);
+      const cartTotals = getCartTotals();
+      const lines = cartItems.map((item) => {
+        const unitPrice = parsePriceValue(item.price);
+        if (unitPrice === null) {
+          return `- ${item.name}: ${item.qty}x`;
+        }
+
+        const lineTotal = formatCurrency(unitPrice * item.qty);
+        return `- ${item.name}: ${item.qty}x (${item.price} cada) = ${lineTotal}`;
+      });
+
+      const totalLine = cartTotals.hasUnpricedItems
+        ? `Total parcial calculado no site: ${formatCurrency(cartTotals.totalValue)} (há itens sem preço no catálogo).`
+        : `Total do pedido: ${formatCurrency(cartTotals.totalValue)}.`;
+
       const message = [
         "Olá, DoSim! Quero fazer um pedido pelo site.",
         "",
         "Itens selecionados:",
         ...lines,
+        "",
+        totalLine,
       ].join("\n");
 
       window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
@@ -509,6 +572,24 @@
       <span class="sr-only">WhatsApp</span>
     `;
     document.body.appendChild(floatingLink);
+  }
+
+  function injectLinksFloat() {
+    if (document.querySelector(".links-float")) {
+      return;
+    }
+
+    const pathname = window.location.pathname.toLowerCase();
+    if (pathname.endsWith("/links/") || pathname.endsWith("/links/index.html")) {
+      return;
+    }
+
+    const linksButton = document.createElement("a");
+    linksButton.className = "links-float";
+    linksButton.href = new URL("links/", window.location.href).href;
+    linksButton.setAttribute("aria-label", "Abrir página /links");
+    linksButton.textContent = "Abrir /links";
+    document.body.appendChild(linksButton);
   }
 
   function updateFooterYear() {

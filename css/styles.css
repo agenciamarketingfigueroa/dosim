@@ -382,6 +382,10 @@ main {
   font-size: clamp(1.9rem, 5vw, 3rem);
 }
 
+.hero h1 {
+  margin-bottom: 1.35rem;
+}
+
 .section-title {
   margin-bottom: 0.9rem;
 }
@@ -992,6 +996,27 @@ main {
   display: inline-grid;
   place-items: center;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.24);
+}
+
+.links-float {
+  position: fixed;
+  right: 0.95rem;
+  bottom: 4.75rem;
+  z-index: 139;
+  padding: 0.5rem 0.78rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+}
+
+.links-float:hover {
+  transform: translateY(-1px);
 }
 
 .whatsapp-float:hover {
