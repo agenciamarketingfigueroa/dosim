@@ -3,48 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Produtos &amp; Preços | DoSim Confeitaria</title>
+    <title>Presenteáveis | DoSim</title>
     <meta
       name="description"
-      content="Veja combos, caixas e opções de personalizados da DoSim Confeitaria. Monte seu orçamento sob medida pelo WhatsApp."
+      content="Catálogo de produtos unitários e presenteáveis da DoSim com etiquetas de mais vendidos, novidades e preço ancorado."
     />
-    <meta property="og:title" content="Produtos &amp; Preços | DoSim Confeitaria" />
+    <meta property="og:title" content="Presenteáveis | DoSim" />
     <meta
       property="og:description"
-      content="Combos e caixas com preços, além de personalizados, sabores e embalagens presenteáveis."
+      content="Escolha seu combo DoSim: nome, quantidade, etiqueta e preço final com ancoragem para facilitar sua decisão."
     />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://seu-usuario.github.io/dosim/assets/img/og-1200x630.svg"
-    />
+    <meta property="og:image" content="https://seu-usuario.github.io/dosim/assets/img/og-1200x630.svg" />
     <meta property="og:url" content="https://seu-usuario.github.io/dosim/produtos.html" />
     <meta name="theme-color" content="#f6f4f0" />
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
     <script src="js/main.js" defer></script>
-    <script src="js/produtos.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="index.html" aria-label="Página inicial da DoSim Confeitaria">
-          <img src="assets/img/logo-placeholder.svg" alt="Logo da DoSim Confeitaria" />
-          <span>DoSim Confeitaria</span>
+        <a class="brand" href="index.html" aria-label="Página inicial da DoSim">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
         </a>
 
         <button
           class="menu-toggle"
           type="button"
-          aria-label="Abrir menu"
+          aria-label="Abrir menu principal"
           aria-expanded="false"
           aria-controls="menu-principal"
         >
@@ -56,136 +51,261 @@
         <nav id="menu-principal" class="site-nav" aria-label="Menu principal">
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="produtos.html" aria-current="page">Produtos &amp; Preços</a></li>
-            <li><a href="portfolio.html">Portfólio</a></li>
-            <li><a href="encomendar.html">Como encomendar</a></li>
-            <li><a href="corporativo.html">Corporativo</a></li>
-            <li><a href="sazonais.html">Sazonais</a></li>
-            <li><a href="contato.html">Contato</a></li>
+            <li><a href="produtos.html" aria-current="page">Presenteáveis</a></li>
+            <li><a href="gramatura.html">Por Gramatura</a></li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <main id="conteudo" class="section">
-      <div class="container">
-        <h1 class="section-heading">Produtos &amp; Preços</h1>
-        <p class="section-subheading">
-          Navegue pelas opções da DoSim e escolha a composição ideal para seu momento. Para ajustes e combinações personalizadas, falamos no WhatsApp.
-        </p>
-
-        <nav class="section-tabs" aria-label="Navegação interna de produtos">
-          <ul>
-            <li><a href="#combos">Combos e caixas (com preços)</a></li>
-            <li><a href="#personalizados">Personalizados</a></li>
-            <li><a href="#sabores">Sabores</a></li>
-            <li><a href="#embalagens">Embalagens presenteáveis</a></li>
-            <li><a href="#por-peso">Por peso (sob consulta)</a></li>
-          </ul>
-        </nav>
-
-        <section id="combos" class="section-divider">
-          <h2 class="section-heading">Combos e caixas (com preços)</h2>
-          <p class="section-subheading">
-            Itens do catálogo com valores de referência. Se quiser adaptar quantidades ou composição, combinamos no orçamento.
-          </p>
-
-          <div class="table-wrapper">
-            <table class="price-table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Unidades</th>
-                  <th>Descrição</th>
-                  <th>Preço</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-              <tbody id="precos-table-body"></tbody>
-            </table>
-          </div>
-
-          <div id="precos-cards" class="price-grid" aria-live="polite"></div>
-        </section>
-
-        <section id="personalizados" class="section-divider">
-          <h2 class="section-heading">Personalizados</h2>
-          <p class="section-subheading">
-            Projetos personalizados para eventos pessoais e ações corporativas com identidade visual, paleta e acabamento sob medida.
+    <main id="conteudo" data-catalog-page>
+      <section class="section-block page-hero">
+        <div class="container narrow" data-reveal>
+          <p class="eyebrow">Catálogo de presenteáveis</p>
+          <h1 class="section-title">Produtos Unitários &amp; Presenteáveis</h1>
+          <p class="section-copy">
+            Escolha o box ideal para presentear. Cada card mostra quantidade, etiqueta e preço final com ancoragem
+            para facilitar sua decisão.
           </p>
           <div class="cta-group">
             <a
               class="btn btn-primary"
-              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim%20Confeitaria!%20Quero%20um%20or%C3%A7amento%20de%20biscoitos%20personalizados."
+              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20ajuda%20para%20escolher%20um%20presente%C3%A1vel."
               target="_blank"
               rel="noopener noreferrer"
-              >Pedir orçamento de personalizados</a
+              >Quero ajuda para escolher</a
             >
+            <a class="btn btn-secondary" href="gramatura.html">Ver opções por gramatura</a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="sabores" class="section-divider">
-          <h2 class="section-heading">Sabores</h2>
-          <p class="section-subheading">
-            Composições clássicas e especiais para equilibrar estética e sabor. Na conversa, sugerimos a melhor seleção para seu pedido.
-          </p>
-          <div class="cta-group">
-            <a
-              class="btn btn-secondary"
-              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim%20Confeitaria!%20Quero%20conhecer%20os%20sabores%20dispon%C3%ADveis."
-              target="_blank"
-              rel="noopener noreferrer"
-              >Consultar sabores no WhatsApp</a
-            >
+      <section class="section-block section-soft">
+        <div class="container">
+          <div class="catalog-grid">
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/chocolate.svg" data-photo-alt="Foto do produto SimPles">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">SimPles</h2>
+              <p class="card-meta">1 unidade</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 4,00</span>
+                <span class="price-current">R$ 4,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20SimPles%20(1%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/3x-Sim.svg" data-photo-alt="Foto do produto 3x Sim">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">3x Sim</h2>
+              <p class="card-meta">3 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 12,00</span>
+                <span class="price-current">R$ 12,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%203x%20Sim%20(3%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/quarteto-dosim.svg" data-photo-alt="Foto do produto Quarteto DoSim">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">Quarteto DoSim</h2>
+              <p class="card-meta">6 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 24,00</span>
+                <span class="price-current">R$ 22,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Quarteto%20DoSim%20(6%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/ninho-com-nutella.svg" data-photo-alt="Foto do produto Quarteto DoSim Ninho com Nutella">
+              <div class="tag-row">
+                <span class="tag tag-new">Novidade</span>
+              </div>
+              <h2 class="card-title">Quarteto DoSim (Ninho com Nutella)</h2>
+              <p class="card-meta">6 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 30,00</span>
+                <span class="price-current">R$ 24,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Quarteto%20DoSim%20Ninho%20com%20Nutella%20(6%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Chá das SIMco">
+              <div class="tag-row">
+                <span class="tag tag-new">Novidade</span>
+              </div>
+              <h2 class="card-title">Chá das SIMco</h2>
+              <p class="card-meta">6 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 20,00</span>
+                <span class="price-current">R$ 25,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Ch%C3%A1%20das%20SIMco%20(6%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/07-padrinhos.svg" data-photo-alt="Foto do produto 07 Padrinhos">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">07 Padrinhos</h2>
+              <p class="card-meta">7 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 28,00</span>
+                <span class="price-current">R$ 27,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%2007%20Padrinhos%20(7%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/encontro-as-09.svg" data-photo-alt="Foto do produto Encontro às 09">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">Encontro às 09</h2>
+              <p class="card-meta">9 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 36,00</span>
+                <span class="price-current">R$ 35,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Encontro%20%C3%A0s%2009%20(9%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 25 unidades">
+              <div class="tag-row">
+                <span class="tag tag-hot">Mais vendido</span>
+              </div>
+              <h2 class="card-title">Sim Completo</h2>
+              <p class="card-meta">25 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 100,00</span>
+                <span class="price-current">R$ 65,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Sim%20Completo%20(25%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 40 unidades">
+              <div class="tag-row">
+                <span class="tag tag-new">Novidade</span>
+              </div>
+              <h2 class="card-title">Sim Completo</h2>
+              <p class="card-meta">40 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 160,00</span>
+                <span class="price-current">R$ 100,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Sim%20Completo%20(40%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
+
+            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 55 unidades">
+              <div class="tag-row">
+                <span class="tag tag-new">Novidade</span>
+              </div>
+              <h2 class="card-title">Sim Completo</h2>
+              <p class="card-meta">55 unidades</p>
+              <div class="price-stack">
+                <span class="price-anchor">de R$ 220,00</span>
+                <span class="price-current">R$ 120,00</span>
+              </div>
+              <a
+                class="btn btn-secondary btn-sm"
+                href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20o%20Sim%20Completo%20(55%20un.)."
+                target="_blank"
+                rel="noopener noreferrer"
+                >Quero esse</a
+              >
+            </article>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="embalagens" class="section-divider">
-          <h2 class="section-heading">Embalagens presenteáveis</h2>
-          <p class="section-subheading">
-            Apresentações com caixa, lata e detalhes especiais para elevar a experiência de presente.
-          </p>
-          <div class="cta-group">
-            <a
-              class="btn btn-secondary"
-              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim%20Confeitaria!%20Quero%20op%C3%A7%C3%B5es%20de%20embalagens%20presente%C3%A1veis."
-              target="_blank"
-              rel="noopener noreferrer"
-              >Ver embalagens no WhatsApp</a
-            >
-          </div>
-        </section>
-
-        <section id="por-peso" class="section-divider">
-          <h2 class="section-heading">Por peso (sob consulta)</h2>
-          <p class="section-subheading">
-            Ideal para encomendas sob medida. Conte seu contexto e peça um orçamento para montarmos a proposta ideal para você.
+      <section class="section-block">
+        <div class="container narrow" data-reveal>
+          <h2 class="section-title">Quer montar um pedido combinado?</h2>
+          <p class="section-copy">
+            Se quiser misturar boxes ou ajustar quantidades, chamamos no WhatsApp e montamos com você.
           </p>
           <div class="cta-group">
             <a
               class="btn btn-primary"
-              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim%20Confeitaria!%20Quero%20um%20or%C3%A7amento%20por%20peso."
+              href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Quero%20montar%20um%20pedido%20combinado."
               target="_blank"
               rel="noopener noreferrer"
-              >Pedir orçamento por peso</a
+              >Montar pedido no WhatsApp</a
             >
+            <a class="btn btn-secondary" href="gramatura.html">Explorar catálogo por gramatura</a>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-grid">
-        <div>
-          <p class="footer-title">DoSim Confeitaria</p>
-          <p class="text-small">Contagem - MG</p>
-        </div>
+      <div class="container footer-inner">
+        <p class="footer-brand">DoSim Confeitaria</p>
         <div class="footer-links">
           <a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp</a>
           <a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <span class="text-small">&copy; <span data-current-year></span> DoSim Confeitaria</span>
+          <span>&copy; <span data-current-year></span> DoSim</span>
         </div>
       </div>
     </footer>
   </body>
 </html>
+

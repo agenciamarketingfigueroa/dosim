@@ -1,40 +1,44 @@
-﻿(() => {
+(() => {
   const WHATSAPP_NUMBER = "5531996154698";
-  const WHATSAPP_BASE_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+  const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+  document.documentElement.classList.add("js");
 
   document.addEventListener("DOMContentLoaded", () => {
     setupMobileMenu();
     setupSmoothScroll();
+    setupContactForm();
+    injectCatalogMediaPlaceholders();
+    setupRevealAnimation();
+    injectWhatsAppFloat();
     updateFooterYear();
-    injectWhatsAppButton();
-    renderHomeHighlights();
   });
 
   function setupMobileMenu() {
-    const menuToggle = document.querySelector(".menu-toggle");
+    const toggle = document.querySelector(".menu-toggle");
     const nav = document.querySelector(".site-nav");
 
-    if (!menuToggle || !nav) {
+    if (!toggle || !nav) {
       return;
     }
 
     const closeMenu = () => {
-      menuToggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-expanded", "false");
       nav.classList.remove("is-open");
     };
 
-    menuToggle.addEventListener("click", () => {
-      const expanded = menuToggle.getAttribute("aria-expanded") === "true";
-      menuToggle.setAttribute("aria-expanded", String(!expanded));
-      nav.classList.toggle("is-open", !expanded);
+    toggle.addEventListener("click", () => {
+      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isExpanded));
+      nav.classList.toggle("is-open", !isExpanded);
     });
 
-    nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", closeMenu);
+    nav.querySelectorAll("a").forEach((item) => {
+      item.addEventListener("click", closeMenu);
     });
 
     window.addEventListener("resize", () => {
-      if (window.innerWidth >= 860) {
+      if (window.innerWidth >= 920) {
         closeMenu();
       }
     });
@@ -43,21 +47,122 @@
   function setupSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", (event) => {
-        const targetId = anchor.getAttribute("href");
-        if (!targetId || targetId.length < 2) {
+        const hash = anchor.getAttribute("href");
+        if (!hash || hash.length < 2) {
           return;
         }
 
-        const target = document.querySelector(targetId);
+        const target = document.querySelector(hash);
         if (!target) {
           return;
         }
 
         event.preventDefault();
         target.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.replaceState(null, "", targetId);
+        window.history.replaceState(null, "", hash);
       });
     });
+  }
+
+  function setupContactForm() {
+    const form = document.querySelector("[data-contact-form]");
+
+    if (!form) {
+      return;
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const nome = String(data.get("nome") || "").trim();
+      const telefone = String(data.get("telefone") || "").trim();
+      const interesse = String(data.get("interesse") || "").trim();
+      const mensagem = String(data.get("mensagem") || "").trim();
+
+      const body = [
+        "Olá, DoSim! Vim pelo site e quero atendimento.",
+        "",
+        `Nome: ${nome}`,
+        `Telefone: ${telefone}`,
+        `Interesse: ${interesse}`,
+        `Mensagem: ${mensagem}`,
+      ].join("\n");
+
+      window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(body)}`, "_blank", "noopener,noreferrer");
+      form.reset();
+    });
+  }
+
+  function setupRevealAnimation() {
+    const revealTargets = Array.from(document.querySelectorAll("[data-reveal]"));
+    if (!revealTargets.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    revealTargets.forEach((element) => observer.observe(element));
+  }
+
+  function injectCatalogMediaPlaceholders() {
+    if (!document.querySelector("[data-catalog-page]")) {
+      return;
+    }
+
+    const catalogCards = document.querySelectorAll(".catalog-card");
+
+    if (!catalogCards.length) {
+      return;
+    }
+
+    catalogCards.forEach((card) => {
+      if (card.querySelector(".catalog-media")) {
+        return;
+      }
+
+      const media = document.createElement("div");
+      media.className = "catalog-media";
+      const photoSrc = card.getAttribute("data-photo-src");
+
+      if (photoSrc) {
+        const image = document.createElement("img");
+        const cardTitle = card.querySelector(".card-title")?.textContent?.trim();
+        image.src = photoSrc;
+        image.loading = "lazy";
+        image.alt = card.getAttribute("data-photo-alt") || (cardTitle ? `Foto do produto ${cardTitle}` : "Foto do produto DoSim");
+        media.appendChild(image);
+      } else {
+        media.innerHTML = "<span>Foto 4:5</span>";
+      }
+
+      card.prepend(media);
+    });
+  }
+
+  function injectWhatsAppFloat() {
+    if (document.querySelector(".whatsapp-float")) {
+      return;
+    }
+
+    const floatingLink = document.createElement("a");
+    floatingLink.className = "whatsapp-float";
+    floatingLink.href = `${WHATSAPP_URL}?text=${encodeURIComponent("Olá, DoSim! Quero atendimento.")}`;
+    floatingLink.target = "_blank";
+    floatingLink.rel = "noopener noreferrer";
+    floatingLink.setAttribute("aria-label", "Conversar no WhatsApp");
+    floatingLink.textContent = "WhatsApp";
+    document.body.appendChild(floatingLink);
   }
 
   function updateFooterYear() {
@@ -65,75 +170,5 @@
     document.querySelectorAll("[data-current-year]").forEach((node) => {
       node.textContent = year;
     });
-  }
-
-  function injectWhatsAppButton() {
-    if (document.querySelector(".whatsapp-float")) {
-      return;
-    }
-
-    const message = "Olá, DoSim Confeitaria! Quero um orçamento.";
-    const button = document.createElement("a");
-    button.className = "whatsapp-float";
-    button.href = `${WHATSAPP_BASE_URL}?text=${encodeURIComponent(message)}`;
-    button.target = "_blank";
-    button.rel = "noopener noreferrer";
-    button.setAttribute("aria-label", "Conversar no WhatsApp");
-    button.innerHTML = "<span>WhatsApp</span>";
-    document.body.appendChild(button);
-  }
-
-  function renderHomeHighlights() {
-    const container = document.getElementById("destaques-list");
-
-    if (!container) {
-      return;
-    }
-
-    const money = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    });
-
-    fetch("data/precos.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Falha ao carregar preços.");
-        }
-        return response.json();
-      })
-      .then((items) => {
-        const highlights = items.filter((item) => item.destaque).slice(0, 3);
-
-        if (!highlights.length) {
-          container.innerHTML =
-            '<p class="text-small">Destaques em atualização. Fale no WhatsApp para receber as opções atuais.</p>';
-          return;
-        }
-
-        container.innerHTML = highlights
-          .map(
-            (item) => `
-              <article class="card">
-                <h3>${item.nome}</h3>
-                <p>${item.descricao}</p>
-                <p class="destaque-value">${money.format(item.precoVenda)}</p>
-                <a
-                  class="btn btn-secondary"
-                  href="${WHATSAPP_BASE_URL}?text=${encodeURIComponent(
-                    `Olá, DoSim Confeitaria! Quero orçamento do item ${item.nome}.`
-                  )}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Quero este</a>
-              </article>
-            `
-          )
-          .join("");
-      })
-      .catch(() => {
-        container.innerHTML =
-          '<p class="text-small">Não foi possível carregar os destaques agora. Chame no WhatsApp para receber o catálogo.</p>';
-      });
   }
 })();
