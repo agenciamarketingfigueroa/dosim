@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfólio | DoSim Confeitaria</title>
+    <meta
+      name="description"
+      content="Conheça o portfólio da DoSim Confeitaria com inspirações infantis, adultas, corporativas e sazonais."
+    />
+    <meta property="og:title" content="Portfólio | DoSim Confeitaria" />
+    <meta
+      property="og:description"
+      content="Galeria de biscoitos decorados da DoSim com estilos para diferentes ocasiões."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://seu-usuario.github.io/dosim/assets/img/og-1200x630.svg"
+    />
+    <meta property="og:url" content="https://seu-usuario.github.io/dosim/portfolio.html" />
+    <meta name="theme-color" content="#f6f4f0" />
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/portfolio.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="Página inicial da DoSim Confeitaria">
+          <img src="assets/img/logo-placeholder.svg" alt="Logo da DoSim Confeitaria" />
+          <span>DoSim Confeitaria</span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          aria-controls="menu-principal"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="menu-principal" class="site-nav" aria-label="Menu principal">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="produtos.html">Produtos &amp; Preços</a></li>
+            <li><a href="portfolio.html" aria-current="page">Portfólio</a></li>
+            <li><a href="encomendar.html">Como encomendar</a></li>
+            <li><a href="corporativo.html">Corporativo</a></li>
+            <li><a href="sazonais.html">Sazonais</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo" class="section">
+      <div class="container">
+        <h1 class="section-heading">Portfólio</h1>
+        <p class="section-subheading">
+          Explore referências visuais da DoSim para inspirar sua encomenda.
+        </p>
+
+        <div class="filter-row" role="toolbar" aria-label="Filtros do portfólio">
+          <button class="filter-chip is-active" type="button" data-filter="todos" aria-label="Mostrar todos os estilos">
+            Todos
+          </button>
+          <button class="filter-chip" type="button" data-filter="infantil" aria-label="Filtrar por estilo infantil">
+            Infantil
+          </button>
+          <button class="filter-chip" type="button" data-filter="adulto" aria-label="Filtrar por estilo adulto">
+            Adulto
+          </button>
+          <button class="filter-chip" type="button" data-filter="corporativo" aria-label="Filtrar por estilo corporativo">
+            Corporativo
+          </button>
+          <button class="filter-chip" type="button" data-filter="sazonais" aria-label="Filtrar por coleções sazonais">
+            Sazonais
+          </button>
+        </div>
+
+        <div class="grid portfolio-grid" id="portfolio-grid">
+          <button class="portfolio-item" type="button" data-tags="infantil" data-image="assets/img/portfolio-01.svg" data-title="Infantil delicado" data-alt="Biscoitos decorados com tema infantil">
+            <img src="assets/img/portfolio-01.svg" alt="Biscoitos decorados com tema infantil" />
+            <span class="portfolio-caption">Infantil delicado</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="adulto" data-image="assets/img/portfolio-02.svg" data-title="Adulto minimalista" data-alt="Biscoitos elegantes para celebração adulta">
+            <img src="assets/img/portfolio-02.svg" alt="Biscoitos elegantes para celebração adulta" />
+            <span class="portfolio-caption">Adulto minimalista</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="corporativo" data-image="assets/img/portfolio-03.svg" data-title="Ação corporativa" data-alt="Biscoitos decorados para ação de marca">
+            <img src="assets/img/portfolio-03.svg" alt="Biscoitos decorados para ação de marca" />
+            <span class="portfolio-caption">Ação corporativa</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="sazonais" data-image="assets/img/portfolio-04.svg" data-title="Coleção sazonal" data-alt="Coleção de biscoitos para data sazonal">
+            <img src="assets/img/portfolio-04.svg" alt="Coleção de biscoitos para data sazonal" />
+            <span class="portfolio-caption">Coleção sazonal</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="infantil" data-image="assets/img/portfolio-05.svg" data-title="Aniversário infantil" data-alt="Kit de biscoitos para aniversário infantil">
+            <img src="assets/img/portfolio-05.svg" alt="Kit de biscoitos para aniversário infantil" />
+            <span class="portfolio-caption">Aniversário infantil</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="adulto" data-image="assets/img/portfolio-06.svg" data-title="Presente adulto" data-alt="Caixa presenteável para público adulto">
+            <img src="assets/img/portfolio-06.svg" alt="Caixa presenteável para público adulto" />
+            <span class="portfolio-caption">Presente adulto</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="corporativo" data-image="assets/img/portfolio-07.svg" data-title="Identidade visual" data-alt="Biscoitos com identidade visual corporativa">
+            <img src="assets/img/portfolio-07.svg" alt="Biscoitos com identidade visual corporativa" />
+            <span class="portfolio-caption">Identidade visual</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="sazonais" data-image="assets/img/portfolio-08.svg" data-title="Edição especial" data-alt="Biscoitos decorados para edição especial de data">
+            <img src="assets/img/portfolio-08.svg" alt="Biscoitos decorados para edição especial de data" />
+            <span class="portfolio-caption">Edição especial</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="infantil" data-image="assets/img/portfolio-09.svg" data-title="Lembrancinhas" data-alt="Lembrancinhas infantis em biscoito">
+            <img src="assets/img/portfolio-09.svg" alt="Lembrancinhas infantis em biscoito" />
+            <span class="portfolio-caption">Lembrancinhas</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="adulto" data-image="assets/img/portfolio-10.svg" data-title="Mesa posta" data-alt="Composição de biscoitos para mesa posta">
+            <img src="assets/img/portfolio-10.svg" alt="Composição de biscoitos para mesa posta" />
+            <span class="portfolio-caption">Mesa posta</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="corporativo" data-image="assets/img/portfolio-11.svg" data-title="Brinde institucional" data-alt="Biscoitos como brinde institucional">
+            <img src="assets/img/portfolio-11.svg" alt="Biscoitos como brinde institucional" />
+            <span class="portfolio-caption">Brinde institucional</span>
+          </button>
+          <button class="portfolio-item" type="button" data-tags="sazonais" data-image="assets/img/portfolio-12.svg" data-title="Sazonal premium" data-alt="Linha sazonal premium de biscoitos decorados">
+            <img src="assets/img/portfolio-12.svg" alt="Linha sazonal premium de biscoitos decorados" />
+            <span class="portfolio-caption">Sazonal premium</span>
+          </button>
+        </div>
+
+        <div class="cta-group" style="margin-top: 1.6rem">
+          <a
+            class="btn btn-primary"
+            href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim%20Confeitaria!%20Vi%20o%20portf%C3%B3lio%20e%20quero%20um%20or%C3%A7amento."
+            target="_blank"
+            rel="noopener noreferrer"
+            >Pedir orçamento pelo WhatsApp</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <div id="lightbox" class="lightbox" role="dialog" aria-label="Visualização ampliada" aria-modal="true" hidden>
+      <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Fechar visualização">&times;</button>
+      <div class="lightbox-content">
+        <img id="lightbox-image" src="" alt="" />
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-title">DoSim Confeitaria</p>
+          <p class="text-small">Contagem - MG</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <span class="text-small">&copy; <span data-current-year></span> DoSim Confeitaria</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

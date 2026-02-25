@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Como Encomendar | DoSim Confeitaria</title>
+    <meta
+      name="description"
+      content="Saiba como encomendar com a DoSim Confeitaria e envie seu orçamento com formulário integrado ao WhatsApp."
+    />
+    <meta property="og:title" content="Como Encomendar | DoSim Confeitaria" />
+    <meta
+      property="og:description"
+      content="Preencha os dados da sua encomenda e fale com a DoSim no WhatsApp para confirmar disponibilidade."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://seu-usuario.github.io/dosim/assets/img/og-1200x630.svg"
+    />
+    <meta property="og:url" content="https://seu-usuario.github.io/dosim/encomendar.html" />
+    <meta name="theme-color" content="#f6f4f0" />
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/contato.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="Página inicial da DoSim Confeitaria">
+          <img src="assets/img/logo-placeholder.svg" alt="Logo da DoSim Confeitaria" />
+          <span>DoSim Confeitaria</span>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          aria-controls="menu-principal"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="menu-principal" class="site-nav" aria-label="Menu principal">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="produtos.html">Produtos &amp; Preços</a></li>
+            <li><a href="portfolio.html">Portfólio</a></li>
+            <li><a href="encomendar.html" aria-current="page">Como encomendar</a></li>
+            <li><a href="corporativo.html">Corporativo</a></li>
+            <li><a href="sazonais.html">Sazonais</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo" class="section">
+      <div class="container">
+        <h1 class="section-heading">Como encomendar</h1>
+        <p class="section-subheading">
+          Conte o que você imagina e montamos uma proposta com acabamento, sabores e apresentação alinhados ao seu momento. Confirmamos disponibilidade no atendimento.
+        </p>
+
+        <div class="dual-grid">
+          <section class="info-panel">
+            <h2 class="section-heading" style="font-size: 1.5rem">Processo em 4 passos</h2>
+            <ol class="steps" style="grid-template-columns: 1fr">
+              <li>
+                <strong>1</strong>
+                <p>Você envia as informações principais da encomenda.</p>
+              </li>
+              <li>
+                <strong>2</strong>
+                <p>Alinhamos proposta de produto e composição no orçamento.</p>
+              </li>
+              <li>
+                <strong>3</strong>
+                <p>Validamos os detalhes e confirmamos disponibilidade no atendimento.</p>
+              </li>
+              <li>
+                <strong>4</strong>
+                <p>A DoSim prepara sua encomenda com atenção aos acabamentos.</p>
+              </li>
+            </ol>
+          </section>
+
+          <section class="form-panel" aria-labelledby="titulo-form-orcamento">
+            <h2 id="titulo-form-orcamento" class="section-heading" style="font-size: 1.5rem">Formulário de orçamento</h2>
+            <form id="form-orcamento" class="form-grid">
+              <div class="form-field">
+                <label for="orcamento-nome">Nome</label>
+                <input id="orcamento-nome" name="nome" type="text" required />
+              </div>
+
+              <div class="form-field">
+                <label for="orcamento-data">Data do evento</label>
+                <input id="orcamento-data" name="dataEvento" type="date" />
+              </div>
+
+              <div class="form-field">
+                <label for="orcamento-tipo">Tipo</label>
+                <select id="orcamento-tipo" name="tipo" required>
+                  <option value="Pessoal">Pessoal</option>
+                  <option value="Corporativo">Corporativo</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="orcamento-quantidade">Quantidade estimada</label>
+                <input id="orcamento-quantidade" name="quantidade" type="number" min="1" required />
+              </div>
+
+              <div class="form-field">
+                <label for="orcamento-preferencias">Preferências</label>
+                <input
+                  id="orcamento-preferencias"
+                  name="preferencias"
+                  type="text"
+                  placeholder="Sabores, estilo, embalagem..."
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="orcamento-observacoes">Observações</label>
+                <textarea
+                  id="orcamento-observacoes"
+                  name="observacoes"
+                  placeholder="Conte mais sobre sua ideia"
+                ></textarea>
+              </div>
+
+              <p class="text-small">Após o envio, abrimos uma mensagem pronta no WhatsApp para finalizar seu atendimento.</p>
+              <button class="btn btn-primary" type="submit" aria-label="Enviar orçamento no WhatsApp">
+                Enviar orçamento no WhatsApp
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-title">DoSim Confeitaria</p>
+          <p class="text-small">Contagem - MG</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <span class="text-small">&copy; <span data-current-year></span> DoSim Confeitaria</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

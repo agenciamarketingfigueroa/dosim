@@ -1,0 +1,11 @@
+﻿[
+  {"nome":"Unitário","unidades":1,"precoVenda":4.00,"descricao":"1 biscoito decorado","destaque":true},
+  {"nome":"3x Sim","unidades":3,"precoVenda":12.00,"descricao":"3 biscoitos em embalagem presenteável","destaque":true},
+  {"nome":"Quarteto DoSim (Craft 12x12)","unidades":5,"precoVenda":22.00,"descricao":"Caixa craft 12x12 com seleção DoSim","destaque":true},
+  {"nome":"Chá das Cinco (Caneca)","unidades":6,"precoVenda":25.00,"descricao":"Combo em caneca, presenteável","destaque":false},
+  {"nome":"07 Padrinhos (Craft 32x7)","unidades":7,"precoVenda":25.00,"descricao":"Caixa craft 32x7 com 7 unidades","destaque":false},
+  {"nome":"Encontro às 09 (Craft 16x16)","unidades":7,"precoVenda":25.00,"descricao":"Caixa craft 16x16 com 7 unidades","destaque":false},
+  {"nome":"Kit Lata (25un)","unidades":25,"precoVenda":65.00,"descricao":"Lata presenteável com 25 unidades","destaque":false},
+  {"nome":"Kit Lata (40un)","unidades":40,"precoVenda":100.00,"descricao":"Lata presenteável com 40 unidades","destaque":false},
+  {"nome":"Kit Lata (55un)","unidades":55,"precoVenda":120.00,"descricao":"Lata presenteável com 55 unidades","destaque":false}
+]

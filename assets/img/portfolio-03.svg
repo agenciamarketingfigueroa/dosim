@@ -1,0 +1,6 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-label="Portfólio 03">
+  <rect width="100%" height="100%" fill="#f6f4f0" />
+  <rect x="12" y="12" width="1176" height="1176" rx="18" fill="none" stroke="#6f4e37" stroke-width="3" stroke-dasharray="8 8" />
+  <text x="50%" y="49%" text-anchor="middle" fill="#6f4e37" font-size="86" font-family="Inter, Arial, sans-serif">placeholder</text>
+  <text x="50%" y="57%" text-anchor="middle" fill="#6f4e37" font-size="32" font-family="Inter, Arial, sans-serif">Portfólio 03</text>
+</svg>
