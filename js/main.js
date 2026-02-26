@@ -207,7 +207,31 @@
     document.body.appendChild(overlay);
     document.body.appendChild(drawer);
 
+    let cartFloatButton = document.querySelector("[data-cart-float-open]");
+    if (!cartFloatButton) {
+      cartFloatButton = document.createElement("button");
+      cartFloatButton.className = "cart-float";
+      cartFloatButton.type = "button";
+      cartFloatButton.setAttribute("data-cart-float-open", "");
+      cartFloatButton.setAttribute("aria-label", "Abrir carrinho");
+      cartFloatButton.hidden = true;
+      cartFloatButton.innerHTML = `
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7 6h14l-1.35 7.1a1 1 0 0 1-.98.8H9.3a1 1 0 0 1-.98-.8L6.7 4H3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="10.2" cy="18.4" r="1.4" fill="currentColor" />
+          <circle cx="17.4" cy="18.4" r="1.4" fill="currentColor" />
+        </svg>
+        <span class="cart-float-count" data-cart-float-count>0</span>
+        <span class="sr-only">Abrir carrinho</span>
+      `;
+      document.body.appendChild(cartFloatButton);
+    }
+
     const counters = Array.from(document.querySelectorAll("[data-cart-count]"));
+    const cartFloatCount = cartFloatButton.querySelector("[data-cart-float-count]");
+    if (cartFloatCount) {
+      counters.push(cartFloatCount);
+    }
     const emptyMessage = drawer.querySelector("[data-cart-empty]");
     const itemsList = drawer.querySelector("[data-cart-items]");
     const totalLabel = drawer.querySelector("[data-cart-total]");
@@ -286,6 +310,7 @@
       drawer.classList.add("is-open");
       overlay.classList.add("is-open");
       drawer.setAttribute("aria-hidden", "false");
+      cartFloatButton.classList.remove("is-visible");
     };
 
     const closeCart = () => {
@@ -295,6 +320,10 @@
       window.setTimeout(() => {
         if (!drawer.classList.contains("is-open")) {
           overlay.hidden = true;
+          const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
+          const shouldShowFloat = totalItems > 0;
+          cartFloatButton.hidden = !shouldShowFloat;
+          cartFloatButton.classList.toggle("is-visible", shouldShowFloat);
         }
       }, 200);
     };
@@ -305,6 +334,10 @@
       counters.forEach((counter) => {
         counter.textContent = String(totalItems);
       });
+      if (!totalItems) {
+        cartFloatButton.hidden = true;
+        cartFloatButton.classList.remove("is-visible");
+      }
 
       if (!cartItems.length) {
         itemsList.innerHTML = "";
@@ -352,6 +385,7 @@
     };
 
     cartOpenButton?.addEventListener("click", openCart);
+    cartFloatButton?.addEventListener("click", openCart);
     closeButton?.addEventListener("click", closeCart);
     overlay.addEventListener("click", closeCart);
     document.addEventListener("keydown", (event) => {

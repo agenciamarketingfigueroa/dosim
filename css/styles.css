@@ -108,8 +108,9 @@ main {
   min-height: 4.35rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 0.8rem;
+  position: relative;
 }
 
 .brand {
@@ -151,6 +152,10 @@ main {
 }
 
 .menu-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 2.9rem;
   height: 2.9rem;
   border: 1px solid rgba(246, 244, 240, 0.45);
@@ -210,12 +215,14 @@ main {
   list-style: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.28rem;
 }
 
 .site-nav a {
   display: inline-flex;
   width: 100%;
+  justify-content: center;
   padding: 0.62rem 0.82rem;
   border-radius: var(--radius-xs);
   font-weight: 700;
@@ -945,6 +952,8 @@ main {
 .footer-inner {
   display: grid;
   gap: 0.75rem;
+  text-align: center;
+  justify-items: center;
 }
 
 .footer-brand {
@@ -966,6 +975,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0.78rem;
   color: rgba(246, 244, 240, 0.88);
   font-size: 0.93rem;
@@ -1056,9 +1066,63 @@ main {
   transition: opacity 480ms ease, transform 480ms ease;
 }
 
+.cart-float {
+  position: fixed;
+  right: 0.95rem;
+  bottom: 4.95rem;
+  z-index: 141;
+  width: 3.15rem;
+  height: 3.15rem;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: #ffffff;
+  color: var(--primary);
+  display: inline-grid;
+  place-items: center;
+  box-shadow: 0 14px 25px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.cart-float.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.cart-float svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.cart-float-count {
+  position: absolute;
+  top: -0.16rem;
+  right: -0.16rem;
+  min-width: 1.18rem;
+  height: 1.18rem;
+  padding: 0 0.18rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 @media (min-width: 920px) {
   .menu-toggle {
     display: none;
+  }
+
+  .header-inner {
+    justify-content: space-between;
   }
 
   .site-nav {
@@ -1100,6 +1164,16 @@ main {
   .footer-inner {
     grid-template-columns: 1fr auto;
     align-items: center;
+    text-align: left;
+    justify-items: stretch;
+  }
+
+  .footer-links {
+    justify-content: flex-end;
+  }
+
+  .cart-float {
+    display: none;
   }
 }
 
