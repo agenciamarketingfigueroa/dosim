@@ -1268,6 +1268,10 @@ main {
 }
 
 @media (max-width: 920px) {
+  main[data-catalog-page] .container {
+    width: min(980px, 92vw);
+  }
+
   .page-hero {
     padding-top: clamp(2.2rem, 4vw, 3.2rem);
     padding-bottom: clamp(2.4rem, 4.6vw, 4rem);
@@ -1310,6 +1314,10 @@ main {
 }
 
 @media (max-width: 540px) {
+  main[data-catalog-page] .container {
+    width: min(980px, 92vw);
+  }
+
   .cart-drawer {
     width: 100vw;
   }
