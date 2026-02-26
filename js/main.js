@@ -248,6 +248,30 @@
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
+    const normalizeText = (value) => (typeof value === "string" ? value.trim() : "");
+
+    const extractCardImageData = (card, fallbackName = "") => {
+      if (!(card instanceof Element)) {
+        return { imageSrc: "", imageAlt: fallbackName ? `Foto do produto ${fallbackName}` : "Foto do produto DoSim" };
+      }
+
+      const image = card.querySelector(".catalog-media img");
+      if (image instanceof HTMLImageElement) {
+        const src = normalizeText(image.getAttribute("src"));
+        if (src) {
+          const altText = normalizeText(image.getAttribute("alt")) || (fallbackName ? `Foto do produto ${fallbackName}` : "Foto do produto DoSim");
+          return { imageSrc: src, imageAlt: altText };
+        }
+      }
+
+      const dataSrc = normalizeText(card.getAttribute("data-photo-src"));
+      const dataAlt = normalizeText(card.getAttribute("data-photo-alt"));
+      return {
+        imageSrc: dataSrc,
+        imageAlt: dataAlt || (fallbackName ? `Foto do produto ${fallbackName}` : "Foto do produto DoSim"),
+      };
+    };
+
     const brlFormatter = new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -386,11 +410,25 @@
 
       itemsList.innerHTML = cartItems
         .map(
-          (item, index) => `
+          (item, index) => {
+            const imageSrc = normalizeText(item.imageSrc);
+            const imageAlt = normalizeText(item.imageAlt) || `Foto do produto ${item.name}`;
+            const itemPrice = normalizeText(item.price);
+
+            return `
             <li class="cart-item">
-              <div class="cart-item-main">
-                <p class="cart-item-name">${escapeHtml(item.name)}</p>
-                ${item.price ? `<p class="cart-item-meta">${escapeHtml(item.price)}</p>` : ""}
+              <div class="cart-item-top">
+                <div class="cart-item-media">
+                  ${
+                    imageSrc
+                      ? `<img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" />`
+                      : '<span class="cart-item-media-fallback" aria-hidden="true">DoSim</span>'
+                  }
+                </div>
+                <div class="cart-item-main">
+                  <p class="cart-item-name">${escapeHtml(item.name)}</p>
+                  <p class="cart-item-meta${itemPrice ? "" : " is-unpriced"}">${itemPrice ? escapeHtml(itemPrice) : "Preço sob consulta"}</p>
+                </div>
               </div>
               <div class="cart-item-actions">
                 <div class="cart-item-qty-group">
@@ -416,7 +454,8 @@
                 <button class="cart-item-remove" type="button" data-cart-remove="${index}">Remover</button>
               </div>
             </li>
-          `
+          `;
+          }
         )
         .join("");
 
@@ -440,11 +479,30 @@
     };
 
     const addToCart = (item) => {
-      const existing = cartItems.find((entry) => entry.id === item.id);
+      const normalizedItem = {
+        id: item.id,
+        name: item.name,
+        price: normalizeText(item.price),
+        imageSrc: normalizeText(item.imageSrc),
+        imageAlt: normalizeText(item.imageAlt),
+      };
+
+      const existing = cartItems.find((entry) => entry.id === normalizedItem.id);
       if (existing) {
         existing.qty += 1;
+        if (!normalizeText(existing.price) && normalizedItem.price) {
+          existing.price = normalizedItem.price;
+        }
+        if (!normalizeText(existing.imageSrc) && normalizedItem.imageSrc) {
+          existing.imageSrc = normalizedItem.imageSrc;
+          existing.imageAlt = normalizedItem.imageAlt || `Foto do produto ${normalizedItem.name}`;
+        }
       } else {
-        cartItems.push({ ...item, qty: 1 });
+        cartItems.push({
+          ...normalizedItem,
+          imageAlt: normalizedItem.imageAlt || `Foto do produto ${normalizedItem.name}`,
+          qty: 1,
+        });
       }
       saveCartItems();
       renderCart();
@@ -592,6 +650,7 @@
       window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     });
 
+    const catalogItemLookup = new Map();
     const gramaturaOptions = Array.from(document.querySelectorAll(".weight-list li"));
     gramaturaOptions.forEach((option) => {
       const card = option.closest(".catalog-card");
@@ -604,6 +663,8 @@
 
       const itemName = `${productName} (${weight})`;
       const itemId = slugify(`${productName}-${weight}`);
+      const imageData = extractCardImageData(card, itemName);
+      catalogItemLookup.set(itemId, { price, ...imageData });
 
       option.classList.add("weight-option");
       option.setAttribute("role", "button");
@@ -611,7 +672,7 @@
       option.setAttribute("aria-label", `Adicionar ${itemName} ao carrinho`);
 
       const handleAdd = () => {
-        addToCart({ id: itemId, name: itemName, price });
+        addToCart({ id: itemId, name: itemName, price, ...imageData });
         option.classList.add("is-added");
         window.setTimeout(() => option.classList.remove("is-added"), 260);
       };
@@ -641,13 +702,15 @@
 
       const productName = card.querySelector(".card-title")?.textContent?.trim();
       const meta = card.querySelector(".card-meta")?.textContent?.trim();
-      const price = card.querySelector(".price-current")?.textContent?.trim() || "";
+      const price = card.querySelector(".price-current")?.textContent?.trim() || card.getAttribute("data-price")?.trim() || "";
       if (!productName) {
         return;
       }
 
       const itemName = meta ? `${productName} (${meta})` : productName;
       const itemId = slugify(`${productName}-${meta || "produto"}`);
+      const imageData = extractCardImageData(card, itemName);
+      catalogItemLookup.set(itemId, { price, ...imageData });
 
       if (addButton instanceof HTMLAnchorElement) {
         addButton.href = "#";
@@ -657,13 +720,43 @@
 
       const handleAdd = (event) => {
         event.preventDefault();
-        addToCart({ id: itemId, name: itemName, price });
+        addToCart({ id: itemId, name: itemName, price, ...imageData });
         addButton.classList.add("is-added");
         window.setTimeout(() => addButton.classList.remove("is-added"), 260);
       };
 
       addButton.addEventListener("click", handleAdd);
     });
+
+    let cartHydrated = false;
+    cartItems = cartItems.map((item) => {
+      const lookup = catalogItemLookup.get(item.id);
+      if (!lookup) {
+        return item;
+      }
+
+      const nextItem = { ...item };
+      if (!normalizeText(nextItem.price) && normalizeText(lookup.price)) {
+        nextItem.price = normalizeText(lookup.price);
+        cartHydrated = true;
+      }
+
+      if (!normalizeText(nextItem.imageSrc) && normalizeText(lookup.imageSrc)) {
+        nextItem.imageSrc = normalizeText(lookup.imageSrc);
+        cartHydrated = true;
+      }
+
+      if (!normalizeText(nextItem.imageAlt) && normalizeText(lookup.imageAlt)) {
+        nextItem.imageAlt = normalizeText(lookup.imageAlt);
+        cartHydrated = true;
+      }
+
+      return nextItem;
+    });
+
+    if (cartHydrated) {
+      saveCartItems();
+    }
 
     renderCart();
   }
@@ -686,6 +779,8 @@
           id: item.id,
           name: item.name,
           price: typeof item.price === "string" ? item.price : "",
+          imageSrc: typeof item.imageSrc === "string" ? item.imageSrc : "",
+          imageAlt: typeof item.imageAlt === "string" ? item.imageAlt : "",
           qty: Number.isFinite(Number(item.qty)) ? Math.max(1, Number.parseInt(String(item.qty), 10)) : 1,
         }));
     } catch {

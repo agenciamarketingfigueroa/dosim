@@ -844,20 +844,65 @@ main {
   border-radius: var(--radius-sm);
   background: #fff;
   padding: 0.7rem;
+  display: grid;
+  gap: 0.58rem;
+}
+
+.cart-item-top {
+  display: grid;
+  grid-template-columns: 3.1rem minmax(0, 1fr);
+  gap: 0.58rem;
+  align-items: center;
+}
+
+.cart-item-media {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 0.62rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(233, 226, 216, 0.5);
+}
+
+.cart-item-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-media-fallback {
+  width: 100%;
+  height: 100%;
+  display: inline-grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .cart-item-name {
   font-weight: 800;
+  line-height: 1.2;
+}
+
+.cart-item-main {
+  min-width: 0;
 }
 
 .cart-item-meta {
   margin-top: 0.2rem;
   color: var(--muted);
   font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.cart-item-meta.is-unpriced {
+  font-style: italic;
 }
 
 .cart-item-actions {
-  margin-top: 0.58rem;
+  margin-top: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 0.42rem;
@@ -1222,6 +1267,42 @@ main {
   }
 }
 
+@media (max-width: 920px) {
+  .page-hero {
+    padding-top: clamp(2.2rem, 4vw, 3.2rem);
+    padding-bottom: clamp(2.4rem, 4.6vw, 4rem);
+  }
+
+  .section {
+    padding: clamp(2.4rem, 5.2vw, 4rem) 0;
+  }
+
+  .section > .container {
+    width: min(980px, 92vw);
+  }
+
+  .section-heading + .section-subheading {
+    margin-top: 0.85rem;
+  }
+
+  .section-subheading {
+    margin-bottom: 1.3rem;
+  }
+
+  .section .dual-grid,
+  .section .grid,
+  .section .form-grid,
+  .section .steps {
+    gap: 0.95rem;
+  }
+
+  .section .info-panel,
+  .section .form-panel,
+  .section .card {
+    padding: 1.05rem;
+  }
+}
+
 @media (max-width: 820px) {
   .home-main .flavor-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1241,6 +1322,15 @@ main {
   .cart-item-actions {
     grid-template-columns: 1fr;
     align-items: stretch;
+  }
+
+  .cart-item-top {
+    grid-template-columns: 2.9rem minmax(0, 1fr);
+  }
+
+  .cart-item-media {
+    width: 2.9rem;
+    height: 2.9rem;
   }
 
   .cart-item-qty {
