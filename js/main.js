@@ -274,6 +274,28 @@
     };
 
     const formatCurrency = (value) => brlFormatter.format(value);
+    const SELECT_QTY_LIMIT = 10;
+    const clampQty = (value) => {
+      const parsed = Number.parseInt(String(value), 10);
+      if (Number.isNaN(parsed)) {
+        return 1;
+      }
+
+      return Math.max(1, parsed);
+    };
+
+    const useCustomQty = (qty) => qty > SELECT_QTY_LIMIT;
+
+    const buildQtySelectOptions = (qty) => {
+      const normalizedQty = clampQty(qty);
+      const hasCustom = useCustomQty(normalizedQty);
+      const baseOptions = Array.from({ length: SELECT_QTY_LIMIT }, (_, index) => {
+        const value = index + 1;
+        return `<option value="${value}" ${!hasCustom && normalizedQty === value ? "selected" : ""}>${value}</option>`;
+      }).join("");
+
+      return `${baseOptions}<option value="custom" ${hasCustom ? "selected" : ""}>Mais de ${SELECT_QTY_LIMIT}</option>`;
+    };
 
     const getCartTotals = () =>
       cartItems.reduce(
@@ -328,7 +350,7 @@
       }, 200);
     };
 
-    const renderCart = () => {
+    const updateCartSummary = () => {
       const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
       const cartTotals = getCartTotals();
       counters.forEach((counter) => {
@@ -344,7 +366,7 @@
         emptyMessage.hidden = false;
         totalLabel.textContent = `0 item(ns) | Total: ${formatCurrency(0)}`;
         submitButton.setAttribute("aria-disabled", "true");
-        return;
+        return false;
       }
 
       emptyMessage.hidden = true;
@@ -352,6 +374,15 @@
       totalLabel.textContent = cartTotals.hasUnpricedItems
         ? `${cartItems.length} produto(s), ${totalItems} item(ns) | Total parcial: ${formatCurrency(cartTotals.totalValue)}`
         : `${cartItems.length} produto(s), ${totalItems} item(ns) | Total: ${formatCurrency(cartTotals.totalValue)}`;
+      return true;
+    };
+
+    const renderCart = (customQtyFocusIndex = null) => {
+      const hasItems = updateCartSummary();
+      if (!hasItems) {
+        itemsList.innerHTML = "";
+        return;
+      }
 
       itemsList.innerHTML = cartItems
         .map(
@@ -362,14 +393,50 @@
                 ${item.price ? `<p class="cart-item-meta">${escapeHtml(item.price)}</p>` : ""}
               </div>
               <div class="cart-item-actions">
-                <label class="sr-only" for="cart-qty-${index}">Quantidade de ${escapeHtml(item.name)}</label>
-                <input id="cart-qty-${index}" class="cart-item-qty" type="number" min="1" step="1" value="${item.qty}" data-cart-index="${index}" />
+                <div class="cart-item-qty-group">
+                  <label class="sr-only" for="cart-qty-select-${index}">Quantidade de ${escapeHtml(item.name)}</label>
+                  <button class="cart-qty-step" type="button" data-cart-step="${index}" data-step="-1" aria-label="Diminuir quantidade de ${escapeHtml(item.name)}">-</button>
+                  <select id="cart-qty-select-${index}" class="cart-item-qty-select" data-cart-qty-select="${index}">
+                    ${buildQtySelectOptions(item.qty)}
+                  </select>
+                  <button class="cart-qty-step" type="button" data-cart-step="${index}" data-step="1" aria-label="Aumentar quantidade de ${escapeHtml(item.name)}">+</button>
+                </div>
+                <label class="sr-only" for="cart-qty-custom-${index}">Digite quantidade maior que ${SELECT_QTY_LIMIT} para ${escapeHtml(item.name)}</label>
+                <input
+                  id="cart-qty-custom-${index}"
+                  class="cart-item-qty cart-item-qty-custom ${useCustomQty(item.qty) ? "is-visible" : ""}"
+                  type="number"
+                  min="${SELECT_QTY_LIMIT + 1}"
+                  step="1"
+                  value="${useCustomQty(item.qty) ? item.qty : SELECT_QTY_LIMIT + 1}"
+                  inputmode="numeric"
+                  data-cart-qty-custom="${index}"
+                  ${useCustomQty(item.qty) ? "" : "hidden"}
+                />
                 <button class="cart-item-remove" type="button" data-cart-remove="${index}">Remover</button>
               </div>
             </li>
           `
         )
         .join("");
+
+      if (typeof customQtyFocusIndex === "number") {
+        const customInput = itemsList.querySelector(`[data-cart-qty-custom="${customQtyFocusIndex}"]`);
+        if (customInput instanceof HTMLInputElement && !customInput.hidden) {
+          customInput.focus();
+          customInput.select();
+        }
+      }
+    };
+
+    const setItemQty = (index, qty) => {
+      if (!Number.isInteger(index) || !cartItems[index]) {
+        return false;
+      }
+
+      cartItems[index].qty = clampQty(qty);
+      saveCartItems();
+      return true;
     };
 
     const addToCart = (item) => {
@@ -396,33 +463,92 @@
 
     itemsList.addEventListener("input", (event) => {
       const target = event.target;
-      if (!(target instanceof HTMLInputElement) || !target.hasAttribute("data-cart-index")) {
+      if (!(target instanceof HTMLInputElement) || !target.hasAttribute("data-cart-qty-custom")) {
         return;
       }
 
-      const index = Number.parseInt(target.getAttribute("data-cart-index") || "", 10);
-      const qty = Number.parseInt(target.value || "1", 10);
+      const index = Number.parseInt(target.getAttribute("data-cart-qty-custom") || "", 10);
       if (Number.isNaN(index) || !cartItems[index]) {
         return;
       }
 
-      if (Number.isNaN(qty) || qty <= 0) {
-        cartItems.splice(index, 1);
-      } else {
-        cartItems[index].qty = qty;
+      const rawValue = target.value.trim();
+      if (!rawValue) {
+        return;
       }
 
+      const qty = Number.parseInt(rawValue, 10);
+      if (Number.isNaN(qty) || qty <= 0) {
+        return;
+      }
+
+      cartItems[index].qty = qty;
       saveCartItems();
-      renderCart();
+      updateCartSummary();
+    });
+
+    itemsList.addEventListener("change", (event) => {
+      const target = event.target;
+
+      if (target instanceof HTMLSelectElement && target.hasAttribute("data-cart-qty-select")) {
+        const index = Number.parseInt(target.getAttribute("data-cart-qty-select") || "", 10);
+        if (Number.isNaN(index) || !cartItems[index]) {
+          return;
+        }
+
+        if (target.value === "custom") {
+          const nextQty = useCustomQty(cartItems[index].qty) ? cartItems[index].qty : SELECT_QTY_LIMIT + 1;
+          if (setItemQty(index, nextQty)) {
+            renderCart(index);
+          }
+          return;
+        }
+
+        if (setItemQty(index, target.value)) {
+          renderCart();
+        }
+        return;
+      }
+
+      if (target instanceof HTMLInputElement && target.hasAttribute("data-cart-qty-custom")) {
+        const index = Number.parseInt(target.getAttribute("data-cart-qty-custom") || "", 10);
+        if (Number.isNaN(index) || !cartItems[index]) {
+          return;
+        }
+
+        if (setItemQty(index, target.value)) {
+          renderCart(useCustomQty(cartItems[index].qty) ? index : null);
+        }
+      }
     });
 
     itemsList.addEventListener("click", (event) => {
       const target = event.target;
-      if (!(target instanceof HTMLElement) || !target.hasAttribute("data-cart-remove")) {
+      if (!(target instanceof HTMLElement)) {
         return;
       }
 
-      const index = Number.parseInt(target.getAttribute("data-cart-remove") || "", 10);
+      const stepButton = target.closest("[data-cart-step]");
+      if (stepButton instanceof HTMLElement) {
+        const index = Number.parseInt(stepButton.getAttribute("data-cart-step") || "", 10);
+        const step = Number.parseInt(stepButton.getAttribute("data-step") || "0", 10);
+        if (Number.isNaN(index) || Number.isNaN(step) || !cartItems[index]) {
+          return;
+        }
+
+        const nextQty = Math.max(1, cartItems[index].qty + step);
+        if (setItemQty(index, nextQty)) {
+          renderCart(useCustomQty(nextQty) ? index : null);
+        }
+        return;
+      }
+
+      const removeButton = target.closest("[data-cart-remove]");
+      if (!(removeButton instanceof HTMLElement)) {
+        return;
+      }
+
+      const index = Number.parseInt(removeButton.getAttribute("data-cart-remove") || "", 10);
       if (Number.isNaN(index) || !cartItems[index]) {
         return;
       }

@@ -774,6 +774,9 @@ main {
   z-index: 190;
   width: min(420px, 94vw);
   height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
   display: grid;
   grid-template-rows: auto 1fr auto;
   border-left: 1px solid var(--line);
@@ -797,6 +800,7 @@ main {
 .cart-drawer-footer {
   border-top: 1px solid var(--line);
   border-bottom: 0;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
 .cart-drawer-title {
@@ -815,8 +819,10 @@ main {
 }
 
 .cart-drawer-body {
+  min-height: 0;
   overflow: auto;
-  padding: 0.85rem 1rem;
+  overscroll-behavior: contain;
+  padding: 0.85rem 1rem calc(0.95rem + env(safe-area-inset-bottom));
 }
 
 .cart-empty {
@@ -852,13 +858,47 @@ main {
 
 .cart-item-actions {
   margin-top: 0.58rem;
-  display: flex;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.42rem;
   align-items: center;
 }
 
+.cart-item-qty-group {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.34rem;
+}
+
+.cart-qty-step {
+  width: 2rem;
+  min-height: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.62rem;
+  background: #fff;
+  color: var(--primary);
+  font-size: 1.06rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cart-item-qty-select {
+  width: 100%;
+  min-height: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.62rem;
+  background: #fff;
+  padding: 0.3rem 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--text);
+}
+
 .cart-item-qty {
-  width: 4.6rem;
+  width: 5rem;
+  min-height: 2rem;
   border: 1px solid var(--line);
   border-radius: 0.62rem;
   background: #fff;
@@ -867,7 +907,12 @@ main {
   font-weight: 700;
 }
 
+.cart-item-qty-custom[hidden] {
+  display: none;
+}
+
 .cart-item-remove {
+  min-height: 2rem;
   border: 1px solid var(--line);
   border-radius: 0.62rem;
   background: #fff;
@@ -1184,6 +1229,28 @@ main {
 }
 
 @media (max-width: 540px) {
+  .cart-drawer {
+    width: 100vw;
+  }
+
+  .cart-drawer-header,
+  .cart-drawer-footer {
+    padding: 0.9rem;
+  }
+
+  .cart-item-actions {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .cart-item-qty {
+    width: 100%;
+  }
+
+  .cart-item-remove {
+    width: 100%;
+  }
+
   .section-copy {
     font-size: 1rem;
   }
