@@ -12,7 +12,6 @@
     injectCatalogMediaPlaceholders();
     setupCatalogWhatsAppCart();
     setupRevealAnimation();
-    injectLinksFloat();
     injectWhatsAppFloat();
     updateFooterYear();
   });
