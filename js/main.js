@@ -2,6 +2,7 @@
   const WHATSAPP_NUMBER = "5531996154698";
   const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
   const CART_STORAGE_KEY = "dosim_cart_v1";
+  const CART_CUSTOMER_STORAGE_KEY = "dosim_cart_customer_v1";
 
   document.documentElement.classList.add("js");
 
@@ -83,7 +84,7 @@
       const mensagem = String(data.get("mensagem") || "").trim();
 
       const body = [
-        "Olá, DoSim! Vim pelo site e quero atendimento.",
+        "Ola, DoSim! Vim pelo site e quero atendimento.",
         "",
         `Nome: ${nome}`,
         `Telefone: ${telefone}`,
@@ -195,8 +196,80 @@
         <button class="cart-close" type="button" data-cart-close aria-label="Fechar carrinho">Fechar</button>
       </div>
       <div class="cart-drawer-body">
-        <p class="cart-empty" data-cart-empty>Seu carrinho está vazio.</p>
+        <p class="cart-empty" data-cart-empty>Seu carrinho esta vazio.</p>
         <ul class="cart-items" data-cart-items></ul>
+        <section class="cart-customer" data-cart-customer>
+          <h3 class="cart-customer-title">Dados para o pedido</h3>
+          <div class="cart-customer-grid">
+            <label class="cart-field">
+              <span>Nome</span>
+              <input type="text" data-cart-first-name autocomplete="given-name" />
+            </label>
+            <label class="cart-field">
+              <span>Sobrenome</span>
+              <input type="text" data-cart-last-name autocomplete="family-name" />
+            </label>
+          </div>
+          <fieldset class="cart-customer-choice">
+            <legend>Recebimento</legend>
+            <label>
+              <input type="radio" name="cart-fulfillment" value="retirada" data-cart-fulfillment />
+              <span>Retirada</span>
+            </label>
+            <label>
+              <input type="radio" name="cart-fulfillment" value="entrega" data-cart-fulfillment />
+              <span>Entrega</span>
+            </label>
+          </fieldset>
+          <fieldset class="cart-customer-choice">
+            <legend>Forma de pagamento</legend>
+            <label>
+              <input type="radio" name="cart-payment" value="pix" data-cart-payment />
+              <span>Pix</span>
+            </label>
+            <label>
+              <input type="radio" name="cart-payment" value="cartao" data-cart-payment />
+              <span>Cartao de credito/debito</span>
+            </label>
+          </fieldset>
+          <label class="cart-field">
+            <span>Data desejada para encomenda</span>
+            <input type="date" data-cart-delivery-date />
+            <small data-cart-delivery-note>Prazo minimo: 1 dia util para itens sem pronta entrega.</small>
+          </label>
+          <div class="cart-delivery-fields" data-cart-delivery-fields hidden>
+            <div class="cart-delivery-grid">
+              <label class="cart-field">
+                <span>Rua</span>
+                <input type="text" data-cart-delivery-street />
+              </label>
+              <label class="cart-field">
+                <span>Numero</span>
+                <input type="text" data-cart-delivery-number />
+              </label>
+              <label class="cart-field">
+                <span>Complemento</span>
+                <input type="text" data-cart-delivery-complement />
+              </label>
+              <label class="cart-field">
+                <span>Bairro</span>
+                <input type="text" data-cart-delivery-neighborhood />
+              </label>
+              <label class="cart-field">
+                <span>Cidade</span>
+                <input type="text" data-cart-delivery-city />
+              </label>
+              <label class="cart-field">
+                <span>CEP</span>
+                <input type="text" data-cart-delivery-cep />
+              </label>
+            </div>
+            <label class="cart-field">
+              <span>Ponto de referencia</span>
+              <textarea rows="2" data-cart-delivery-reference></textarea>
+            </label>
+          </div>
+        </section>
       </div>
       <div class="cart-drawer-footer">
         <p class="cart-total" data-cart-total>0 item(ns)</p>
@@ -237,8 +310,47 @@
     const totalLabel = drawer.querySelector("[data-cart-total]");
     const submitButton = drawer.querySelector("[data-cart-submit]");
     const closeButton = drawer.querySelector("[data-cart-close]");
+    const customerSection = drawer.querySelector("[data-cart-customer]");
+    const firstNameInput = drawer.querySelector("[data-cart-first-name]");
+    const lastNameInput = drawer.querySelector("[data-cart-last-name]");
+    const fulfillmentInputs = Array.from(drawer.querySelectorAll("[data-cart-fulfillment]"));
+    const paymentInputs = Array.from(drawer.querySelectorAll("[data-cart-payment]"));
+    const deliveryFields = drawer.querySelector("[data-cart-delivery-fields]");
+    const deliveryDateInput = drawer.querySelector("[data-cart-delivery-date]");
+    const deliveryNote = drawer.querySelector("[data-cart-delivery-note]");
+    const deliveryStreetInput = drawer.querySelector("[data-cart-delivery-street]");
+    const deliveryNumberInput = drawer.querySelector("[data-cart-delivery-number]");
+    const deliveryComplementInput = drawer.querySelector("[data-cart-delivery-complement]");
+    const deliveryNeighborhoodInput = drawer.querySelector("[data-cart-delivery-neighborhood]");
+    const deliveryCityInput = drawer.querySelector("[data-cart-delivery-city]");
+    const deliveryCepInput = drawer.querySelector("[data-cart-delivery-cep]");
+    const deliveryReferenceInput = drawer.querySelector("[data-cart-delivery-reference]");
+
+    if (
+      !(emptyMessage instanceof HTMLElement) ||
+      !(itemsList instanceof HTMLElement) ||
+      !(totalLabel instanceof HTMLElement) ||
+      !(submitButton instanceof HTMLElement) ||
+      !(closeButton instanceof HTMLElement) ||
+      !(customerSection instanceof HTMLElement) ||
+      !(firstNameInput instanceof HTMLInputElement) ||
+      !(lastNameInput instanceof HTMLInputElement) ||
+      !(deliveryFields instanceof HTMLElement) ||
+      !(deliveryDateInput instanceof HTMLInputElement) ||
+      !(deliveryNote instanceof HTMLElement) ||
+      !(deliveryStreetInput instanceof HTMLInputElement) ||
+      !(deliveryNumberInput instanceof HTMLInputElement) ||
+      !(deliveryComplementInput instanceof HTMLInputElement) ||
+      !(deliveryNeighborhoodInput instanceof HTMLInputElement) ||
+      !(deliveryCityInput instanceof HTMLInputElement) ||
+      !(deliveryCepInput instanceof HTMLInputElement) ||
+      !(deliveryReferenceInput instanceof HTMLTextAreaElement)
+    ) {
+      return;
+    }
 
     let cartItems = loadCartItems();
+    let flavorValidationActive = false;
 
     const slugify = (value) =>
       value
@@ -249,6 +361,143 @@
         .replace(/(^-|-$)/g, "");
 
     const normalizeText = (value) => (typeof value === "string" ? value.trim() : "");
+    const normalizeCatalogType = (value) => (value === "presenteavel" || value === "gramatura" ? value : "");
+    const normalizeFulfillment = (value) => (value === "entrega" ? "entrega" : "retirada");
+    const normalizePayment = (value) => (value === "cartao" ? "cartao" : "pix");
+    const normalizeDateInput = (value) => (/^\d{4}-\d{2}-\d{2}$/.test(String(value)) ? String(value) : "");
+
+    const DELIVERY_MIN_BUSINESS_DAYS = 1;
+    const DELIVERY_FEE_VALUE = 7;
+    const SELECT_QTY_LIMIT = 10;
+    const FLAVOR_OPTIONS = [
+      { id: "tradicional", label: "Tradicional", available: true },
+      { id: "chocolate", label: "Chocolate", available: true },
+      { id: "canela", label: "Canela", available: true },
+      { id: "capuccino", label: "Capuccino", available: true },
+      { id: "ninho-nutella", label: "Ninho com Nutella", available: true },
+      { id: "ovomaltine", label: "Ovomaltine", available: true },
+    ];
+    const flavorOptionById = new Map(FLAVOR_OPTIONS.map((option) => [option.id, option]));
+
+    const storedCustomerData = loadCustomerData();
+    let customerData = {
+      firstName: normalizeText(storedCustomerData.firstName),
+      lastName: normalizeText(storedCustomerData.lastName),
+      fulfillment: normalizeFulfillment(storedCustomerData.fulfillment),
+      payment: normalizePayment(storedCustomerData.payment),
+      street: normalizeText(storedCustomerData.street),
+      number: normalizeText(storedCustomerData.number),
+      complement: normalizeText(storedCustomerData.complement),
+      neighborhood: normalizeText(storedCustomerData.neighborhood),
+      city: normalizeText(storedCustomerData.city),
+      cep: normalizeText(storedCustomerData.cep),
+      reference: normalizeText(storedCustomerData.reference),
+      deliveryDate: normalizeDateInput(storedCustomerData.deliveryDate),
+    };
+
+    const clampQty = (value) => {
+      const parsed = Number.parseInt(String(value), 10);
+      if (Number.isNaN(parsed)) {
+        return 1;
+      }
+
+      return Math.max(1, parsed);
+    };
+
+    const useCustomQty = (qty) => qty > SELECT_QTY_LIMIT;
+
+    const inferCatalogType = (itemId, itemName) => {
+      const normalizedId = normalizeText(itemId).toLowerCase();
+      const normalizedName = normalizeText(itemName).toLowerCase();
+      if (/\(\d+\s*unidades?\)/.test(normalizedName) || /-unidade/.test(normalizedId) || /-unidades/.test(normalizedId)) {
+        return "presenteavel";
+      }
+
+      if (/\(\d+\s*g\)/.test(normalizedName) || /-\d+g$/.test(normalizedId)) {
+        return "gramatura";
+      }
+
+      return "";
+    };
+
+    const shouldItemSupportFlavorSelection = (catalogType, itemName) => {
+      if (catalogType === "presenteavel") {
+        return true;
+      }
+
+      if (catalogType !== "gramatura") {
+        return false;
+      }
+
+      return normalizeText(itemName).toLowerCase().startsWith("misto");
+    };
+
+    const isFlavorAvailable = (flavorId) => flavorOptionById.get(flavorId)?.available !== false;
+
+    const sanitizeFlavorIds = (value) => {
+      if (!Array.isArray(value)) {
+        return [];
+      }
+
+      const seen = new Set();
+      return value
+        .map((entry) => normalizeText(entry))
+        .filter((entry) => {
+          if (!entry || seen.has(entry)) {
+            return false;
+          }
+
+          const flavor = flavorOptionById.get(entry);
+          if (!flavor || !isFlavorAvailable(entry)) {
+            return false;
+          }
+
+          seen.add(entry);
+          return true;
+        });
+    };
+
+    const areStringArraysEqual = (left, right) => {
+      if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) {
+        return false;
+      }
+
+      return left.every((value, index) => value === right[index]);
+    };
+
+    const normalizeCartItem = (item) => {
+      const itemName = normalizeText(item.name);
+      const catalogType = normalizeCatalogType(item.catalogType) || inferCatalogType(item.id, itemName);
+      const supportsFlavors = shouldItemSupportFlavorSelection(catalogType, itemName) || item.supportsFlavors === true;
+
+      return {
+        id: item.id,
+        name: itemName,
+        price: normalizeText(item.price),
+        imageSrc: normalizeText(item.imageSrc),
+        imageAlt: normalizeText(item.imageAlt) || (itemName ? `Foto do produto ${itemName}` : "Foto do produto DoSim"),
+        qty: clampQty(item.qty),
+        catalogType,
+        supportsFlavors,
+        selectedFlavorIds: supportsFlavors ? sanitizeFlavorIds(item.selectedFlavorIds) : [],
+      };
+    };
+
+    const areItemsEquivalent = (left, right) =>
+      normalizeText(left.id) === normalizeText(right.id) &&
+      normalizeText(left.name) === normalizeText(right.name) &&
+      normalizeText(left.price) === normalizeText(right.price) &&
+      normalizeText(left.imageSrc) === normalizeText(right.imageSrc) &&
+      normalizeText(left.imageAlt) === normalizeText(right.imageAlt) &&
+      clampQty(left.qty) === clampQty(right.qty) &&
+      normalizeCatalogType(left.catalogType) === normalizeCatalogType(right.catalogType) &&
+      Boolean(left.supportsFlavors) === Boolean(right.supportsFlavors) &&
+      areStringArraysEqual(sanitizeFlavorIds(left.selectedFlavorIds), sanitizeFlavorIds(right.selectedFlavorIds));
+
+    const buildFlavorLabelList = (flavorIds) =>
+      sanitizeFlavorIds(flavorIds)
+        .map((flavorId) => flavorOptionById.get(flavorId)?.label)
+        .filter((label) => Boolean(label));
 
     const extractCardImageData = (card, fallbackName = "") => {
       if (!(card instanceof Element)) {
@@ -298,17 +547,6 @@
     };
 
     const formatCurrency = (value) => brlFormatter.format(value);
-    const SELECT_QTY_LIMIT = 10;
-    const clampQty = (value) => {
-      const parsed = Number.parseInt(String(value), 10);
-      if (Number.isNaN(parsed)) {
-        return 1;
-      }
-
-      return Math.max(1, parsed);
-    };
-
-    const useCustomQty = (qty) => qty > SELECT_QTY_LIMIT;
 
     const buildQtySelectOptions = (qty) => {
       const normalizedQty = clampQty(qty);
@@ -344,6 +582,105 @@
       }
     };
 
+    const saveCustomerData = () => {
+      try {
+        window.localStorage.setItem(CART_CUSTOMER_STORAGE_KEY, JSON.stringify(customerData));
+      } catch {
+        // Ignore storage errors and keep cart working for current session.
+      }
+    };
+
+    const getSelectedFulfillment = () => {
+      const checkedInput = fulfillmentInputs.find((input) => input.checked);
+      return normalizeFulfillment(checkedInput?.value);
+    };
+
+    const getSelectedPayment = () => {
+      const checkedInput = paymentInputs.find((input) => input.checked);
+      return normalizePayment(checkedInput?.value);
+    };
+
+    const refreshMinimumDeliveryDate = () => {
+      const minDeliveryDate = getFutureBusinessDateISO(DELIVERY_MIN_BUSINESS_DAYS);
+      const dayLabel = DELIVERY_MIN_BUSINESS_DAYS === 1 ? "dia util" : "dias uteis";
+      deliveryDateInput.min = minDeliveryDate;
+      deliveryNote.textContent = `Prazo minimo: ${DELIVERY_MIN_BUSINESS_DAYS} ${dayLabel} para itens sem pronta entrega.`;
+      return minDeliveryDate;
+    };
+
+    const syncCustomerDataFromForm = () => {
+      customerData = {
+        firstName: normalizeText(firstNameInput.value),
+        lastName: normalizeText(lastNameInput.value),
+        fulfillment: getSelectedFulfillment(),
+        payment: getSelectedPayment(),
+        street: normalizeText(deliveryStreetInput.value),
+        number: normalizeText(deliveryNumberInput.value),
+        complement: normalizeText(deliveryComplementInput.value),
+        neighborhood: normalizeText(deliveryNeighborhoodInput.value),
+        city: normalizeText(deliveryCityInput.value),
+        cep: normalizeText(deliveryCepInput.value),
+        reference: normalizeText(deliveryReferenceInput.value),
+        deliveryDate: normalizeDateInput(deliveryDateInput.value),
+      };
+    };
+
+    const updateDeliveryFieldVisibility = () => {
+      const isDelivery = getSelectedFulfillment() === "entrega";
+      deliveryFields.hidden = !isDelivery;
+    };
+
+    const syncCustomerFormFromState = () => {
+      firstNameInput.value = customerData.firstName;
+      lastNameInput.value = customerData.lastName;
+      deliveryStreetInput.value = customerData.street;
+      deliveryNumberInput.value = customerData.number;
+      deliveryComplementInput.value = customerData.complement;
+      deliveryNeighborhoodInput.value = customerData.neighborhood;
+      deliveryCityInput.value = customerData.city;
+      deliveryCepInput.value = customerData.cep;
+      deliveryReferenceInput.value = customerData.reference;
+      deliveryDateInput.value = customerData.deliveryDate;
+
+      const fulfillmentValue = normalizeFulfillment(customerData.fulfillment);
+      let radioSelected = false;
+      fulfillmentInputs.forEach((input) => {
+        const shouldCheck = input.value === fulfillmentValue;
+        input.checked = shouldCheck;
+        if (shouldCheck) {
+          radioSelected = true;
+        }
+      });
+
+      if (!radioSelected && fulfillmentInputs[0]) {
+        fulfillmentInputs[0].checked = true;
+      }
+
+      const paymentValue = normalizePayment(customerData.payment);
+      let paymentSelected = false;
+      paymentInputs.forEach((input) => {
+        const shouldCheck = input.value === paymentValue;
+        input.checked = shouldCheck;
+        if (shouldCheck) {
+          paymentSelected = true;
+        }
+      });
+
+      if (!paymentSelected && paymentInputs[0]) {
+        paymentInputs[0].checked = true;
+      }
+
+      refreshMinimumDeliveryDate();
+      updateDeliveryFieldVisibility();
+      syncCustomerDataFromForm();
+      saveCustomerData();
+    };
+
+    const persistCustomerDataFromForm = () => {
+      syncCustomerDataFromForm();
+      saveCustomerData();
+    };
+
     const openCart = () => {
       const toggle = document.querySelector(".menu-toggle");
       const nav = document.querySelector(".site-nav");
@@ -377,6 +714,8 @@
     const updateCartSummary = () => {
       const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
       const cartTotals = getCartTotals();
+      const deliveryFee = getSelectedFulfillment() === "entrega" ? DELIVERY_FEE_VALUE : 0;
+      const orderTotal = cartTotals.totalValue + deliveryFee;
       counters.forEach((counter) => {
         counter.textContent = String(totalItems);
       });
@@ -395,9 +734,10 @@
 
       emptyMessage.hidden = true;
       submitButton.removeAttribute("aria-disabled");
-      totalLabel.textContent = cartTotals.hasUnpricedItems
-        ? `${cartItems.length} produto(s), ${totalItems} item(ns) | Total parcial: ${formatCurrency(cartTotals.totalValue)}`
-        : `${cartItems.length} produto(s), ${totalItems} item(ns) | Total: ${formatCurrency(cartTotals.totalValue)}`;
+      const subtotalPrefix = cartTotals.hasUnpricedItems ? "Subtotal parcial" : "Subtotal";
+      const totalPrefix = cartTotals.hasUnpricedItems ? "Total parcial" : "Total";
+      const deliveryLabel = deliveryFee > 0 ? ` | Taxa entrega: ${formatCurrency(deliveryFee)}` : "";
+      totalLabel.textContent = `${cartItems.length} produto(s), ${totalItems} item(ns) | ${subtotalPrefix}: ${formatCurrency(cartTotals.totalValue)}${deliveryLabel} | ${totalPrefix}: ${formatCurrency(orderTotal)}`;
       return true;
     };
 
@@ -414,6 +754,40 @@
             const imageSrc = normalizeText(item.imageSrc);
             const imageAlt = normalizeText(item.imageAlt) || `Foto do produto ${item.name}`;
             const itemPrice = normalizeText(item.price);
+            const selectedFlavorIds = sanitizeFlavorIds(item.selectedFlavorIds);
+            const hasFlavorError = Boolean(item.supportsFlavors) && !selectedFlavorIds.length && flavorValidationActive;
+
+            const flavorMarkup = item.supportsFlavors
+              ? `
+              <div class="cart-item-flavors${hasFlavorError ? " has-error" : ""}">
+                <p class="cart-item-flavors-title">Sabores</p>
+                <div class="cart-flavor-options">
+                  ${FLAVOR_OPTIONS.map((flavor) => {
+                    const unavailable = flavor.available === false;
+                    const checked = selectedFlavorIds.includes(flavor.id);
+                    return `
+                      <label class="cart-flavor-option${checked ? " is-selected" : ""}${unavailable ? " is-unavailable" : ""}">
+                        <input
+                          type="checkbox"
+                          value="${escapeHtml(flavor.id)}"
+                          data-cart-flavor="${index}"
+                          data-flavor-id="${escapeHtml(flavor.id)}"
+                          ${checked ? "checked" : ""}
+                          ${unavailable ? "disabled" : ""}
+                        />
+                        <span>${escapeHtml(flavor.label)}</span>
+                      </label>
+                    `;
+                  }).join("")}
+                </div>
+                ${
+                  hasFlavorError
+                    ? '<p class="cart-item-error">Selecione pelo menos 1 sabor para este item.</p>'
+                    : '<p class="cart-item-hint">Marque um ou mais sabores.</p>'
+                }
+              </div>
+            `
+              : "";
 
             return `
             <li class="cart-item">
@@ -427,9 +801,10 @@
                 </div>
                 <div class="cart-item-main">
                   <p class="cart-item-name">${escapeHtml(item.name)}</p>
-                  <p class="cart-item-meta${itemPrice ? "" : " is-unpriced"}">${itemPrice ? escapeHtml(itemPrice) : "Preço sob consulta"}</p>
+                  <p class="cart-item-meta${itemPrice ? "" : " is-unpriced"}">${itemPrice ? escapeHtml(itemPrice) : "Preco sob consulta"}</p>
                 </div>
               </div>
+              ${flavorMarkup}
               <div class="cart-item-actions">
                 <div class="cart-item-qty-group">
                   <label class="sr-only" for="cart-qty-select-${index}">Quantidade de ${escapeHtml(item.name)}</label>
@@ -479,13 +854,10 @@
     };
 
     const addToCart = (item) => {
-      const normalizedItem = {
-        id: item.id,
-        name: item.name,
-        price: normalizeText(item.price),
-        imageSrc: normalizeText(item.imageSrc),
-        imageAlt: normalizeText(item.imageAlt),
-      };
+      const normalizedItem = normalizeCartItem({
+        ...item,
+        qty: 1,
+      });
 
       const existing = cartItems.find((entry) => entry.id === normalizedItem.id);
       if (existing) {
@@ -493,17 +865,26 @@
         if (!normalizeText(existing.price) && normalizedItem.price) {
           existing.price = normalizedItem.price;
         }
+
         if (!normalizeText(existing.imageSrc) && normalizedItem.imageSrc) {
           existing.imageSrc = normalizedItem.imageSrc;
           existing.imageAlt = normalizedItem.imageAlt || `Foto do produto ${normalizedItem.name}`;
         }
+
+        if (!normalizeCatalogType(existing.catalogType) && normalizedItem.catalogType) {
+          existing.catalogType = normalizedItem.catalogType;
+        }
+
+        const supportsFlavors =
+          shouldItemSupportFlavorSelection(normalizeCatalogType(existing.catalogType), existing.name) ||
+          existing.supportsFlavors === true ||
+          normalizedItem.supportsFlavors === true;
+        existing.supportsFlavors = supportsFlavors;
+        existing.selectedFlavorIds = supportsFlavors ? sanitizeFlavorIds(existing.selectedFlavorIds) : [];
       } else {
-        cartItems.push({
-          ...normalizedItem,
-          imageAlt: normalizedItem.imageAlt || `Foto do produto ${normalizedItem.name}`,
-          qty: 1,
-        });
+        cartItems.push(normalizedItem);
       }
+
       saveCartItems();
       renderCart();
       openCart();
@@ -517,6 +898,27 @@
       if (event.key === "Escape") {
         closeCart();
       }
+    });
+
+    firstNameInput.addEventListener("input", persistCustomerDataFromForm);
+    lastNameInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryStreetInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryNumberInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryComplementInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryNeighborhoodInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryCityInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryCepInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryReferenceInput.addEventListener("input", persistCustomerDataFromForm);
+    deliveryDateInput.addEventListener("change", persistCustomerDataFromForm);
+    fulfillmentInputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        updateDeliveryFieldVisibility();
+        persistCustomerDataFromForm();
+        updateCartSummary();
+      });
+    });
+    paymentInputs.forEach((input) => {
+      input.addEventListener("change", persistCustomerDataFromForm);
     });
 
     itemsList.addEventListener("input", (event) => {
@@ -547,6 +949,28 @@
 
     itemsList.addEventListener("change", (event) => {
       const target = event.target;
+
+      if (target instanceof HTMLInputElement && target.hasAttribute("data-cart-flavor")) {
+        const index = Number.parseInt(target.getAttribute("data-cart-flavor") || "", 10);
+        const flavorId = normalizeText(target.getAttribute("data-flavor-id"));
+        if (Number.isNaN(index) || !cartItems[index] || !flavorOptionById.has(flavorId) || !isFlavorAvailable(flavorId)) {
+          return;
+        }
+
+        const currentFlavorIds = sanitizeFlavorIds(cartItems[index].selectedFlavorIds);
+        let nextFlavorIds = currentFlavorIds;
+        if (target.checked) {
+          nextFlavorIds = sanitizeFlavorIds([...currentFlavorIds, flavorId]);
+        } else {
+          nextFlavorIds = currentFlavorIds.filter((id) => id !== flavorId);
+        }
+
+        cartItems[index].selectedFlavorIds = nextFlavorIds;
+        flavorValidationActive = false;
+        saveCartItems();
+        renderCart();
+        return;
+      }
 
       if (target instanceof HTMLSelectElement && target.hasAttribute("data-cart-qty-select")) {
         const index = Number.parseInt(target.getAttribute("data-cart-qty-select") || "", 10);
@@ -612,44 +1036,154 @@
       }
 
       cartItems.splice(index, 1);
+      if (!cartItems.length) {
+        flavorValidationActive = false;
+      }
       saveCartItems();
       renderCart();
     });
 
-    submitButton?.addEventListener("click", (event) => {
+    submitButton.addEventListener("click", (event) => {
       event.preventDefault();
       if (!cartItems.length) {
-        window.alert("Seu carrinho está vazio.");
+        window.alert("Seu carrinho esta vazio.");
         return;
       }
 
+      const minDeliveryDate = refreshMinimumDeliveryDate();
+      syncCustomerDataFromForm();
+      saveCustomerData();
+
+      if (!customerData.firstName || !customerData.lastName) {
+        window.alert("Preencha nome e sobrenome para enviar o pedido.");
+        if (!customerData.firstName) {
+          firstNameInput.focus();
+        } else {
+          lastNameInput.focus();
+        }
+        return;
+      }
+
+      if (!customerData.deliveryDate) {
+        window.alert("Selecione a data desejada para encomenda.");
+        deliveryDateInput.focus();
+        return;
+      }
+
+      if (customerData.deliveryDate < minDeliveryDate) {
+        window.alert(`Selecione uma data a partir de ${formatISODateForDisplay(minDeliveryDate)}.`);
+        deliveryDateInput.focus();
+        return;
+      }
+
+      const itemsWithoutFlavor = cartItems.filter((item) => item.supportsFlavors && !sanitizeFlavorIds(item.selectedFlavorIds).length);
+      if (itemsWithoutFlavor.length) {
+        flavorValidationActive = true;
+        renderCart();
+        const productNames = itemsWithoutFlavor.map((item) => item.name).join(", ");
+        window.alert(`Selecione pelo menos 1 sabor para: ${productNames}.`);
+        return;
+      }
+
+      if (customerData.fulfillment === "entrega") {
+        if (!customerData.street) {
+          window.alert("Preencha a rua para entrega.");
+          deliveryStreetInput.focus();
+          return;
+        }
+
+        if (!customerData.number) {
+          window.alert("Preencha o numero para entrega.");
+          deliveryNumberInput.focus();
+          return;
+        }
+
+        if (!customerData.neighborhood) {
+          window.alert("Preencha o bairro para entrega.");
+          deliveryNeighborhoodInput.focus();
+          return;
+        }
+
+        if (!customerData.city) {
+          window.alert("Preencha a cidade para entrega.");
+          deliveryCityInput.focus();
+          return;
+        }
+
+        if (!customerData.cep) {
+          window.alert("Preencha o CEP para entrega.");
+          deliveryCepInput.focus();
+          return;
+        }
+      }
+
+      flavorValidationActive = false;
       const cartTotals = getCartTotals();
       const lines = cartItems.map((item) => {
         const unitPrice = parsePriceValue(item.price);
+        const selectedFlavorLabels = item.supportsFlavors ? buildFlavorLabelList(item.selectedFlavorIds) : [];
+        const flavorSuffix = selectedFlavorLabels.length ? ` | Sabores: ${selectedFlavorLabels.join(", ")}` : "";
+
         if (unitPrice === null) {
-          return `- ${item.name}: ${item.qty}x`;
+          return `- ${item.name}: ${item.qty}x${flavorSuffix}`;
         }
 
         const lineTotal = formatCurrency(unitPrice * item.qty);
-        return `- ${item.name}: ${item.qty}x (${item.price} cada) = ${lineTotal}`;
+        return `- ${item.name}: ${item.qty}x (${item.price} cada) = ${lineTotal}${flavorSuffix}`;
       });
 
-      const totalLine = cartTotals.hasUnpricedItems
-        ? `Total parcial calculado no site: ${formatCurrency(cartTotals.totalValue)} (há itens sem preço no catálogo).`
-        : `Total do pedido: ${formatCurrency(cartTotals.totalValue)}.`;
+      const deliveryFee = customerData.fulfillment === "entrega" ? DELIVERY_FEE_VALUE : 0;
+      const orderTotal = cartTotals.totalValue + deliveryFee;
+      const totalsBlock = [
+        cartTotals.hasUnpricedItems
+          ? `Subtotal parcial dos produtos: ${formatCurrency(cartTotals.totalValue)} (ha itens sem preco no catalogo).`
+          : `Subtotal dos produtos: ${formatCurrency(cartTotals.totalValue)}.`,
+      ];
+      if (deliveryFee > 0) {
+        totalsBlock.push(`Taxa de entrega: ${formatCurrency(deliveryFee)}.`);
+      }
+      totalsBlock.push(
+        cartTotals.hasUnpricedItems
+          ? `Total parcial do pedido: ${formatCurrency(orderTotal)} (valor final sera confirmado no atendimento).`
+          : `Total do pedido: ${formatCurrency(orderTotal)}.`
+      );
+
+      const customerBlock = [
+        `Nome: ${customerData.firstName} ${customerData.lastName}`,
+        `Recebimento: ${customerData.fulfillment === "entrega" ? "Entrega" : "Retirada"}`,
+        `Forma de pagamento: ${customerData.payment === "cartao" ? "Cartao de credito/debito" : "Pix"}`,
+        `Data desejada: ${formatISODateForDisplay(customerData.deliveryDate)}`,
+      ];
+
+      const addressBlock =
+        customerData.fulfillment === "entrega"
+          ? [
+              "ENDERECO DE ENTREGA:",
+              `Rua: ${customerData.street}`,
+              `Numero: ${customerData.number}`,
+              `Complemento: ${customerData.complement || "-"}`,
+              `Bairro: ${customerData.neighborhood}`,
+              `Cidade: ${customerData.city}`,
+              `CEP: ${customerData.cep}`,
+              `Ponto de referencia: ${customerData.reference || "-"}`,
+            ]
+          : [];
 
       const message = [
-        "Olá, DoSim! Quero fazer um pedido pelo site.",
+        "Ola, DoSim! Quero fazer um pedido pelo site.",
+        "",
+        "Dados do cliente:",
+        ...customerBlock,
+        ...(addressBlock.length ? ["", "", ...addressBlock] : []),
         "",
         "Itens selecionados:",
         ...lines,
         "",
-        totalLine,
+        ...totalsBlock,
       ].join("\n");
 
       window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
     });
-
     const catalogItemLookup = new Map();
     const gramaturaOptions = Array.from(document.querySelectorAll(".weight-list li"));
     gramaturaOptions.forEach((option) => {
@@ -664,7 +1198,13 @@
       const itemName = `${productName} (${weight})`;
       const itemId = slugify(`${productName}-${weight}`);
       const imageData = extractCardImageData(card, itemName);
-      catalogItemLookup.set(itemId, { price, ...imageData });
+      const isMistoGramatura = slugify(productName) === "misto";
+      catalogItemLookup.set(itemId, {
+        price,
+        ...imageData,
+        catalogType: "gramatura",
+        supportsFlavors: isMistoGramatura,
+      });
 
       option.classList.add("weight-option");
       option.setAttribute("role", "button");
@@ -672,7 +1212,14 @@
       option.setAttribute("aria-label", `Adicionar ${itemName} ao carrinho`);
 
       const handleAdd = () => {
-        addToCart({ id: itemId, name: itemName, price, ...imageData });
+        addToCart({
+          id: itemId,
+          name: itemName,
+          price,
+          ...imageData,
+          catalogType: "gramatura",
+          supportsFlavors: isMistoGramatura,
+        });
         option.classList.add("is-added");
         window.setTimeout(() => option.classList.remove("is-added"), 260);
       };
@@ -710,7 +1257,12 @@
       const itemName = meta ? `${productName} (${meta})` : productName;
       const itemId = slugify(`${productName}-${meta || "produto"}`);
       const imageData = extractCardImageData(card, itemName);
-      catalogItemLookup.set(itemId, { price, ...imageData });
+      catalogItemLookup.set(itemId, {
+        price,
+        ...imageData,
+        catalogType: "presenteavel",
+        supportsFlavors: true,
+      });
 
       if (addButton instanceof HTMLAnchorElement) {
         addButton.href = "#";
@@ -720,7 +1272,14 @@
 
       const handleAdd = (event) => {
         event.preventDefault();
-        addToCart({ id: itemId, name: itemName, price, ...imageData });
+        addToCart({
+          id: itemId,
+          name: itemName,
+          price,
+          ...imageData,
+          catalogType: "presenteavel",
+          supportsFlavors: true,
+        });
         addButton.classList.add("is-added");
         window.setTimeout(() => addButton.classList.remove("is-added"), 260);
       };
@@ -731,33 +1290,31 @@
     let cartHydrated = false;
     cartItems = cartItems.map((item) => {
       const lookup = catalogItemLookup.get(item.id);
-      if (!lookup) {
-        return item;
-      }
+      const hydratedSource = {
+        ...item,
+        price: normalizeText(item.price) || normalizeText(lookup?.price),
+        imageSrc: normalizeText(item.imageSrc) || normalizeText(lookup?.imageSrc),
+        imageAlt: normalizeText(item.imageAlt) || normalizeText(lookup?.imageAlt),
+        catalogType: normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),
+        supportsFlavors:
+          shouldItemSupportFlavorSelection(
+            normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),
+            item.name
+          ) || item.supportsFlavors === true || lookup?.supportsFlavors === true,
+      };
 
-      const nextItem = { ...item };
-      if (!normalizeText(nextItem.price) && normalizeText(lookup.price)) {
-        nextItem.price = normalizeText(lookup.price);
+      const normalizedItem = normalizeCartItem(hydratedSource);
+      if (!areItemsEquivalent(item, normalizedItem)) {
         cartHydrated = true;
       }
-
-      if (!normalizeText(nextItem.imageSrc) && normalizeText(lookup.imageSrc)) {
-        nextItem.imageSrc = normalizeText(lookup.imageSrc);
-        cartHydrated = true;
-      }
-
-      if (!normalizeText(nextItem.imageAlt) && normalizeText(lookup.imageAlt)) {
-        nextItem.imageAlt = normalizeText(lookup.imageAlt);
-        cartHydrated = true;
-      }
-
-      return nextItem;
+      return normalizedItem;
     });
 
     if (cartHydrated) {
       saveCartItems();
     }
 
+    syncCustomerFormFromState();
     renderCart();
   }
 
@@ -781,11 +1338,117 @@
           price: typeof item.price === "string" ? item.price : "",
           imageSrc: typeof item.imageSrc === "string" ? item.imageSrc : "",
           imageAlt: typeof item.imageAlt === "string" ? item.imageAlt : "",
+          catalogType: typeof item.catalogType === "string" ? item.catalogType : "",
+          supportsFlavors: item.supportsFlavors === true,
+          selectedFlavorIds: Array.isArray(item.selectedFlavorIds)
+            ? item.selectedFlavorIds.filter((entry) => typeof entry === "string")
+            : [],
           qty: Number.isFinite(Number(item.qty)) ? Math.max(1, Number.parseInt(String(item.qty), 10)) : 1,
         }));
     } catch {
       return [];
     }
+  }
+
+  function loadCustomerData() {
+    try {
+      const raw = window.localStorage.getItem(CART_CUSTOMER_STORAGE_KEY);
+      if (!raw) {
+        return {
+          firstName: "",
+          lastName: "",
+          fulfillment: "retirada",
+          payment: "pix",
+          street: "",
+          number: "",
+          complement: "",
+          neighborhood: "",
+          city: "",
+          cep: "",
+          reference: "",
+          deliveryDate: "",
+        };
+      }
+
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") {
+        return {
+          firstName: "",
+          lastName: "",
+          fulfillment: "retirada",
+          payment: "pix",
+          street: "",
+          number: "",
+          complement: "",
+          neighborhood: "",
+          city: "",
+          cep: "",
+          reference: "",
+          deliveryDate: "",
+        };
+      }
+
+      return {
+        firstName: typeof parsed.firstName === "string" ? parsed.firstName : "",
+        lastName: typeof parsed.lastName === "string" ? parsed.lastName : "",
+        fulfillment: parsed.fulfillment === "entrega" ? "entrega" : "retirada",
+        payment: parsed.payment === "cartao" ? "cartao" : "pix",
+        street: typeof parsed.street === "string" ? parsed.street : typeof parsed.address === "string" ? parsed.address : "",
+        number: typeof parsed.number === "string" ? parsed.number : "",
+        complement: typeof parsed.complement === "string" ? parsed.complement : "",
+        neighborhood: typeof parsed.neighborhood === "string" ? parsed.neighborhood : "",
+        city: typeof parsed.city === "string" ? parsed.city : "",
+        cep: typeof parsed.cep === "string" ? parsed.cep : "",
+        reference: typeof parsed.reference === "string" ? parsed.reference : "",
+        deliveryDate: typeof parsed.deliveryDate === "string" ? parsed.deliveryDate : "",
+      };
+    } catch {
+      return {
+        firstName: "",
+        lastName: "",
+        fulfillment: "retirada",
+        payment: "pix",
+        street: "",
+        number: "",
+        complement: "",
+        neighborhood: "",
+        city: "",
+        cep: "",
+        reference: "",
+        deliveryDate: "",
+      };
+    }
+  }
+
+  function getFutureBusinessDateISO(businessDays) {
+    const safeBusinessDays = Number.isFinite(Number(businessDays))
+      ? Math.max(0, Number.parseInt(String(businessDays), 10))
+      : 0;
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    let daysRemaining = safeBusinessDays;
+
+    while (daysRemaining > 0) {
+      date.setDate(date.getDate() + 1);
+      const weekday = date.getDay();
+      if (weekday !== 0 && weekday !== 6) {
+        daysRemaining -= 1;
+      }
+    }
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatISODateForDisplay(isoDate) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(isoDate))) {
+      return String(isoDate || "");
+    }
+
+    const [year, month, day] = String(isoDate).split("-");
+    return `${day}/${month}/${year}`;
   }
 
   function escapeHtml(value) {
@@ -804,7 +1467,7 @@
 
     const floatingLink = document.createElement("a");
     floatingLink.className = "whatsapp-float";
-    floatingLink.href = `${WHATSAPP_URL}?text=${encodeURIComponent("Olá, DoSim! Quero atendimento.")}`;
+    floatingLink.href = `${WHATSAPP_URL}?text=${encodeURIComponent("Ola, DoSim! Quero atendimento.")}`;
     floatingLink.target = "_blank";
     floatingLink.rel = "noopener noreferrer";
     floatingLink.setAttribute("aria-label", "Conversar no WhatsApp");
@@ -841,7 +1504,7 @@
     const linksButton = document.createElement("a");
     linksButton.className = "links-float";
     linksButton.href = new URL("links/", window.location.href).href;
-    linksButton.setAttribute("aria-label", "Abrir página /links");
+    linksButton.setAttribute("aria-label", "Abrir pagina /links");
     linksButton.textContent = "Abrir /links";
     document.body.appendChild(linksButton);
   }
