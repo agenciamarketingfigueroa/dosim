@@ -420,7 +420,13 @@
       return "";
     };
 
+    const isFixedFlavorProduct = (itemName) => normalizeText(itemName).toLowerCase().includes("ninho com nutella");
+
     const shouldItemSupportFlavorSelection = (catalogType, itemName) => {
+      if (isFixedFlavorProduct(itemName)) {
+        return false;
+      }
+
       if (catalogType === "presenteavel") {
         return true;
       }
@@ -430,6 +436,14 @@
       }
 
       return normalizeText(itemName).toLowerCase().startsWith("misto");
+    };
+
+    const resolveFlavorSupport = (catalogType, itemName, fallbackSupport = false) => {
+      if (isFixedFlavorProduct(itemName)) {
+        return false;
+      }
+
+      return shouldItemSupportFlavorSelection(catalogType, itemName) || fallbackSupport === true;
     };
 
     const isFlavorAvailable = (flavorId) => flavorOptionById.get(flavorId)?.available !== false;
@@ -468,7 +482,7 @@
     const normalizeCartItem = (item) => {
       const itemName = normalizeText(item.name);
       const catalogType = normalizeCatalogType(item.catalogType) || inferCatalogType(item.id, itemName);
-      const supportsFlavors = shouldItemSupportFlavorSelection(catalogType, itemName) || item.supportsFlavors === true;
+      const supportsFlavors = resolveFlavorSupport(catalogType, itemName, item.supportsFlavors);
 
       return {
         id: item.id,
@@ -875,10 +889,11 @@
           existing.catalogType = normalizedItem.catalogType;
         }
 
-        const supportsFlavors =
-          shouldItemSupportFlavorSelection(normalizeCatalogType(existing.catalogType), existing.name) ||
-          existing.supportsFlavors === true ||
-          normalizedItem.supportsFlavors === true;
+        const supportsFlavors = resolveFlavorSupport(
+          normalizeCatalogType(existing.catalogType),
+          existing.name,
+          existing.supportsFlavors === true || normalizedItem.supportsFlavors === true
+        );
         existing.supportsFlavors = supportsFlavors;
         existing.selectedFlavorIds = supportsFlavors ? sanitizeFlavorIds(existing.selectedFlavorIds) : [];
       } else {
@@ -1257,11 +1272,12 @@
       const itemName = meta ? `${productName} (${meta})` : productName;
       const itemId = slugify(`${productName}-${meta || "produto"}`);
       const imageData = extractCardImageData(card, itemName);
+      const supportsFlavors = resolveFlavorSupport("presenteavel", itemName);
       catalogItemLookup.set(itemId, {
         price,
         ...imageData,
         catalogType: "presenteavel",
-        supportsFlavors: true,
+        supportsFlavors,
       });
 
       if (addButton instanceof HTMLAnchorElement) {
@@ -1278,7 +1294,7 @@
           price,
           ...imageData,
           catalogType: "presenteavel",
-          supportsFlavors: true,
+          supportsFlavors,
         });
         addButton.classList.add("is-added");
         window.setTimeout(() => addButton.classList.remove("is-added"), 260);
@@ -1296,11 +1312,11 @@
         imageSrc: normalizeText(item.imageSrc) || normalizeText(lookup?.imageSrc),
         imageAlt: normalizeText(item.imageAlt) || normalizeText(lookup?.imageAlt),
         catalogType: normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),
-        supportsFlavors:
-          shouldItemSupportFlavorSelection(
-            normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),
-            item.name
-          ) || item.supportsFlavors === true || lookup?.supportsFlavors === true,
+        supportsFlavors: resolveFlavorSupport(
+          normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),
+          item.name,
+          item.supportsFlavors === true || lookup?.supportsFlavors === true
+        ),
       };
 
       const normalizedItem = normalizeCartItem(hydratedSource);
