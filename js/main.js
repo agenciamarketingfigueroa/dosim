@@ -695,6 +695,10 @@
       saveCustomerData();
     };
 
+    const setCartViewportState = (isOpen) => {
+      document.body.classList.toggle("cart-open", isOpen);
+    };
+
     const openCart = () => {
       const toggle = document.querySelector(".menu-toggle");
       const nav = document.querySelector(".site-nav");
@@ -703,6 +707,7 @@
         nav.classList.remove("is-open");
       }
 
+      setCartViewportState(true);
       overlay.hidden = false;
       drawer.classList.add("is-open");
       overlay.classList.add("is-open");
@@ -716,6 +721,7 @@
       drawer.setAttribute("aria-hidden", "true");
       window.setTimeout(() => {
         if (!drawer.classList.contains("is-open")) {
+          setCartViewportState(false);
           overlay.hidden = true;
           const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
           const shouldShowFloat = totalItems > 0;
