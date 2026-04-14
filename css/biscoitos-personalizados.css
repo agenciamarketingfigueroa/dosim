@@ -1,0 +1,388 @@
+.dosim-bp-page {
+  padding-bottom: 1rem;
+}
+
+.dosim-bp-hero,
+.dosim-bp-content-grid {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+.dosim-bp-highlight,
+.dosim-bp-info-panel,
+.dosim-bp-form-panel,
+.dosim-bp-package-card,
+.dosim-bp-info-card,
+.dosim-bp-hero-media,
+.dosim-bp-faq-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-soft);
+}
+
+.dosim-bp-highlight,
+.dosim-bp-info-panel,
+.dosim-bp-form-panel {
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.dosim-bp-hero-media {
+  margin: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(155deg, rgba(111, 78, 55, 0.12), rgba(255, 255, 255, 0.96) 48%),
+    var(--surface);
+}
+
+.dosim-bp-hero-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.dosim-bp-card-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.dosim-bp-page .section-copy {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.dosim-bp-hero-copy,
+.dosim-bp-highlight,
+.dosim-bp-section-head,
+.dosim-bp-package-card,
+.dosim-bp-info-panel,
+.dosim-bp-info-card,
+.dosim-bp-form-panel {
+  text-align: center;
+}
+
+.dosim-bp-inline-list,
+.dosim-bp-feature-list {
+  margin: 0 auto;
+  padding-left: 0;
+  display: grid;
+  gap: 0.52rem;
+  width: 100%;
+  list-style-position: inside;
+  justify-items: center;
+  text-align: center;
+}
+
+.dosim-bp-inline-list li,
+.dosim-bp-feature-list li {
+  color: var(--text);
+}
+
+.dosim-bp-highlight-note,
+.dosim-bp-muted {
+  margin-top: 0.85rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.dosim-bp-section-head {
+  margin-bottom: 1.3rem;
+}
+
+.dosim-bp-packages-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.dosim-bp-package-card {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.1rem;
+  transition:
+    border-color var(--transition),
+    background-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+
+.dosim-bp-package-card:hover {
+  transform: translateY(-2px);
+}
+
+.dosim-bp-package-card.is-selected {
+  border-color: rgba(111, 78, 55, 0.58);
+  background:
+    radial-gradient(circle at top right, rgba(111, 78, 55, 0.14), transparent 36%),
+    rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.12);
+}
+
+.dosim-bp-package-card.is-selected .dosim-bp-package-cta {
+  box-shadow: 0 0 0 2px rgba(111, 78, 55, 0.14);
+}
+
+.dosim-bp-package-copy {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.dosim-bp-option-group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.dosim-bp-option-label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.dosim-bp-option-chips,
+.dosim-bp-size-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.dosim-bp-option-chips span,
+.dosim-bp-size-chips span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(246, 244, 240, 0.82);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.dosim-bp-info-panel,
+.dosim-bp-form-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.dosim-bp-info-card {
+  padding: 1rem;
+}
+
+.dosim-bp-info-card-strong {
+  background:
+    linear-gradient(155deg, rgba(111, 78, 55, 0.14), rgba(255, 255, 255, 0.96) 48%),
+    var(--surface);
+}
+
+.dosim-bp-selected-name {
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.dosim-bp-summary-list {
+  margin: 0;
+  display: grid;
+  gap: 0.72rem;
+}
+
+.dosim-bp-summary-list div {
+  display: grid;
+  gap: 0.15rem;
+  justify-items: center;
+}
+
+.dosim-bp-summary-list dt {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.dosim-bp-summary-list dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.dosim-bp-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.dosim-bp-page .hero-badges,
+.dosim-bp-page .cta-group {
+  justify-content: center;
+}
+
+.dosim-bp-form-grid {
+  display: grid;
+  gap: 0.9rem;
+  text-align: center;
+}
+
+.dosim-bp-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.dosim-bp-field label,
+.dosim-bp-field legend {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}
+
+.dosim-bp-field fieldset,
+.dosim-bp-field {
+  min-width: 0;
+}
+
+.dosim-bp-field input,
+.dosim-bp-field textarea,
+.dosim-bp-field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.68rem 0.76rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.dosim-bp-field textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.dosim-bp-field input[readonly] {
+  background: rgba(246, 244, 240, 0.94);
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+.dosim-bp-field > fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.dosim-bp-radio-group {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.dosim-bp-radio-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.78rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.92);
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.dosim-bp-radio-card.is-checked {
+  border-color: rgba(111, 78, 55, 0.58);
+  background: rgba(233, 226, 216, 0.54);
+}
+
+.dosim-bp-radio-card input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.dosim-bp-help,
+.dosim-bp-error,
+.dosim-bp-form-status {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.dosim-bp-help {
+  color: var(--muted);
+  text-align: center;
+}
+
+.dosim-bp-error {
+  color: #8f2424;
+  min-height: 1.2em;
+  text-align: center;
+}
+
+.dosim-bp-form-status {
+  min-height: 1.4em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.dosim-bp-form-status.is-error {
+  color: #8f2424;
+}
+
+.dosim-bp-field [aria-invalid="true"] {
+  border-color: rgba(143, 36, 36, 0.52);
+}
+
+.dosim-bp-faq-list {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.dosim-bp-faq-item {
+  overflow: hidden;
+}
+
+.dosim-bp-faq-item summary {
+  padding: 1rem 1.1rem;
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+}
+
+.dosim-bp-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.dosim-bp-faq-item summary::after {
+  content: "+";
+  float: right;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.dosim-bp-faq-item[open] summary::after {
+  content: "-";
+}
+
+.dosim-bp-faq-item p {
+  padding: 0 1.1rem 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 919px) {
+  .dosim-bp-page .cta-group .btn {
+    width: 100%;
+  }
+}
