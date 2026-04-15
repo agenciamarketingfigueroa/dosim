@@ -19,7 +19,7 @@
       packageLeadTime: "15 dias",
       volumeLabel: "25 / 40 / 55",
       minQty: 25,
-      note: "Primeiro pedido com criação de molde e produção completa da primeira remessa.",
+      note: "No primeiro pedido, precisamos solicitar a confecção da forma com o fornecedor antes da produção.",
     },
     reposicao: {
       title: "Reposição | Mesmo Molde, Mais Rápido",
@@ -27,7 +27,7 @@
       packageLeadTime: "3 dias (a partir do segundo pedido)",
       volumeLabel: "A partir de 25 unidades",
       minQty: 25,
-      note: "Na reposição não há custo de criação de molde e o prazo reduz quando o molde já existe.",
+      note: "Como a forma já existe, a reposição entra em um fluxo mais rápido e não precisa de nova criação.",
     },
     assinatura: {
       title: "Assinatura | mínimo 3 meses",
@@ -35,7 +35,7 @@
       packageLeadTime: "1ª entrega: 15 dias | demais entregas: 3 dias",
       volumeLabel: "25 / 40 / 55 por remessa",
       minQty: 25,
-      note: "A assinatura começa com o primeiro pedido e segue com remessas recorrentes em contrato mínimo de 3 meses.",
+      note: "Na assinatura, a primeira remessa segue o fluxo do primeiro pedido e as seguintes entram como reposição.",
     },
   };
 
@@ -268,7 +268,7 @@
     const data = new FormData(form);
     const packageData = PACKAGES[packageKey];
     const orderType = ORDER_TYPES[selectedOrderType] || ORDER_TYPES["primeiro-pedido"];
-    const packageLeadTime = page.querySelector("[data-bp-selected-package-lead-time]")?.textContent?.trim() || "";
+    const packageLeadTime = packageData.packageLeadTime;
     const sanitizedWhatsapp = sanitizeDigits(String(data.get("whatsapp") || ""));
 
     const lines = [
@@ -298,42 +298,25 @@
   function updateSelectionSummary(page, packageKey, selectedOrderType) {
     const packageData = PACKAGES[packageKey];
     const orderType = ORDER_TYPES[selectedOrderType] || null;
-    const selectedName = page.querySelector("[data-bp-selected-name]");
-    const packageLeadTime = page.querySelector("[data-bp-selected-package-lead-time]");
-    const orderTypeField = page.querySelector("[data-bp-selected-order-type]");
-    const orderLeadTimeField = page.querySelector("[data-bp-selected-order-lead-time]");
-    const volumeField = page.querySelector("[data-bp-selected-volume]");
-    const noteField = page.querySelector("[data-bp-selected-note]");
     const orderTypeNote = page.querySelector("[data-bp-order-type-note]");
 
-    if (!selectedName || !packageLeadTime || !orderTypeField || !orderLeadTimeField || !volumeField || !noteField) {
-      return;
-    }
-
     if (!packageData) {
-      selectedName.textContent = "Selecione um pacote acima para preencher o formulário automaticamente.";
-      packageLeadTime.textContent = "15 dias no primeiro pedido ou 3 dias na reposição.";
-      orderTypeField.textContent = "Aguardando seleção";
-      orderLeadTimeField.textContent = "Aguardando seleção";
-      volumeField.textContent = "25 / 40 / 55";
-      noteField.textContent = "Os pacotes desta página começam em 25 unidades.";
       if (orderTypeNote) {
         orderTypeNote.textContent =
-          "Selecione um pacote para ver como ele conversa com o tipo de pedido escolhido.";
+          "Ao escolher um tipo de pedido, o formulário abaixo é preenchido automaticamente com a opção correspondente.";
       }
       return;
     }
 
-    selectedName.textContent = packageData.title;
-    packageLeadTime.textContent = packageData.packageLeadTime;
-    orderTypeField.textContent = orderType ? orderType.label : ORDER_TYPES[packageData.defaultOrderType].label;
-    orderLeadTimeField.textContent = orderType ? orderType.leadTime : ORDER_TYPES[packageData.defaultOrderType].leadTime;
-    volumeField.textContent = packageData.volumeLabel;
-    noteField.textContent = packageData.note;
-
     if (orderTypeNote) {
+      if (packageKey === "assinatura") {
+        orderTypeNote.textContent =
+          "Na assinatura, a primeira remessa segue o fluxo de primeiro pedido e as próximas aproveitam a forma já pronta.";
+        return;
+      }
+
       orderTypeNote.textContent = orderType
-        ? `Com o tipo "${orderType.label}", o prazo-base considerado é ${orderType.leadTime}.`
+        ? `Você selecionou "${orderType.label}", então o formulário abaixo seguirá esse fluxo.`
         : "Selecione um tipo de pedido para alinhar a regra de prazo.";
     }
   }

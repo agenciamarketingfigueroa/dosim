@@ -170,10 +170,17 @@
 .dosim-bp-form-panel {
   display: grid;
   gap: 1rem;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .dosim-bp-info-card {
   padding: 1rem;
+}
+
+.dosim-bp-extra-card {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .dosim-bp-info-card-strong {

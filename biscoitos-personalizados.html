@@ -71,15 +71,6 @@
               Escolha o pacote que combina com o seu momento, defina o briefing da produção e envie uma mensagem
               completa pelo WhatsApp sem depender de backend.
             </p>
-            <div class="hero-badges">
-              <span>Primeiro pedido: 15 dias</span>
-              <span>A partir do segundo pedido: 3 dias</span>
-              <span>Tamanhos de 4 a 7 cm</span>
-            </div>
-            <div class="cta-group">
-              <a class="btn btn-primary" href="#pacotes">Ver pacotes</a>
-              <a class="btn btn-secondary" href="#formulario-personalizados">Ir para o formulário</a>
-            </div>
           </div>
 
           <figure class="dosim-bp-hero-media" data-reveal>
@@ -89,28 +80,23 @@
             />
           </figure>
 
-          <aside class="dosim-bp-highlight" data-reveal aria-labelledby="bp-highlight-title">
-            <h2 id="bp-highlight-title" class="dosim-bp-card-title">Resumo rápido</h2>
-            <ul class="dosim-bp-inline-list">
-              <li>Primeiro pedido com criação de molde e produção completa.</li>
-              <li>Reposição com o mesmo molde em prazo reduzido a partir do segundo pedido.</li>
-              <li>Assinatura com contrato mínimo de 3 meses e recorrência por remessa.</li>
-            </ul>
-            <p class="dosim-bp-highlight-note">
-              Selecione um pacote abaixo para preencher automaticamente o campo de pacote escolhido e o tipo de
-              pedido no formulário.
-            </p>
-          </aside>
+          <div class="hero-badges dosim-bp-hero-highlights" data-reveal>
+            <span>Primeiro pedido: 15 dias</span>
+            <span>A partir do segundo pedido: 3 dias</span>
+            <span>Tamanhos de 4 a 7 cm</span>
+          </div>
+
         </div>
       </section>
 
       <section id="pacotes" class="section-block section-soft">
         <div class="container">
           <div class="dosim-bp-section-head" data-reveal>
-            <h2 class="section-title">Pacotes</h2>
+            <h2 class="section-title">Escolha o tipo de pedido</h2>
             <p class="section-copy">
-              Cada opção já considera o ritmo de produção correspondente. Você pode trocar de pacote a qualquer
-              momento antes de enviar.
+              Para ficar mais claro, separamos o fluxo principal em duas situações: primeiro pedido, quando ainda
+              precisamos produzir a forma; e reposição, quando o molde já existe. A assinatura aparece mais abaixo
+              como uma opção extra para quem quer recorrência.
             </p>
           </div>
 
@@ -122,19 +108,19 @@
               data-reveal
             >
               <div class="tag-row">
-                <span class="tag tag-new">Pacote 1</span>
+                <span class="tag tag-new">Novo projeto</span>
               </div>
-              <h3 class="card-title">Primeiro Pedido | Molde + Produção</h3>
+              <h3 class="card-title">Primeiro pedido</h3>
               <p class="dosim-bp-package-copy">
-                Ideal para começar um projeto novo com molde dedicado e planejamento completo da primeira produção.
+                Quando o desenho ainda não existe, começamos pela confecção da forma com o fornecedor e depois
+                seguimos para a produção dos biscoitos.
               </p>
               <ul class="dosim-bp-feature-list">
                 <li>mínimo 25 unidades</li>
                 <li>prazo: 15 dias</li>
-                <li>opções de volume: 25 / 40 / 55</li>
               </ul>
               <div class="dosim-bp-option-group" aria-label="Opções de volume do primeiro pedido">
-                <span class="dosim-bp-option-label">Volumes</span>
+                <span class="dosim-bp-option-label">Volumes mais pedidos</span>
                 <div class="dosim-bp-option-chips">
                   <span>25</span>
                   <span>40</span>
@@ -147,7 +133,7 @@
                 data-bp-select-package
                 aria-pressed="false"
               >
-                Quero este pacote
+                Este é meu primeiro pedido
               </button>
             </article>
 
@@ -158,11 +144,12 @@
               data-reveal
             >
               <div class="tag-row">
-                <span class="tag tag-hot">Pacote 2</span>
+                <span class="tag tag-hot">Molde existente</span>
               </div>
-              <h3 class="card-title">Reposição | Mesmo Molde, Mais Rápido</h3>
+              <h3 class="card-title">Reposição</h3>
               <p class="dosim-bp-package-copy">
-                Para repetir um pedido com o molde existente e acelerar a próxima remessa sem refazer a criação.
+                Quando você já tem um molde aprovado conosco, a próxima remessa entra como reposição e segue um
+                fluxo mais rápido.
               </p>
               <ul class="dosim-bp-feature-list">
                 <li>a partir de 25 unidades</li>
@@ -175,44 +162,7 @@
                 data-bp-select-package
                 aria-pressed="false"
               >
-                Quero este pacote
-              </button>
-            </article>
-
-            <article
-              class="dosim-bp-package-card"
-              data-bp-package-card
-              data-bp-package-key="assinatura"
-              data-reveal
-            >
-              <div class="tag-row">
-                <span class="tag tag-new">Pacote 3</span>
-              </div>
-              <h3 class="card-title">Assinatura | mínimo 3 meses</h3>
-              <p class="dosim-bp-package-copy">
-                Uma solução recorrente para marcas, eventos seriados e ativações que precisam de remessas frequentes.
-              </p>
-              <ul class="dosim-bp-feature-list">
-                <li>contrato mínimo: 3 meses</li>
-                <li>1ª entrega: 15 dias</li>
-                <li>demais entregas: 3 dias</li>
-                <li>opções de recorrência por remessa: 25 / 40 / 55</li>
-              </ul>
-              <div class="dosim-bp-option-group" aria-label="Opções de recorrência por remessa">
-                <span class="dosim-bp-option-label">Recorrência por remessa</span>
-                <div class="dosim-bp-option-chips">
-                  <span>25</span>
-                  <span>40</span>
-                  <span>55</span>
-                </div>
-              </div>
-              <button
-                class="btn btn-primary btn-block dosim-bp-package-cta"
-                type="button"
-                data-bp-select-package
-                aria-pressed="false"
-              >
-                Quero este pacote
+                Quero fazer uma reposição
               </button>
             </article>
           </div>
@@ -220,7 +170,7 @@
       </section>
 
       <section class="section-block">
-        <div class="container dosim-bp-content-grid">
+        <div class="container">
           <section class="dosim-bp-info-panel" data-reveal aria-labelledby="bp-info-title">
             <h2 id="bp-info-title" class="section-title">Informações do produto</h2>
             <p class="section-copy">
@@ -239,45 +189,82 @@
             </div>
 
             <div class="dosim-bp-info-card">
-              <h3 class="dosim-bp-card-title">Regras de prazo</h3>
+              <h3 class="dosim-bp-card-title">Prazo do primeiro pedido</h3>
               <ul class="dosim-bp-feature-list">
                 <li>primeiro pedido: 15 dias</li>
-                <li>a partir do segundo pedido: 3 dias</li>
               </ul>
-              <p class="dosim-bp-muted" data-bp-order-type-note>
-                Selecione um pacote para ver como ele conversa com o tipo de pedido escolhido.
+              <p class="dosim-bp-muted">
+                Esse prazo maior existe porque precisamos solicitar a confecção da forma com o fornecedor antes de
+                iniciar a produção do seu lote.
               </p>
             </div>
 
-            <div class="dosim-bp-info-card dosim-bp-info-card-strong" aria-live="polite">
-              <h3 class="dosim-bp-card-title">Resumo do pacote selecionado</h3>
-              <p class="dosim-bp-selected-name" data-bp-selected-name>
-                Selecione um pacote acima para preencher o formulário automaticamente.
+            <div class="dosim-bp-info-card">
+              <h3 class="dosim-bp-card-title">Reposição mais rápida</h3>
+              <ul class="dosim-bp-feature-list">
+                <li>a partir do segundo pedido: 3 dias</li>
+              </ul>
+              <p class="dosim-bp-muted">
+                Depois que a forma já existe, a reposição entra em um fluxo mais rápido e não precisa passar pela
+                etapa de criação novamente.
               </p>
-              <dl class="dosim-bp-summary-list">
-                <div>
-                  <dt>Prazo do pacote</dt>
-                  <dd data-bp-selected-package-lead-time>15 dias no primeiro pedido ou 3 dias na reposição.</dd>
-                </div>
-                <div>
-                  <dt>Tipo no formulário</dt>
-                  <dd data-bp-selected-order-type>Aguardando seleção</dd>
-                </div>
-                <div>
-                  <dt>Prazo pela regra do tipo</dt>
-                  <dd data-bp-selected-order-lead-time>Aguardando seleção</dd>
-                </div>
-                <div>
-                  <dt>Volume / recorrência</dt>
-                  <dd data-bp-selected-volume>25 / 40 / 55</dd>
-                </div>
-              </dl>
-              <p class="dosim-bp-muted" data-bp-selected-note>
-                Os pacotes desta página começam em 25 unidades.
+              <p class="dosim-bp-muted" data-bp-order-type-note>
+                Ao escolher um tipo de pedido, o formulário abaixo é preenchido automaticamente com a opção
+                correspondente.
               </p>
             </div>
           </section>
+        </div>
+      </section>
 
+      <section class="section-block section-soft">
+        <div class="container">
+          <div class="dosim-bp-section-head" data-reveal>
+            <p class="eyebrow">Oportunidade extra</p>
+            <h2 class="section-title">Assinatura para remessas recorrentes</h2>
+            <p class="section-copy">
+              Se você já sabe que vai precisar de entregas frequentes, a assinatura entra como uma forma de organizar
+              a recorrência sem misturar com o fluxo principal do pedido.
+            </p>
+          </div>
+
+          <article
+            class="dosim-bp-package-card dosim-bp-extra-card"
+            data-bp-package-card
+            data-bp-package-key="assinatura"
+            data-reveal
+          >
+            <div class="tag-row">
+              <span class="tag tag-new">Extra</span>
+            </div>
+            <h3 class="card-title">Assinatura | mínimo 3 meses</h3>
+            <p class="dosim-bp-package-copy">
+              Indicada para marcas, eventos e ações que já precisam de remessas planejadas com mais frequência.
+            </p>
+            <ul class="dosim-bp-feature-list">
+              <li>contrato mínimo: 3 meses</li>
+              <li>1ª entrega: 15 dias</li>
+              <li>demais entregas: 3 dias</li>
+              <li>opções por remessa: 25 / 40 / 55</li>
+            </ul>
+            <p class="dosim-bp-muted">
+              A primeira remessa segue a lógica do primeiro pedido. As próximas aproveitam a mesma forma e entram no
+              fluxo de reposição.
+            </p>
+            <button
+              class="btn btn-primary btn-block dosim-bp-package-cta"
+              type="button"
+              data-bp-select-package
+              aria-pressed="false"
+            >
+              Quero conversar sobre assinatura
+            </button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="container">
           <section
             id="formulario-personalizados"
             class="dosim-bp-form-panel"
