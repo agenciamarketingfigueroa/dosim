@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">DoSim Confeitaria</title>
+  <desc id="description">Biscoitos amanteigados artesanais em Contagem, Minas Gerais.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf3"/>
+      <stop offset="1" stop-color="#e9dfd2"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#6f4e37" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <circle cx="1090" cy="90" r="180" fill="#6f4e37" fill-opacity=".1"/>
+  <circle cx="75" cy="585" r="210" fill="#6f4e37" fill-opacity=".08"/>
+  <g filter="url(#shadow)">
+    <rect x="712" y="120" width="300" height="300" rx="150" fill="#f7eee3" stroke="#6f4e37" stroke-opacity=".18" stroke-width="8"/>
+    <circle cx="862" cy="270" r="105" fill="#b77d4d"/>
+    <circle cx="825" cy="232" r="14" fill="#6f4e37"/>
+    <circle cx="891" cy="213" r="11" fill="#6f4e37"/>
+    <circle cx="909" cy="286" r="14" fill="#6f4e37"/>
+    <circle cx="844" cy="313" r="10" fill="#6f4e37"/>
+    <circle cx="803" cy="287" r="12" fill="#6f4e37"/>
+  </g>
+  <text x="120" y="190" fill="#6f4e37" font-family="Georgia, serif" font-size="92" font-weight="700">DoSim</text>
+  <text x="125" y="245" fill="#6f4e37" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">CONFEITARIA</text>
+  <text x="120" y="338" fill="#1f1712" font-family="Georgia, serif" font-size="48">Biscoitos artesanais</text>
+  <text x="120" y="397" fill="#1f1712" font-family="Georgia, serif" font-size="48">para presentear e celebrar</text>
+  <text x="120" y="492" fill="#6f4e37" font-family="Arial, sans-serif" font-size="28" font-weight="700">CONTAGEM · MINAS GERAIS</text>
+</svg>

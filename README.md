@@ -103,6 +103,19 @@ Formatos recomendados para produção: `.jpg` ou `.webp` (foto) e `.svg` (arte v
 3. Salve o arquivo.
 4. Recarregue a página `produtos.html` para ver tabela e cards atualizados.
 
+## Frete calculado no carrinho
+
+Ao escolher **Entrega**, o carrinho calcula uma estimativa pela rota e exige a confirmação do cálculo antes de abrir o pedido no WhatsApp. A regra fica no início de `js/main.js`, em `SHIPPING_RULES`:
+
+- `origin`: coordenadas do ponto de saída — substitua pela localização exata da DoSim antes de publicar;
+- `baseFee`: taxa base;
+- `costPerKm`: custo por quilômetro;
+- `profitMargin`: margem de lucro aplicada sobre o frete estimado;
+- `maximumRouteKm`: limite máximo da rota;
+- `roundingStep`: arredondamento do valor final.
+
+O cálculo é uma estimativa exibida ao cliente e é incluído na mensagem de pedido do WhatsApp.
+
 ## WhatsApp e contatos oficiais no projeto
 
 - WhatsApp: `https://wa.me/5531996154698`

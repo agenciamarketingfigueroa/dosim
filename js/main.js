@@ -268,6 +268,10 @@
               <span>Ponto de referencia</span>
               <textarea rows="2" data-cart-delivery-reference></textarea>
             </label>
+            <div class="cart-shipping-quote" data-cart-shipping-quote aria-live="polite">
+              <p data-cart-shipping-status>Preencha o endereço para calcular o frete.</p>
+              <button class="btn btn-secondary btn-sm" type="button" data-cart-calculate-shipping>Calcular frete</button>
+            </div>
           </div>
         </section>
       </div>
@@ -325,6 +329,8 @@
     const deliveryCityInput = drawer.querySelector("[data-cart-delivery-city]");
     const deliveryCepInput = drawer.querySelector("[data-cart-delivery-cep]");
     const deliveryReferenceInput = drawer.querySelector("[data-cart-delivery-reference]");
+    const shippingStatus = drawer.querySelector("[data-cart-shipping-status]");
+    const calculateShippingButton = drawer.querySelector("[data-cart-calculate-shipping]");
 
     if (
       !(emptyMessage instanceof HTMLElement) ||
@@ -344,7 +350,9 @@
       !(deliveryNeighborhoodInput instanceof HTMLInputElement) ||
       !(deliveryCityInput instanceof HTMLInputElement) ||
       !(deliveryCepInput instanceof HTMLInputElement) ||
-      !(deliveryReferenceInput instanceof HTMLTextAreaElement)
+      !(deliveryReferenceInput instanceof HTMLTextAreaElement) ||
+      !(shippingStatus instanceof HTMLElement) ||
+      !(calculateShippingButton instanceof HTMLButtonElement)
     ) {
       return;
     }
@@ -367,7 +375,17 @@
     const normalizeDateInput = (value) => (/^\d{4}-\d{2}-\d{2}$/.test(String(value)) ? String(value) : "");
 
     const DELIVERY_MIN_BUSINESS_DAYS = 1;
-    const DELIVERY_FEE_VALUE = 7;
+    // Ajuste estes valores conforme o custo real da sua operação.
+    // Troque a coordenada pela do ponto exato de saída antes de publicar.
+    const SHIPPING_RULES = {
+      origin: { lat: -19.9317, lng: -44.0536 }, // Contagem - MG (referência provisória)
+      // Referência: corrida de plataforma, com lucro aplicado ao valor do frete.
+      baseFee: 4,
+      costPerKm: 0.55,
+      profitMargin: 1.2,
+      maximumRouteKm: 20,
+      roundingStep: 0.5,
+    };
     const SELECT_QTY_LIMIT = 10;
     const FLAVOR_OPTIONS = [
       { id: "tradicional", label: "Tradicional", available: true },
@@ -394,6 +412,8 @@
       reference: normalizeText(storedCustomerData.reference),
       deliveryDate: normalizeDateInput(storedCustomerData.deliveryDate),
     };
+    let shippingQuote = null;
+    let isCalculatingShipping = false;
 
     const clampQty = (value) => {
       const parsed = Number.parseInt(String(value), 10);
@@ -561,6 +581,86 @@
     };
 
     const formatCurrency = (value) => brlFormatter.format(value);
+
+    const buildDeliveryAddress = () =>
+      [
+        deliveryStreetInput.value,
+        deliveryNumberInput.value,
+        deliveryNeighborhoodInput.value,
+        deliveryCityInput.value,
+        deliveryCepInput.value,
+        "Brasil",
+      ]
+        .map(normalizeText)
+        .filter(Boolean)
+        .join(", ");
+
+    const clearShippingQuote = () => {
+      shippingQuote = null;
+      if (getSelectedFulfillment() === "entrega") {
+        shippingStatus.textContent = "Endereço alterado. Calcule o frete novamente.";
+      }
+    };
+
+    const roundShippingFee = (value) => {
+      const step = SHIPPING_RULES.roundingStep;
+      return Math.ceil(value / step) * step;
+    };
+
+    const calculateShipping = async () => {
+      const address = buildDeliveryAddress();
+      if (!address || !normalizeText(deliveryStreetInput.value) || !normalizeText(deliveryNumberInput.value) || !normalizeText(deliveryCityInput.value)) {
+        shippingStatus.textContent = "Preencha rua, número e cidade para calcular o frete.";
+        return false;
+      }
+
+      isCalculatingShipping = true;
+      calculateShippingButton.disabled = true;
+      calculateShippingButton.textContent = "Calculando...";
+      shippingStatus.textContent = "Consultando a distância da rota...";
+
+      try {
+        const geocodeResponse = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q=${encodeURIComponent(address)}`
+        );
+        if (!geocodeResponse.ok) throw new Error("Não foi possível localizar o endereço.");
+        const locations = await geocodeResponse.json();
+        const destination = locations[0];
+        if (!destination) throw new Error("Não encontramos esse endereço. Confira os dados informados.");
+
+        const routeResponse = await fetch(
+          `https://router.project-osrm.org/route/v1/driving/${SHIPPING_RULES.origin.lng},${SHIPPING_RULES.origin.lat};${destination.lon},${destination.lat}?overview=false`
+        );
+        if (!routeResponse.ok) throw new Error("Não foi possível calcular a rota agora.");
+        const routeData = await routeResponse.json();
+        const routeMeters = routeData.routes?.[0]?.distance;
+        if (!Number.isFinite(routeMeters)) throw new Error("Não foi possível calcular a rota agora.");
+
+        const routeKm = routeMeters / 1000;
+        if (routeKm > SHIPPING_RULES.maximumRouteKm) {
+          shippingQuote = { available: false, routeKm, address };
+          shippingStatus.textContent = `Entrega indisponível para ${routeKm.toFixed(1).replace(".", ",")} km de rota. Nosso limite é ${SHIPPING_RULES.maximumRouteKm} km.`;
+          updateCartSummary();
+          return false;
+        }
+
+        const rawFee = (SHIPPING_RULES.baseFee + routeKm * SHIPPING_RULES.costPerKm) * SHIPPING_RULES.profitMargin;
+        const amount = roundShippingFee(rawFee);
+        shippingQuote = { available: true, amount, routeKm, address };
+        shippingStatus.textContent = `Frete estimado: ${formatCurrency(amount)} para ${routeKm.toFixed(1).replace(".", ",")} km de rota.`;
+        updateCartSummary();
+        return true;
+      } catch (error) {
+        shippingQuote = null;
+        shippingStatus.textContent = error instanceof Error ? error.message : "Não foi possível calcular o frete agora.";
+        updateCartSummary();
+        return false;
+      } finally {
+        isCalculatingShipping = false;
+        calculateShippingButton.disabled = false;
+        calculateShippingButton.textContent = "Calcular frete";
+      }
+    };
 
     const buildQtySelectOptions = (qty) => {
       const normalizedQty = clampQty(qty);
@@ -734,7 +834,7 @@
     const updateCartSummary = () => {
       const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
       const cartTotals = getCartTotals();
-      const deliveryFee = getSelectedFulfillment() === "entrega" ? DELIVERY_FEE_VALUE : 0;
+      const deliveryFee = getSelectedFulfillment() === "entrega" && shippingQuote?.available ? shippingQuote.amount : 0;
       const orderTotal = cartTotals.totalValue + deliveryFee;
       counters.forEach((counter) => {
         counter.textContent = String(totalItems);
@@ -756,7 +856,12 @@
       submitButton.removeAttribute("aria-disabled");
       const subtotalPrefix = cartTotals.hasUnpricedItems ? "Subtotal parcial" : "Subtotal";
       const totalPrefix = cartTotals.hasUnpricedItems ? "Total parcial" : "Total";
-      const deliveryLabel = deliveryFee > 0 ? ` | Taxa entrega: ${formatCurrency(deliveryFee)}` : "";
+      const deliveryLabel =
+        getSelectedFulfillment() !== "entrega"
+          ? ""
+          : deliveryFee > 0
+            ? ` | Frete: ${formatCurrency(deliveryFee)}`
+            : " | Frete: calcule pelo endereço";
       totalLabel.textContent = `${cartItems.length} produto(s), ${totalItems} item(ns) | ${subtotalPrefix}: ${formatCurrency(cartTotals.totalValue)}${deliveryLabel} | ${totalPrefix}: ${formatCurrency(orderTotal)}`;
       return true;
     };
@@ -923,17 +1028,28 @@
 
     firstNameInput.addEventListener("input", persistCustomerDataFromForm);
     lastNameInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryStreetInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryNumberInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryComplementInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryNeighborhoodInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryCityInput.addEventListener("input", persistCustomerDataFromForm);
-    deliveryCepInput.addEventListener("input", persistCustomerDataFromForm);
+    const handleDeliveryAddressChange = () => {
+      clearShippingQuote();
+      persistCustomerDataFromForm();
+      updateCartSummary();
+    };
+    deliveryStreetInput.addEventListener("input", handleDeliveryAddressChange);
+    deliveryNumberInput.addEventListener("input", handleDeliveryAddressChange);
+    deliveryComplementInput.addEventListener("input", handleDeliveryAddressChange);
+    deliveryNeighborhoodInput.addEventListener("input", handleDeliveryAddressChange);
+    deliveryCityInput.addEventListener("input", handleDeliveryAddressChange);
+    deliveryCepInput.addEventListener("input", handleDeliveryAddressChange);
     deliveryReferenceInput.addEventListener("input", persistCustomerDataFromForm);
+    calculateShippingButton.addEventListener("click", calculateShipping);
     deliveryDateInput.addEventListener("change", persistCustomerDataFromForm);
     fulfillmentInputs.forEach((input) => {
       input.addEventListener("change", () => {
         updateDeliveryFieldVisibility();
+        if (getSelectedFulfillment() !== "entrega") {
+          shippingQuote = null;
+        } else {
+          clearShippingQuote();
+        }
         persistCustomerDataFromForm();
         updateCartSummary();
       });
@@ -1136,6 +1252,22 @@
           deliveryCepInput.focus();
           return;
         }
+
+        if (isCalculatingShipping) {
+          window.alert("Aguarde o cálculo do frete terminar.");
+          return;
+        }
+
+        if (!shippingQuote || shippingQuote.address !== buildDeliveryAddress()) {
+          window.alert("Calcule o frete para este endereço antes de enviar o pedido.");
+          calculateShippingButton.focus();
+          return;
+        }
+
+        if (!shippingQuote.available) {
+          window.alert("Esse endereço está fora da área de entrega automática. Fale conosco pelo WhatsApp para verificar alternativas.");
+          return;
+        }
       }
 
       flavorValidationActive = false;
@@ -1153,7 +1285,7 @@
         return `- ${item.name}: ${item.qty}x (${item.price} cada) = ${lineTotal}${flavorSuffix}`;
       });
 
-      const deliveryFee = customerData.fulfillment === "entrega" ? DELIVERY_FEE_VALUE : 0;
+      const deliveryFee = customerData.fulfillment === "entrega" && shippingQuote?.available ? shippingQuote.amount : 0;
       const orderTotal = cartTotals.totalValue + deliveryFee;
       const totalsBlock = [
         cartTotals.hasUnpricedItems
@@ -1161,7 +1293,7 @@
           : `Subtotal dos produtos: ${formatCurrency(cartTotals.totalValue)}.`,
       ];
       if (deliveryFee > 0) {
-        totalsBlock.push(`Taxa de entrega: ${formatCurrency(deliveryFee)}.`);
+        totalsBlock.push(`Frete estimado: ${formatCurrency(deliveryFee)} (${shippingQuote.routeKm.toFixed(1).replace(".", ",")} km de rota).`);
       }
       totalsBlock.push(
         cartTotals.hasUnpricedItems
@@ -1190,6 +1322,19 @@
             ]
           : [];
 
+      const pixPaymentBlock =
+        customerData.payment === "pix"
+          ? [
+              "",
+              "PAGAMENTO VIA PIX:",
+              "Nome: Delliz Christine",
+              "Chave Pix: dosimconfeitaria@gmail.com",
+              "Banco: Nubank",
+              "",
+              "Por favor, envie o comprovante de pagamento nesta conversa para que seu pedido possa entrar em produção.",
+            ]
+          : [];
+
       const message = [
         "Ola, DoSim! Quero fazer um pedido pelo site.",
         "",
@@ -1201,6 +1346,7 @@
         ...lines,
         "",
         ...totalsBlock,
+        ...pixPaymentBlock,
       ].join("\n");
 
       window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
