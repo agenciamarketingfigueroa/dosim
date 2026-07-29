@@ -33,6 +33,7 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 |-- css/
 |   `-- styles.css
 |-- data/
+|   |-- custos-receitas.md
 |   `-- precos.json
 |-- js/
 |   |-- contato.js
@@ -102,6 +103,11 @@ Formatos recomendados para produção: `.jpg` ou `.webp` (foto) e `.svg` (arte v
    - `destaque` (`true` ou `false`)
 3. Salve o arquivo.
 4. Recarregue a página `produtos.html` para ver tabela e cards atualizados.
+
+## Custos das receitas
+
+A tabela de custos, suas premissas e os cálculos de referência estão em
+`data/custos-receitas.md`.
 
 ## Frete calculado no carrinho
 
