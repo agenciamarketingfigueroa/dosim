@@ -1328,7 +1328,7 @@
               "",
               "PAGAMENTO VIA PIX:",
               "Nome: Delliz Christine",
-              "Chave Pix: dosimconfeitaria@gmail.com",
+              "Chave Pix: 31996154698",
               "Banco: Nubank",
               "",
               "Por favor, envie o comprovante de pagamento nesta conversa para que seu pedido possa entrar em produção.",
