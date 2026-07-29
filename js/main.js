@@ -378,13 +378,17 @@
     // Ajuste estes valores conforme o custo real da sua operação.
     // Troque a coordenada pela do ponto exato de saída antes de publicar.
     const SHIPPING_RULES = {
-      origin: { lat: -19.9317, lng: -44.0536 }, // Contagem - MG (referência provisória)
-      // Referência: corrida de plataforma, com lucro aplicado ao valor do frete.
-      baseFee: 4,
-      costPerKm: 0.55,
-      profitMargin: 1.2,
+      origin: { lat: -19.87986, lng: -44.0284 }, // Ponto público aproximado da região de saída
+      // Valores provisórios calibrados com cotações fora do horário de pico.
+      priceBands: [
+        { maximumKm: 2, amount: 7 },
+        { maximumKm: 5, amount: 8 },
+        { maximumKm: 8, amount: 11 },
+        { maximumKm: 12, amount: 14 },
+        { maximumKm: 16, amount: 21.5 },
+        { maximumKm: 20, amount: 27 },
+      ],
       maximumRouteKm: 20,
-      roundingStep: 0.5,
     };
     const SELECT_QTY_LIMIT = 10;
     const FLAVOR_OPTIONS = [
@@ -602,10 +606,8 @@
       }
     };
 
-    const roundShippingFee = (value) => {
-      const step = SHIPPING_RULES.roundingStep;
-      return Math.ceil(value / step) * step;
-    };
+    const getShippingFeeForRoute = (routeKm) =>
+      SHIPPING_RULES.priceBands.find((band) => routeKm <= band.maximumKm)?.amount ?? null;
 
     const calculateShipping = async () => {
       const address = buildDeliveryAddress();
@@ -644,8 +646,8 @@
           return false;
         }
 
-        const rawFee = (SHIPPING_RULES.baseFee + routeKm * SHIPPING_RULES.costPerKm) * SHIPPING_RULES.profitMargin;
-        const amount = roundShippingFee(rawFee);
+        const amount = getShippingFeeForRoute(routeKm);
+        if (!Number.isFinite(amount)) throw new Error("Não foi possível calcular o frete para essa distância.");
         shippingQuote = { available: true, amount, routeKm, address };
         shippingStatus.textContent = `Frete estimado: ${formatCurrency(amount)} para ${routeKm.toFixed(1).replace(".", ",")} km de rota.`;
         updateCartSummary();
@@ -1401,7 +1403,7 @@
     });
 
     const presenteavelCards = Array.from(document.querySelectorAll(".catalog-card")).filter((card) => {
-      if (!card.querySelector(".btn-sm")) {
+      if (!card.querySelector(".btn-sm:not([disabled])")) {
         return false;
       }
 
@@ -1409,7 +1411,7 @@
     });
 
     presenteavelCards.forEach((card) => {
-      const addButton = card.querySelector(".btn-sm");
+      const addButton = card.querySelector(".btn-sm:not([disabled])");
       if (!(addButton instanceof HTMLAnchorElement || addButton instanceof HTMLButtonElement)) {
         return;
       }
@@ -1455,12 +1457,26 @@
       addButton.addEventListener("click", handleAdd);
     });
 
+    const unavailablePresenteavelIds = new Set([
+      "simples-1-unidade",
+      "quarteto-dosim-6-unidades",
+      "quarteto-dosim-ninho-com-nutella-6-unidades",
+      "07-padrinhos-7-unidades",
+      "sim-completo-25-unidades",
+      "sim-completo-40-unidades",
+      "sim-completo-55-unidades",
+    ]);
     let cartHydrated = false;
-    cartItems = cartItems.map((item) => {
+    const availableCartItems = cartItems.filter((item) => !unavailablePresenteavelIds.has(normalizeText(item.id)));
+    if (availableCartItems.length !== cartItems.length) {
+      cartHydrated = true;
+    }
+
+    cartItems = availableCartItems.map((item) => {
       const lookup = catalogItemLookup.get(item.id);
       const hydratedSource = {
         ...item,
-        price: normalizeText(item.price) || normalizeText(lookup?.price),
+        price: normalizeText(lookup?.price) || normalizeText(item.price),
         imageSrc: normalizeText(item.imageSrc) || normalizeText(lookup?.imageSrc),
         imageAlt: normalizeText(item.imageAlt) || normalizeText(lookup?.imageAlt),
         catalogType: normalizeCatalogType(item.catalogType) || normalizeCatalogType(lookup?.catalogType),

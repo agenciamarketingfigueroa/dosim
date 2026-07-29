@@ -111,14 +111,24 @@ A tabela de custos, suas premissas e os cálculos de referência estão em
 
 ## Frete calculado no carrinho
 
-Ao escolher **Entrega**, o carrinho calcula uma estimativa pela rota e exige a confirmação do cálculo antes de abrir o pedido no WhatsApp. A regra fica no início de `js/main.js`, em `SHIPPING_RULES`:
+Ao escolher **Entrega**, o carrinho calcula uma estimativa pela rota e exige a confirmação do cálculo antes de abrir o pedido no WhatsApp. A regra fica no início de `js/main.js`, em `SHIPPING_RULES`.
 
-- `origin`: coordenadas do ponto de saída — substitua pela localização exata da DoSim antes de publicar;
-- `baseFee`: taxa base;
-- `costPerKm`: custo por quilômetro;
-- `profitMargin`: margem de lucro aplicada sobre o frete estimado;
-- `maximumRouteKm`: limite máximo da rota;
-- `roundingStep`: arredondamento do valor final.
+- `origin`: coordenada pública de referência para a rota; o endereço interno da DoSim não deve ser incluído no site;
+- `priceBands`: faixas provisórias de distância e preço, calibradas com cotações fora do horário de pico;
+- `maximumRouteKm`: limite máximo da rota.
+
+Faixas provisórias vigentes:
+
+| Distância da rota | Frete |
+| ---: | ---: |
+| Até 2 km | R$ 7,00 |
+| Até 5 km | R$ 8,00 |
+| Até 8 km | R$ 11,00 |
+| Até 12 km | R$ 14,00 |
+| Até 16 km | R$ 21,50 |
+| Até 20 km | R$ 27,00 |
+
+Esses valores devem ser recalibrados depois da coleta em horário de pico. Para usar a origem exata sem expô-la no código público, o cálculo da rota deve ser movido para um serviço privado de backend.
 
 O cálculo é uma estimativa exibida ao cliente e é incluído na mensagem de pedido do WhatsApp.
 

@@ -745,6 +745,19 @@ main {
   background: rgba(233, 226, 216, 0.72);
 }
 
+.catalog-card .btn:disabled {
+  color: var(--muted);
+  border-color: var(--line);
+  background: rgba(233, 226, 216, 0.55);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.82;
+}
+
+.catalog-card .btn:disabled:hover {
+  transform: none;
+}
+
 .btn-sm {
   min-height: 2.45rem;
   margin-top: auto;
