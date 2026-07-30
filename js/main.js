@@ -177,6 +177,20 @@
       cartOpenButton = cartNavItem.querySelector("[data-cart-open]");
     }
 
+    if (!navList.querySelector("[data-orders-access]")) {
+      const ordersNavItem = document.createElement("li");
+      ordersNavItem.className = "orders-nav-item";
+      ordersNavItem.innerHTML = `
+        <a class="orders-nav-btn" href="pedidos.html" data-orders-access aria-label="Acessar controle de pedidos" title="Controle de pedidos">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M10 4H6.8A1.8 1.8 0 0 0 5 5.8v12.4A1.8 1.8 0 0 0 6.8 20H10M14.5 8.5 18 12l-3.5 3.5M18 12H9" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="sr-only">Controle de pedidos</span>
+        </a>
+      `;
+      navList.appendChild(ordersNavItem);
+    }
+
     if (document.querySelector("[data-cart-drawer]")) {
       return;
     }
@@ -1467,7 +1481,11 @@
       "sim-completo-55-unidades",
     ]);
     let cartHydrated = false;
-    const availableCartItems = cartItems.filter((item) => !unavailablePresenteavelIds.has(normalizeText(item.id)));
+    const availableCartItems = cartItems.filter((item) => {
+      const itemId = normalizeText(item.id);
+      const isOldGramatura = /-(100g|150g)$/.test(itemId);
+      return !unavailablePresenteavelIds.has(itemId) && !isOldGramatura;
+    });
     if (availableCartItems.length !== cartItems.length) {
       cartHydrated = true;
     }

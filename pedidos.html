@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Controle de Pedidos | DoSim</title>
+    <meta name="theme-color" content="#6f4e37" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/pedidos.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/pedidos.js" defer></script>
+  </head>
+  <body class="orders-page">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="Página inicial da DoSim">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Abrir menu principal"
+          aria-expanded="false"
+          aria-controls="menu-principal"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="menu-principal" class="site-nav" aria-label="Menu principal">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="produtos.html">Presenteáveis</a></li>
+            <li><a href="gramatura.html">Por Gramatura</a></li>
+            <li><a href="index.html#corporativo">Personalizados</a></li>
+            <li><a href="index.html#contato">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="conteudo" class="orders-main">
+      <section class="orders-login" data-orders-login>
+        <div class="orders-login-card">
+          <img src="assets/img/logo-escura.svg" alt="DoSim" />
+          <p class="eyebrow">Área interna</p>
+          <h1>Controle de pedidos</h1>
+          <p class="orders-login-copy">Digite a senha para acessar os pedidos salvos neste dispositivo.</p>
+          <form data-orders-login-form>
+            <label class="orders-field">
+              <span>Senha</span>
+              <input type="password" inputmode="numeric" autocomplete="current-password" required data-orders-password />
+            </label>
+            <p class="orders-form-error" data-orders-login-error aria-live="polite"></p>
+            <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="orders-dashboard" data-orders-dashboard hidden>
+        <div class="container orders-shell">
+          <div class="orders-topbar">
+            <div>
+              <p class="eyebrow">Área interna</p>
+              <h1 class="section-title">Controle de pedidos</h1>
+              <p class="section-copy">Pedidos salvos somente neste navegador.</p>
+            </div>
+            <div class="orders-toolbar">
+              <button class="btn btn-secondary btn-sm" type="button" data-orders-export>Exportar backup</button>
+              <label class="btn btn-secondary btn-sm orders-import-label">
+                Importar backup
+                <input type="file" accept="application/json,.json" data-orders-import />
+              </label>
+              <button class="orders-logout" type="button" data-orders-logout>Sair</button>
+            </div>
+          </div>
+
+          <div class="orders-stats" aria-label="Resumo dos pedidos">
+            <article>
+              <span>Em aberto</span>
+              <strong data-orders-open-count>0</strong>
+            </article>
+            <article>
+              <span>Para hoje</span>
+              <strong data-orders-today-count>0</strong>
+            </article>
+            <article>
+              <span>Próximo pedido</span>
+              <strong class="orders-next-date" data-orders-next-date>—</strong>
+            </article>
+          </div>
+
+          <div class="orders-layout">
+            <section class="orders-panel orders-form-panel">
+              <div class="orders-panel-heading">
+                <div>
+                  <p class="eyebrow" data-orders-form-eyebrow>Novo registro</p>
+                  <h2 data-orders-form-title>Adicionar pedido</h2>
+                </div>
+                <span class="orders-number-preview" data-orders-number-preview>DS-0001</span>
+              </div>
+
+              <form data-orders-form>
+                <div class="orders-basic-fields">
+                  <label class="orders-field">
+                    <span>Nome do cliente</span>
+                    <input type="text" autocomplete="name" maxlength="80" required data-orders-customer />
+                  </label>
+                  <label class="orders-field">
+                    <span>Data de entrega</span>
+                    <input type="date" required data-orders-delivery-date />
+                  </label>
+                </div>
+
+                <fieldset class="orders-flavors-fieldset">
+                  <legend>Sabores e quantidades</legend>
+                  <p>Marque os sabores e ajuste a quantidade.</p>
+                  <div class="orders-flavors" data-orders-flavors></div>
+                </fieldset>
+
+                <p class="orders-form-error" data-orders-form-error aria-live="polite"></p>
+                <div class="orders-form-actions">
+                  <button class="btn btn-primary" type="submit" data-orders-submit>Salvar pedido</button>
+                  <button class="btn btn-secondary" type="button" data-orders-cancel-edit hidden>Cancelar edição</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="orders-panel orders-list-panel">
+              <div class="orders-list-heading">
+                <div>
+                  <p class="eyebrow">Agenda</p>
+                  <h2>Próximos pedidos</h2>
+                </div>
+                <label class="orders-filter">
+                  <span class="sr-only">Filtrar pedidos</span>
+                  <select data-orders-filter>
+                    <option value="open">Em aberto</option>
+                    <option value="all">Todos</option>
+                    <option value="completed">Concluídos</option>
+                  </select>
+                </label>
+              </div>
+              <p class="orders-empty" data-orders-empty>Nenhum pedido cadastrado.</p>
+              <div class="orders-list" data-orders-list></div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="orders-toast" role="status" aria-live="polite" data-orders-toast hidden></div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-logo">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </div>
+        <div class="footer-links">
+          <span>Uso interno</span>
+          <span>&copy; <span data-current-year></span> DoSim</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -132,6 +132,12 @@ Esses valores devem ser recalibrados depois da coleta em horário de pico. Para 
 
 O cálculo é uma estimativa exibida ao cliente e é incluído na mensagem de pedido do WhatsApp.
 
+## Controle local de pedidos
+
+A página `pedidos.html` permite cadastrar manualmente nome do cliente, data de entrega, sabores e quantidades. Os pedidos recebem numeração sequencial automática e podem ser editados, concluídos, reabertos ou excluídos.
+
+Os dados são armazenados no `localStorage` do navegador e não são sincronizados entre dispositivos. Use **Exportar backup** regularmente para evitar perda de dados caso o armazenamento do navegador seja apagado. A senha da página é apenas uma barreira visual em um site estático; autenticação realmente segura exige backend.
+
 ## WhatsApp e contatos oficiais no projeto
 
 - WhatsApp: `https://wa.me/5531996154698`
