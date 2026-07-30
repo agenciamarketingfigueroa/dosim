@@ -146,7 +146,9 @@
         image.alt = card.getAttribute("data-photo-alt") || (cardTitle ? `Foto do produto ${cardTitle}` : "Foto do produto DoSim");
         media.appendChild(image);
       } else {
-        media.innerHTML = "<span>Foto 4:5</span>";
+        const placeholder = document.createElement("span");
+        placeholder.textContent = card.getAttribute("data-photo-placeholder") || "Foto 4:5";
+        media.appendChild(placeholder);
       }
 
       card.prepend(media);
@@ -1483,7 +1485,9 @@
     let cartHydrated = false;
     const availableCartItems = cartItems.filter((item) => {
       const itemId = normalizeText(item.id);
-      const isOldGramatura = /-(100g|150g)$/.test(itemId);
+      const isOldGramatura =
+        /-(100g|150g)$/.test(itemId) ||
+        /^(queijo-congelado|queijo-faca-voce-mesmo)-(200g|300g|500g)$/.test(itemId);
       return !unavailablePresenteavelIds.has(itemId) && !isOldGramatura;
     });
     if (availableCartItems.length !== cartItems.length) {

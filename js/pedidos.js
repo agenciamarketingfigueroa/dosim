@@ -2,7 +2,16 @@
   const STORAGE_KEY = "dosim_orders_v1";
   const AUTH_KEY = "dosim_orders_authenticated_v1";
   const AUTH_HASH = "5b33003a928495b97792ac286d477b54dd20eb773c74ae2fb3653bc5950ad6dd";
-  const FLAVORS = ["Tradicional", "Chocolate", "Canela", "Cappuccino", "Ninho com Nutella", "Ovomaltine"];
+  const FLAVORS = [
+    "Tradicional",
+    "Chocolate",
+    "Canela",
+    "Cappuccino",
+    "Ninho com Nutella",
+    "Ovomaltine",
+    "Queijo",
+    "Queijo para Assar",
+  ];
 
   document.addEventListener("DOMContentLoaded", () => {
     const loginPanel = document.querySelector("[data-orders-login]");
@@ -433,7 +442,9 @@
         if (!item || typeof item.flavor !== "string" || !Number.isInteger(item.quantity) || item.quantity < 1) {
           throw new Error("Item inválido");
         }
-        return { flavor: item.flavor.slice(0, 80), quantity: item.quantity };
+        const legacyCheeseNames = ["Queijo Congelado", "Queijo (Faça Você Mesmo)"];
+        const flavor = legacyCheeseNames.includes(item.flavor) ? "Queijo para Assar" : item.flavor;
+        return { flavor: flavor.slice(0, 80), quantity: item.quantity };
       });
       if (!items.length) throw new Error("Pedido sem itens");
       return {
