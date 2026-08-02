@@ -1,5 +1,17 @@
 (() => {
-  const WHATSAPP_NUMBER = "55XXXXXXXXXXX";
+  const WHATSAPP_NUMBER = "5531996154698";
+  const PERSONALIZED_PRICING = {
+    pricedSize: "6 cm",
+    unitWeightGrams: 20,
+    referenceWeightGrams: 500,
+    referencePrice: 49,
+    moldFee: 40,
+    minimumQuantity: 25,
+  };
+  const CURRENCY_FORMATTER = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 
   const ORDER_TYPES = {
     "primeiro-pedido": {
@@ -29,13 +41,38 @@
       minQty: 25,
       note: "Como a forma já existe, a reposição entra em um fluxo mais rápido e não precisa de nova criação.",
     },
-    assinatura: {
-      title: "Assinatura | mínimo 3 meses",
-      defaultOrderType: "primeiro-pedido",
-      packageLeadTime: "1ª entrega: 15 dias | demais entregas: 3 dias",
-      volumeLabel: "25 / 40 / 55 por remessa",
+    "assinatura-mensal": {
+      title: "Assinatura | Plano Mensal",
+      defaultOrderType: "reposicao",
+      packageLeadTime: "3 dias por remessa",
+      volumeLabel: "40 unidades por remessa",
       minQty: 25,
-      note: "Na assinatura, a primeira remessa segue o fluxo do primeiro pedido e as seguintes entram como reposição.",
+      fixedQty: 40,
+      discountRate: 0,
+      commitmentMonths: 1,
+      note: "Plano mensal para molde existente, com renovação a cada remessa.",
+    },
+    "assinatura-3-meses": {
+      title: "Assinatura | Plano Trimestral",
+      defaultOrderType: "reposicao",
+      packageLeadTime: "3 dias por remessa",
+      volumeLabel: "40 unidades por remessa",
+      minQty: 25,
+      fixedQty: 40,
+      discountRate: 0.1,
+      commitmentMonths: 3,
+      note: "Plano de 3 meses para molde existente, com 10% de desconto em cada remessa.",
+    },
+    "assinatura-6-meses": {
+      title: "Assinatura | Plano Semestral",
+      defaultOrderType: "reposicao",
+      packageLeadTime: "3 dias por remessa",
+      volumeLabel: "40 unidades por remessa",
+      minQty: 25,
+      fixedQty: 40,
+      discountRate: 0.15,
+      commitmentMonths: 6,
+      note: "Plano de 6 meses para molde existente, com 15% de desconto em cada remessa.",
     },
   };
 
@@ -53,6 +90,7 @@
     const formSection = document.getElementById("formulario-personalizados");
     const packageField = document.getElementById("bp-pacote");
     const quantityField = document.getElementById("bp-quantidade");
+    const sizeField = document.getElementById("bp-tamanho");
     const whatsappField = document.getElementById("bp-whatsapp");
     const statusField = page.querySelector("[data-bp-form-status]");
     const quantityErrorField = page.querySelector("[data-bp-quantity-error]");
@@ -68,10 +106,14 @@
     const state = {
       selectedPackageKey: "",
     };
+    const refreshPriceEstimate = () => {
+      updatePriceEstimate(form, getSelectedOrderType(typeRadios), state.selectedPackageKey);
+    };
 
     setDateMinValue(form.elements.namedItem("dataDesejada"));
     updateRadioCards(typeRadios);
     updateSelectionSummary(page, state.selectedPackageKey, getSelectedOrderType(typeRadios));
+    refreshPriceEstimate();
 
     packageCards.forEach((card) => {
       const button = card.querySelector("[data-bp-select-package]");
@@ -95,6 +137,7 @@
           statusField,
           quantityErrorField,
         });
+        refreshPriceEstimate();
       });
     });
 
@@ -102,13 +145,17 @@
       radio.addEventListener("change", () => {
         updateRadioCards(typeRadios);
         updateSelectionSummary(page, state.selectedPackageKey, getSelectedOrderType(typeRadios));
+        refreshPriceEstimate();
       });
     });
 
     quantityField.addEventListener("input", () => {
       clearQuantityError(quantityField, quantityErrorField);
       validateQuantity(state.selectedPackageKey, quantityField, quantityErrorField);
+      refreshPriceEstimate();
     });
+
+    sizeField?.addEventListener("change", refreshPriceEstimate);
 
     whatsappField.addEventListener("input", () => {
       whatsappField.setCustomValidity("");
@@ -190,6 +237,22 @@
     state.selectedPackageKey = packageKey;
     packageField.value = selectedPackage.title;
     quantityField.min = String(selectedPackage.minQty);
+    quantityField.readOnly = Number.isFinite(selectedPackage.fixedQty);
+    if (quantityField.readOnly) {
+      quantityField.value = String(selectedPackage.fixedQty);
+    }
+
+    const quantityHelpField = document.getElementById("bp-quantity-help");
+    if (quantityHelpField) {
+      quantityHelpField.textContent = quantityField.readOnly
+        ? `Este plano inclui ${selectedPackage.fixedQty} unidades por remessa.`
+        : "Todos os pacotes desta página partem de 25 unidades.";
+    }
+
+    const usesExistingMold = packageKey.startsWith("assinatura-");
+    typeRadios.forEach((radio) => {
+      radio.disabled = usesExistingMold && radio.value !== "reposicao";
+    });
 
     packageCards.forEach((card) => {
       const isSelected = card.getAttribute("data-bp-package-key") === packageKey;
@@ -270,6 +333,34 @@
     const orderType = ORDER_TYPES[selectedOrderType] || ORDER_TYPES["primeiro-pedido"];
     const packageLeadTime = packageData.packageLeadTime;
     const sanitizedWhatsapp = sanitizeDigits(String(data.get("whatsapp") || ""));
+    const quantity = Number(data.get("quantidade"));
+    const size = String(data.get("tamanho") || "").trim();
+    const price = calculatePersonalizedPrice(quantity, selectedOrderType, size, packageKey);
+    const priceLines = [];
+    const isSubscription = packageKey.startsWith("assinatura-");
+
+    if (price) {
+      priceLines.push(`Peso estimado: ${formatWeight(price.weightGrams)}`);
+      if (price.discountRate > 0) {
+        priceLines.push(`Valor-base por remessa: ${formatCurrency(price.baseProduction)}`);
+        priceLines.push(
+          `Desconto da assinatura: ${formatPercentage(price.discountRate)} (-${formatCurrency(price.discountAmount)})`
+        );
+        priceLines.push(`Valor por remessa com desconto: ${formatCurrency(price.production)}`);
+      } else {
+        priceLines.push(`Valor da produção: ${formatCurrency(price.production)}`);
+      }
+      priceLines.push(`Forminha: ${price.moldFee > 0 ? formatCurrency(price.moldFee) : "não cobrada"}`);
+      priceLines.push(
+        `${isSubscription ? "Total por remessa" : "Total estimado"}: ${formatCurrency(price.total)}`
+      );
+      if (price.commitmentMonths > 1) {
+        priceLines.push(`Total do ciclo de ${price.commitmentMonths} meses: ${formatCurrency(price.cycleTotal)}`);
+        priceLines.push(`Economia total no ciclo: ${formatCurrency(price.cycleSavings)}`);
+      }
+    } else {
+      priceLines.push(`Valor estimado: sob consulta para o tamanho ${size || "não informado"}.`);
+    }
 
     const lines = [
       "Olá, DoSim! Quero solicitar um pedido de biscoitos personalizados.",
@@ -280,9 +371,11 @@
       `Data desejada: ${formatDate(String(data.get("dataDesejada") || ""))}`,
       `Cidade/Bairro ou Endereço: ${String(data.get("localEntrega") || "").trim()}`,
       `Quantidade: ${String(data.get("quantidade") || "").trim()}`,
-      `Tamanho: ${String(data.get("tamanho") || "").trim()}`,
+      `Tamanho: ${size}`,
+      `Sabor: ${String(data.get("sabor") || "").trim()}`,
       `Tipo de pedido: ${orderType.label}`,
       `Prazo do pacote: ${packageLeadTime || packageData.packageLeadTime}`,
+      ...priceLines,
       `Logo (URL): ${String(data.get("logoUrl") || "").trim()}`,
       `Observações: ${withFallback(String(data.get("observacoes") || "").trim())}`,
       "",
@@ -290,6 +383,129 @@
     ];
 
     return lines.join("\n");
+  }
+
+  function calculatePersonalizedPrice(quantity, selectedOrderType, size, packageKey = "") {
+    if (
+      !Number.isFinite(quantity) ||
+      quantity < PERSONALIZED_PRICING.minimumQuantity ||
+      !ORDER_TYPES[selectedOrderType] ||
+      size !== PERSONALIZED_PRICING.pricedSize
+    ) {
+      return null;
+    }
+
+    const packageData = PACKAGES[packageKey] || {};
+    const discountRate = Number(packageData.discountRate) || 0;
+    const commitmentMonths = Number(packageData.commitmentMonths) || 1;
+    const pricePerGram = PERSONALIZED_PRICING.referencePrice / PERSONALIZED_PRICING.referenceWeightGrams;
+    const weightGrams = quantity * PERSONALIZED_PRICING.unitWeightGrams;
+    const baseProduction = roundCurrency(weightGrams * pricePerGram);
+    const discountAmount = roundCurrency(baseProduction * discountRate);
+    const production = roundCurrency(baseProduction - discountAmount);
+    const moldFee = selectedOrderType === "primeiro-pedido" ? PERSONALIZED_PRICING.moldFee : 0;
+    const total = roundCurrency(production + moldFee);
+
+    return {
+      weightGrams,
+      baseProduction,
+      discountRate,
+      discountAmount,
+      production,
+      moldFee,
+      total,
+      commitmentMonths,
+      cycleTotal: roundCurrency(total * commitmentMonths),
+      cycleSavings: roundCurrency(discountAmount * commitmentMonths),
+    };
+  }
+
+  function updatePriceEstimate(form, selectedOrderType, packageKey) {
+    const messageField = form.querySelector("[data-bp-estimate-message]");
+    const detailsField = form.querySelector("[data-bp-estimate-details]");
+    const weightField = form.querySelector("[data-bp-estimate-weight]");
+    const productionField = form.querySelector("[data-bp-estimate-production]");
+    const moldRow = form.querySelector("[data-bp-estimate-mold-row]");
+    const moldField = form.querySelector("[data-bp-estimate-mold]");
+    const discountRow = form.querySelector("[data-bp-estimate-discount-row]");
+    const discountField = form.querySelector("[data-bp-estimate-discount]");
+    const totalLabel = form.querySelector("[data-bp-estimate-total-label]");
+    const totalField = form.querySelector("[data-bp-estimate-total]");
+    const cycleRow = form.querySelector("[data-bp-estimate-cycle-row]");
+    const cycleField = form.querySelector("[data-bp-estimate-cycle]");
+
+    if (
+      !messageField ||
+      !detailsField ||
+      !weightField ||
+      !productionField ||
+      !moldRow ||
+      !moldField ||
+      !discountRow ||
+      !discountField ||
+      !totalLabel ||
+      !totalField ||
+      !cycleRow ||
+      !cycleField
+    ) {
+      return;
+    }
+
+    const data = new FormData(form);
+    const quantityValue = String(data.get("quantidade") || "").trim();
+    const size = String(data.get("tamanho") || "").trim();
+
+    if (!quantityValue || !size || !selectedOrderType) {
+      messageField.textContent = "Informe a quantidade, o tamanho e o tipo de pedido para calcular o valor.";
+      detailsField.hidden = true;
+      return;
+    }
+
+    if (size !== PERSONALIZED_PRICING.pricedSize) {
+      messageField.textContent = `O tamanho ${size} fica sob consulta. O cálculo por gramatura está disponível para o padrão de 6 cm.`;
+      detailsField.hidden = true;
+      return;
+    }
+
+    const price = calculatePersonalizedPrice(Number(quantityValue), selectedOrderType, size, packageKey);
+    if (!price) {
+      messageField.textContent = `Informe uma quantidade válida, a partir de ${PERSONALIZED_PRICING.minimumQuantity} unidades, para calcular o valor.`;
+      detailsField.hidden = true;
+      return;
+    }
+
+    messageField.textContent = "Estimativa para sabores doces básicos e embalagem coletiva.";
+    weightField.textContent = formatWeight(price.weightGrams);
+    productionField.textContent = formatCurrency(price.production);
+    moldRow.hidden = price.moldFee === 0;
+    moldField.textContent = formatCurrency(price.moldFee);
+    discountRow.hidden = price.discountRate === 0;
+    discountField.textContent = `${formatPercentage(price.discountRate)} (-${formatCurrency(price.discountAmount)})`;
+    totalLabel.textContent = packageKey.startsWith("assinatura-") ? "Total por remessa" : "Total estimado";
+    totalField.textContent = formatCurrency(price.total);
+    cycleRow.hidden = price.commitmentMonths <= 1;
+    cycleField.textContent = `${formatCurrency(price.cycleTotal)} · ${price.commitmentMonths} meses`;
+    detailsField.hidden = false;
+  }
+
+  function roundCurrency(value) {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
+  }
+
+  function formatCurrency(value) {
+    return CURRENCY_FORMATTER.format(value);
+  }
+
+  function formatPercentage(value) {
+    return new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 0 }).format(value);
+  }
+
+  function formatWeight(grams) {
+    if (grams < 1000) {
+      return `${grams} g`;
+    }
+
+    return `${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 }).format(grams / 1000)} kg`;
   }
 
   function updateSelectionSummary(page, packageKey, selectedOrderType) {
@@ -306,9 +522,9 @@
     }
 
     if (orderTypeNote) {
-      if (packageKey === "assinatura") {
+      if (packageKey.startsWith("assinatura-")) {
         orderTypeNote.textContent =
-          "Na assinatura, a primeira remessa segue o fluxo de primeiro pedido e as próximas aproveitam a forma já pronta.";
+          "A assinatura considera o molde já existente e 40 unidades em cada remessa mensal.";
         return;
       }
 
@@ -360,6 +576,7 @@
       const label = radio.closest(".dosim-bp-radio-card");
       if (label) {
         label.classList.toggle("is-checked", radio.checked);
+        label.classList.toggle("is-disabled", radio.disabled);
       }
     });
   }

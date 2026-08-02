@@ -118,15 +118,23 @@
               <ul class="dosim-bp-feature-list">
                 <li>mínimo 25 unidades</li>
                 <li>prazo: 15 dias</li>
+                <li>valor já inclui R$ 40,00 da forminha</li>
               </ul>
-              <div class="dosim-bp-option-group" aria-label="Opções de volume do primeiro pedido">
-                <span class="dosim-bp-option-label">Volumes mais pedidos</span>
-                <div class="dosim-bp-option-chips">
-                  <span>25</span>
-                  <span>40</span>
-                  <span>55</span>
+              <dl class="dosim-bp-price-list" aria-label="Preços do primeiro pedido para biscoitos de 6 centímetros">
+                <div>
+                  <dt>25 un. <span>500 g</span></dt>
+                  <dd>R$ 89,00</dd>
                 </div>
-              </div>
+                <div>
+                  <dt>40 un. <span>800 g</span></dt>
+                  <dd>R$ 118,40</dd>
+                </div>
+                <div>
+                  <dt>55 un. <span>1,1 kg</span></dt>
+                  <dd>R$ 147,80</dd>
+                </div>
+              </dl>
+              <p class="dosim-bp-price-note">Preços para o padrão de 6 cm, com a forminha incluída.</p>
               <button
                 class="btn btn-primary btn-block dosim-bp-package-cta"
                 type="button"
@@ -156,6 +164,21 @@
                 <li>prazo: 3 dias (a partir do segundo pedido)</li>
                 <li>na reposição não há custo de criação de molde</li>
               </ul>
+              <dl class="dosim-bp-price-list" aria-label="Preços de reposição para biscoitos de 6 centímetros">
+                <div>
+                  <dt>25 un. <span>500 g</span></dt>
+                  <dd>R$ 49,00</dd>
+                </div>
+                <div>
+                  <dt>40 un. <span>800 g</span></dt>
+                  <dd>R$ 78,40</dd>
+                </div>
+                <div>
+                  <dt>55 un. <span>1,1 kg</span></dt>
+                  <dd>R$ 107,80</dd>
+                </div>
+              </dl>
+              <p class="dosim-bp-price-note">Preços para o padrão de 6 cm, sem cobrança de nova forminha.</p>
               <button
                 class="btn btn-primary btn-block dosim-bp-package-cta"
                 type="button"
@@ -182,10 +205,26 @@
               <div class="dosim-bp-size-chips" aria-label="Tamanhos disponíveis">
                 <span>4 cm</span>
                 <span>5 cm</span>
-                <span>6 cm</span>
+                <span class="is-priced">6 cm</span>
                 <span>7 cm</span>
               </div>
-              <p class="dosim-bp-muted">Todos os tamanhos são considerados por diâmetro.</p>
+              <p class="dosim-bp-muted">
+                A tabela publicada considera o padrão de 6 cm, com 20 g por unidade. Outros tamanhos ficam sob
+                consulta.
+              </p>
+            </div>
+
+            <div class="dosim-bp-info-card dosim-bp-info-card-strong">
+              <h3 class="dosim-bp-card-title">Base de Cálculo</h3>
+              <ul class="dosim-bp-feature-list">
+                <li>produção: valor cobrado pela gramatura</li>
+                <li>primeiro pedido: necessário a confecção do seu clichê</li>
+                <li>reposição: somente o valor da produção</li>
+              </ul>
+              <p class="dosim-bp-muted">
+                Valores para sabores doces básicos e embalagem coletiva. Ninho com Nutella, salgados e embalagens
+                individuais ou especiais são orçados separadamente.
+              </p>
             </div>
 
             <div class="dosim-bp-info-card">
@@ -221,45 +260,112 @@
         <div class="container">
           <div class="dosim-bp-section-head" data-reveal>
             <p class="eyebrow">Oportunidade extra</p>
-            <h2 class="section-title">Assinatura para remessas recorrentes</h2>
+            <h2 class="section-title">Escolha sua assinatura</h2>
             <p class="section-copy">
-              Se você já sabe que vai precisar de entregas frequentes, a assinatura entra como uma forma de organizar
-              a recorrência sem misturar com o fluxo principal do pedido.
+              Planos calculados para uma remessa mensal de 40 biscoitos personalizados de 6 cm, considerando que o
+              molde já existe. Quanto maior o período, maior a economia.
             </p>
           </div>
 
-          <article
-            class="dosim-bp-package-card dosim-bp-extra-card"
-            data-bp-package-card
-            data-bp-package-key="assinatura"
-            data-reveal
-          >
-            <div class="tag-row">
-              <span class="tag tag-new">Extra</span>
-            </div>
-            <h3 class="card-title">Assinatura | mínimo 3 meses</h3>
-            <p class="dosim-bp-package-copy">
-              Indicada para marcas, eventos e ações que já precisam de remessas planejadas com mais frequência.
-            </p>
-            <ul class="dosim-bp-feature-list">
-              <li>contrato mínimo: 3 meses</li>
-              <li>1ª entrega: 15 dias</li>
-              <li>demais entregas: 3 dias</li>
-              <li>opções por remessa: 25 / 40 / 55</li>
-            </ul>
-            <p class="dosim-bp-muted">
-              A primeira remessa segue a lógica do primeiro pedido. As próximas aproveitam a mesma forma e entram no
-              fluxo de reposição.
-            </p>
-            <button
-              class="btn btn-primary btn-block dosim-bp-package-cta"
-              type="button"
-              data-bp-select-package
-              aria-pressed="false"
+          <div class="dosim-bp-subscription-grid">
+            <article
+              class="dosim-bp-package-card dosim-bp-subscription-card"
+              data-bp-package-card
+              data-bp-package-key="assinatura-mensal"
+              data-reveal
             >
-              Quero conversar sobre assinatura
-            </button>
-          </article>
+              <div class="tag-row">
+                <span class="tag tag-new">Flexível</span>
+              </div>
+              <h3 class="card-title">Plano Mensal</h3>
+              <p class="dosim-bp-package-copy">Para quem quer testar a recorrência sem compromisso prolongado.</p>
+              <div class="dosim-bp-plan-price">
+                <span>R$ 78,40</span>
+                <small>por remessa</small>
+              </div>
+              <ul class="dosim-bp-feature-list">
+                <li>40 biscoitos por remessa</li>
+                <li>800 g por remessa</li>
+                <li>molde já existente</li>
+                <li>renovação mensal</li>
+              </ul>
+              <button
+                class="btn btn-primary btn-block dosim-bp-package-cta"
+                type="button"
+                data-bp-select-package
+                aria-pressed="false"
+              >
+                Quero o plano mensal
+              </button>
+            </article>
+
+            <article
+              class="dosim-bp-package-card dosim-bp-subscription-card"
+              data-bp-package-card
+              data-bp-package-key="assinatura-3-meses"
+              data-reveal
+            >
+              <div class="tag-row">
+                <span class="tag tag-hot">10% de desconto</span>
+              </div>
+              <h3 class="card-title">Plano Trimestral</h3>
+              <p class="dosim-bp-package-copy">Três remessas programadas com economia e previsibilidade.</p>
+              <div class="dosim-bp-plan-price">
+                <span>R$ 70,56</span>
+                <small>por mês</small>
+              </div>
+              <ul class="dosim-bp-feature-list">
+                <li>40 biscoitos por remessa</li>
+                <li>3 remessas mensais</li>
+                <li>total do ciclo: R$ 211,68</li>
+                <li>economia total: R$ 23,52</li>
+              </ul>
+              <button
+                class="btn btn-primary btn-block dosim-bp-package-cta"
+                type="button"
+                data-bp-select-package
+                aria-pressed="false"
+              >
+                Quero economizar 10%
+              </button>
+            </article>
+
+            <article
+              class="dosim-bp-package-card dosim-bp-subscription-card dosim-bp-subscription-card-featured"
+              data-bp-package-card
+              data-bp-package-key="assinatura-6-meses"
+              data-reveal
+            >
+              <div class="tag-row">
+                <span class="tag tag-hot">Melhor benefício · 15% OFF</span>
+              </div>
+              <h3 class="card-title">Plano Semestral</h3>
+              <p class="dosim-bp-package-copy">A maior economia para quem já tem uma demanda recorrente.</p>
+              <div class="dosim-bp-plan-price">
+                <span>R$ 66,64</span>
+                <small>por mês</small>
+              </div>
+              <ul class="dosim-bp-feature-list">
+                <li>40 biscoitos por remessa</li>
+                <li>6 remessas mensais</li>
+                <li>total do ciclo: R$ 399,84</li>
+                <li>economia total: R$ 70,56</li>
+              </ul>
+              <button
+                class="btn btn-primary btn-block dosim-bp-package-cta"
+                type="button"
+                data-bp-select-package
+                aria-pressed="false"
+              >
+                Quero economizar 15%
+              </button>
+            </article>
+          </div>
+
+          <p class="dosim-bp-subscription-note">
+            Valores para sabores doces básicos e embalagem coletiva. Ninho com Nutella, salgados e embalagens
+            individuais ou especiais são orçados separadamente.
+          </p>
         </div>
       </section>
 
@@ -308,7 +414,7 @@
                     id="bp-quantidade"
                     name="quantidade"
                     type="number"
-                    min="1"
+                    min="25"
                     step="1"
                     inputmode="numeric"
                     aria-describedby="bp-quantity-help bp-quantity-error"
@@ -329,8 +435,22 @@
                     <option value="">Selecione</option>
                     <option value="4 cm">4 cm</option>
                     <option value="5 cm">5 cm</option>
-                    <option value="6 cm">6 cm</option>
+                    <option value="6 cm">6 cm — preço por peso</option>
                     <option value="7 cm">7 cm</option>
+                  </select>
+                  <p class="dosim-bp-help">O cálculo automático de preço é válido para o padrão de 6 cm.</p>
+                </div>
+
+                <div class="dosim-bp-field">
+                  <label for="bp-sabor">Sabor</label>
+                  <select id="bp-sabor" name="sabor" required>
+                    <option value="">Selecione</option>
+                    <option value="Tradicional">Tradicional</option>
+                    <option value="Chocolate">Chocolate</option>
+                    <option value="Canela">Canela</option>
+                    <option value="Cappuccino">Cappuccino</option>
+                    <option value="Ovomaltine">Ovomaltine</option>
+                    <option value="Misto">Misto</option>
                   </select>
                 </div>
 
@@ -369,6 +489,44 @@
                     readonly
                   />
                 </div>
+
+                <section
+                  class="dosim-bp-estimate dosim-bp-field-full"
+                  data-bp-price-estimate
+                  aria-labelledby="bp-estimate-title"
+                  aria-live="polite"
+                >
+                  <h3 id="bp-estimate-title">Estimativa do pedido</h3>
+                  <p class="dosim-bp-estimate-message" data-bp-estimate-message>
+                    Informe a quantidade, o tamanho e o tipo de pedido para calcular o valor.
+                  </p>
+                  <dl class="dosim-bp-summary-list" data-bp-estimate-details hidden>
+                    <div>
+                      <dt>Peso estimado</dt>
+                      <dd data-bp-estimate-weight>—</dd>
+                    </div>
+                    <div>
+                      <dt>Produção</dt>
+                      <dd data-bp-estimate-production>—</dd>
+                    </div>
+                    <div data-bp-estimate-mold-row>
+                      <dt>Forminha</dt>
+                      <dd data-bp-estimate-mold>—</dd>
+                    </div>
+                    <div data-bp-estimate-discount-row hidden>
+                      <dt>Desconto da assinatura</dt>
+                      <dd data-bp-estimate-discount>—</dd>
+                    </div>
+                    <div class="dosim-bp-estimate-total">
+                      <dt data-bp-estimate-total-label>Total estimado</dt>
+                      <dd data-bp-estimate-total>—</dd>
+                    </div>
+                    <div data-bp-estimate-cycle-row hidden>
+                      <dt>Total do ciclo</dt>
+                      <dd data-bp-estimate-cycle>—</dd>
+                    </div>
+                  </dl>
+                </section>
 
                 <div class="dosim-bp-field">
                   <label for="bp-logo">Logo: link (URL)</label>

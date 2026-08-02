@@ -166,6 +166,59 @@
   font-weight: 800;
 }
 
+.dosim-bp-size-chips .is-priced {
+  border-color: rgba(111, 78, 55, 0.5);
+  background: rgba(233, 226, 216, 0.72);
+  color: var(--primary);
+}
+
+.dosim-bp-price-list {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.dosim-bp-price-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: rgba(246, 244, 240, 0.74);
+}
+
+.dosim-bp-price-list dt,
+.dosim-bp-price-list dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.dosim-bp-price-list dt {
+  text-align: left;
+}
+
+.dosim-bp-price-list dt span {
+  display: block;
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.dosim-bp-price-list dd {
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.dosim-bp-price-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .dosim-bp-info-panel,
 .dosim-bp-form-panel {
   display: grid;
@@ -178,9 +231,59 @@
   padding: 1rem;
 }
 
-.dosim-bp-extra-card {
-  max-width: 760px;
-  margin: 0 auto;
+.dosim-bp-subscription-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.dosim-bp-subscription-card {
+  height: 100%;
+}
+
+.dosim-bp-subscription-card .dosim-bp-package-cta {
+  align-self: end;
+  margin-top: auto;
+}
+
+.dosim-bp-subscription-card-featured {
+  border-color: rgba(111, 78, 55, 0.58);
+  background:
+    radial-gradient(circle at top right, rgba(111, 78, 55, 0.14), transparent 38%),
+    rgba(255, 255, 255, 0.96);
+}
+
+.dosim-bp-plan-price {
+  display: grid;
+  gap: 0.12rem;
+  justify-items: center;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: rgba(246, 244, 240, 0.74);
+}
+
+.dosim-bp-plan-price span {
+  color: var(--primary);
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.dosim-bp-plan-price small {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.dosim-bp-subscription-note {
+  max-width: 900px;
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
 }
 
 .dosim-bp-info-card-strong {
@@ -221,6 +324,41 @@
 .dosim-bp-form {
   display: grid;
   gap: 1rem;
+}
+
+.dosim-bp-estimate {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(111, 78, 55, 0.36);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(155deg, rgba(111, 78, 55, 0.1), rgba(255, 255, 255, 0.96) 52%),
+    var(--surface);
+}
+
+.dosim-bp-estimate h3,
+.dosim-bp-estimate-message {
+  margin: 0;
+}
+
+.dosim-bp-estimate h3 {
+  font-size: 1.08rem;
+}
+
+.dosim-bp-estimate-message {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.dosim-bp-estimate .dosim-bp-summary-list {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.dosim-bp-estimate-total dd {
+  color: var(--primary);
+  font-size: 1.08rem;
 }
 
 .dosim-bp-page .hero-badges,
@@ -305,6 +443,11 @@
 .dosim-bp-radio-card.is-checked {
   border-color: rgba(111, 78, 55, 0.58);
   background: rgba(233, 226, 216, 0.54);
+}
+
+.dosim-bp-radio-card.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .dosim-bp-radio-card input {

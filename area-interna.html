@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Área Interna | DoSim</title>
+    <meta name="theme-color" content="#6f4e37" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/pedidos.css" />
+    <script src="js/main.js" defer></script>
+    <script src="js/internal-auth.js" defer></script>
+    <script src="js/area-interna.js" defer></script>
+  </head>
+  <body class="orders-page">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html" aria-label="Página inicial da DoSim">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </a>
+      </div>
+    </header>
+
+    <main id="conteudo" class="orders-main">
+      <section class="orders-login" data-internal-login>
+        <div class="orders-login-card">
+          <img src="assets/img/logo-escura.svg" alt="DoSim" />
+          <p class="eyebrow">Área interna</p>
+          <h1>Entrada da equipe</h1>
+          <p class="orders-login-copy">Digite a senha para acessar as ferramentas internas da DoSim.</p>
+          <form data-internal-login-form>
+            <label class="orders-field">
+              <span>Senha</span>
+              <input
+                type="password"
+                inputmode="numeric"
+                autocomplete="current-password"
+                required
+                data-internal-password
+              />
+            </label>
+            <p class="orders-form-error" data-internal-login-error aria-live="polite"></p>
+            <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="orders-dashboard internal-hub" data-internal-hub hidden>
+        <div class="container orders-shell">
+          <div class="orders-topbar internal-hub-topbar">
+            <div>
+              <p class="eyebrow">Área interna</p>
+              <h1 class="section-title">O que vamos organizar agora?</h1>
+              <p class="section-copy">Escolha uma ferramenta para continuar.</p>
+            </div>
+            <button class="orders-logout" type="button" data-internal-logout>Sair</button>
+          </div>
+
+          <div class="internal-tools-grid">
+            <article class="internal-tool-card">
+              <span class="internal-tool-icon" aria-hidden="true">✓</span>
+              <div>
+                <p class="eyebrow">Produção</p>
+                <h2>Controle de pedidos</h2>
+                <p>Cadastre entregas, acompanhe a agenda e marque os pedidos concluídos.</p>
+              </div>
+              <a class="btn btn-primary btn-block" href="pedidos.html">Abrir pedidos</a>
+            </article>
+
+            <article class="internal-tool-card internal-tool-card-featured">
+              <span class="internal-tool-icon" aria-hidden="true">R$</span>
+              <div>
+                <p class="eyebrow">Atendimento</p>
+                <h2>Montar orçamento</h2>
+                <p>Escolha o produto, calcule quantidade, entrega e prepare a mensagem para o WhatsApp.</p>
+              </div>
+              <a class="btn btn-primary btn-block" href="orcamentos.html">Criar orçamento</a>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-logo">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </div>
+        <div class="footer-links">
+          <span>Uso interno</span>
+          <span>&copy; <span data-current-year></span> DoSim</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

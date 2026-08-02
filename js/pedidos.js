@@ -1,7 +1,5 @@
 (() => {
   const STORAGE_KEY = "dosim_orders_v1";
-  const AUTH_KEY = "dosim_orders_authenticated_v1";
-  const AUTH_HASH = "5b33003a928495b97792ac286d477b54dd20eb773c74ae2fb3653bc5950ad6dd";
   const FLAVORS = [
     "Tradicional",
     "Chocolate",
@@ -14,6 +12,12 @@
   ];
 
   document.addEventListener("DOMContentLoaded", () => {
+    const auth = globalThis.DoSimInternalAuth;
+    if (!auth?.isAuthenticated()) {
+      globalThis.location.replace("area-interna.html");
+      return;
+    }
+
     const loginPanel = document.querySelector("[data-orders-login]");
     const dashboard = document.querySelector("[data-orders-dashboard]");
     const loginForm = document.querySelector("[data-orders-login-form]");
@@ -42,6 +46,7 @@
 
     if (
       !(loginPanel instanceof HTMLElement) ||
+      !auth ||
       !(dashboard instanceof HTMLElement) ||
       !(loginForm instanceof HTMLFormElement) ||
       !(passwordInput instanceof HTMLInputElement) ||
@@ -103,15 +108,6 @@
         passwordInput.value = "";
         passwordInput.focus();
       }
-    };
-
-    const digest = async (value) => {
-      if (!globalThis.crypto?.subtle) throw new Error("Autenticação indisponível neste navegador.");
-      const bytes = new TextEncoder().encode(value);
-      const hashBuffer = await globalThis.crypto.subtle.digest("SHA-256", bytes);
-      return Array.from(new Uint8Array(hashBuffer))
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
     };
 
     const createFlavorFields = () => {
@@ -332,12 +328,12 @@
       event.preventDefault();
       if (loginError instanceof HTMLElement) loginError.textContent = "";
       try {
-        if ((await digest(passwordInput.value)) !== AUTH_HASH) {
+        if (!(await auth.authenticate(passwordInput.value))) {
           if (loginError instanceof HTMLElement) loginError.textContent = "Senha incorreta.";
           passwordInput.select();
           return;
         }
-        sessionStorage.setItem(AUTH_KEY, "true");
+        auth.login();
         setAuthenticatedView(true);
       } catch (error) {
         if (loginError instanceof HTMLElement) {
@@ -415,13 +411,12 @@
 
     if (logoutButton instanceof HTMLButtonElement) {
       logoutButton.addEventListener("click", () => {
-        sessionStorage.removeItem(AUTH_KEY);
-        resetForm();
-        setAuthenticatedView(false);
+        auth.logout();
+        globalThis.location.replace("area-interna.html");
       });
     }
 
-    setAuthenticatedView(sessionStorage.getItem(AUTH_KEY) === "true");
+    setAuthenticatedView(true);
   });
 
   function normalizeState(value) {
