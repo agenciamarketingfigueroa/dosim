@@ -19,6 +19,7 @@
       flavor: get("[data-quote-flavor]"),
       personalizedOrder: get("[data-quote-personalized-order]"),
       personalizedType: get("[data-quote-personalized-type]"),
+      size: get("[data-quote-size]"),
       units: get("[data-quote-units]"),
       grams: get("[data-quote-grams]"),
       quantityNote: get("[data-quote-quantity-note]"),
@@ -61,6 +62,7 @@
       fields.modality,
       fields.product,
       fields.flavor,
+      fields.size,
       fields.units,
       fields.grams,
       fields.deliveryDate,
@@ -70,6 +72,11 @@
 
     const DOSIM_WHATSAPP = "5531996154698";
     const GRAMS_PER_UNIT = 20;
+    const PERSONALIZED_SIZES = {
+      4: { label: "4 cm", unitWeightGrams: 8 },
+      5: { label: "5 cm", unitWeightGrams: 10 },
+      6: { label: "6 cm", unitWeightGrams: 20 },
+    };
     const SHIPPING_RULES = {
       origin: { lat: -19.87986, lng: -44.0284 },
       priceBands: [
@@ -126,7 +133,7 @@
         congelado: [{ id: "queijo-assar-gramatura", label: "Queijo para assar · congelado" }],
       },
       personalizado: {
-        amanteigado: [{ id: "personalizado-6cm", label: "Biscoito personalizado de 6 cm", price500: 49 }],
+        amanteigado: [{ id: "personalizado", label: "Biscoito personalizado", price500: 49 }],
       },
     };
     const MANUAL_PRODUCT = { id: "sob-consulta", label: "Projeto sob consulta · definir valor manualmente", manual: true };
@@ -154,6 +161,9 @@
     const getProducts = () => PRODUCTS[fields.modality.value]?.[fields.type.value] || [MANUAL_PRODUCT];
     const getSelectedProduct = () => getProducts().find((product) => product.id === fields.product.value) || null;
     const getSelectedFlavor = () => (FLAVORS[fields.type.value] || []).find((flavor) => flavor.id === fields.flavor.value) || null;
+    const getSelectedSize = () => PERSONALIZED_SIZES[fields.size.value] || PERSONALIZED_SIZES[6];
+    const getUnitWeight = () =>
+      fields.modality.value === "personalizado" ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT;
 
     let shippingQuote = null;
     let isCalculatingShipping = false;
@@ -190,10 +200,21 @@
       const personalized = fields.modality.value === "personalizado";
       fields.personalizedOrder.hidden = !personalized;
       fields.personalizedType.required = personalized;
+      fields.size.required = personalized;
+      const unitWeight = getUnitWeight();
+      fields.quantityNote.textContent = personalized
+        ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
+        : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
     };
 
     const setDefaultQuantity = () => {
       const product = getSelectedProduct();
+      if (fields.modality.value === "personalizado") {
+        const grams = 500;
+        fields.grams.value = String(grams);
+        fields.units.value = String(Math.round(grams / getUnitWeight()));
+        return;
+      }
       const units = product?.packageUnits || 25;
       fields.units.value = String(units);
       fields.grams.value = String(units * GRAMS_PER_UNIT);
@@ -202,13 +223,13 @@
     const syncFromUnits = () => {
       const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
       fields.units.value = units ? String(units) : "";
-      fields.grams.value = units ? String(units * GRAMS_PER_UNIT) : "";
+      fields.grams.value = units ? String(units * getUnitWeight()) : "";
     };
 
     const syncFromGrams = () => {
       const grams = positiveNumber(fields.grams.value);
       fields.grams.value = grams ? String(Math.round(grams)) : "";
-      fields.units.value = grams ? String(Math.max(1, Math.round(grams / GRAMS_PER_UNIT))) : "";
+      fields.units.value = grams ? String(Math.max(1, Math.round(grams / getUnitWeight()))) : "";
     };
 
     const normalizePresentableQuantity = () => {
@@ -339,7 +360,10 @@
       const productPrice = positiveNumber(fields.productPrice.value);
       const isDelivery = getFulfillment() === "entrega";
       const shipping = isDelivery && shippingQuote?.available ? shippingQuote.amount : 0;
-      fields.summaryProduct.textContent = getPresentationLabel();
+      fields.summaryProduct.textContent =
+        fields.modality.value === "personalizado"
+          ? `${getPresentationLabel()} · ${getSelectedSize().label}`
+          : getPresentationLabel();
       fields.summaryQuantity.textContent = units && grams ? `${Math.round(units)} un. · aprox. ${formatWeight(grams)}` : "Informe a quantidade";
       fields.summaryModality.textContent = MODALITY_LABELS[fields.modality.value] || "—";
       fields.summaryFlavor.textContent = flavor?.label || "Sob consulta";
@@ -395,7 +419,7 @@
       const flavor = getSelectedFlavor();
       const personalized = fields.modality.value === "personalizado";
       const lines = [
-        "*Novo orçamento DoSim* 🤎",
+        "*Orçamento DoSim 🤎*",
         "",
         `*Cliente:* ${normalizeText(fields.customer.value)}`,
       ];
@@ -406,13 +430,14 @@
 
       lines.push(
         "",
-        `🍪 *${getPresentationLabel()}*`,
+        `🤎 *${getPresentationLabel()}*`,
         `${TYPE_LABELS[fields.type.value]} · ${MODALITY_LABELS[fields.modality.value]}`,
         `*Sabor:* ${flavor?.label || "Sob consulta"}`,
         `*Quantidade:* ${Math.round(positiveNumber(fields.units.value))} unidades (aprox. ${formatWeight(positiveNumber(fields.grams.value))})`
       );
 
       if (personalized) {
+        lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams} g por unidade)`);
         lines.push(
           fields.personalizedType.value === "primeiro-pedido"
             ? "*Personalização:* primeiro pedido, com confecção do clichê"
@@ -438,7 +463,7 @@
       if (normalizeText(fields.notes.value)) {
         lines.push("", `*Observações:* ${normalizeText(fields.notes.value)}`);
       }
-      lines.push("", "Um orçamento simples, gostoso e feito com carinho. ✨");
+      lines.push("", "DoSim — afeto em cada detalhe, sabor em cada momento. 🤎");
       return lines.join("\n");
     };
 
@@ -494,6 +519,11 @@
     });
     fields.flavor.addEventListener("change", applySuggestedPrice);
     fields.personalizedType.addEventListener("change", applySuggestedPrice);
+    fields.size.addEventListener("change", () => {
+      updatePersonalizedVisibility();
+      syncFromGrams();
+      applySuggestedPrice();
+    });
     fields.units.addEventListener("input", () => {
       syncFromUnits();
       applySuggestedPrice();

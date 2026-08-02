@@ -27,6 +27,10 @@
   gap: 0.7rem;
 }
 
+[data-quote-personalized-order][hidden] {
+  display: none;
+}
+
 .quote-form .orders-field select,
 .quote-form .orders-field textarea,
 .quote-form .orders-field input {
