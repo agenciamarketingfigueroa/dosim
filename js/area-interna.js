@@ -22,6 +22,8 @@
       loginPanel.hidden = authenticated;
       hubPanel.hidden = !authenticated;
       if (authenticated) {
+        passwordInput.blur();
+        globalThis.scrollTo({ top: 0, left: 0, behavior: "auto" });
         hubPanel.querySelector("a")?.focus();
         return;
       }

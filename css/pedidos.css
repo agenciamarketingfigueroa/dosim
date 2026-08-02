@@ -473,6 +473,20 @@
 }
 
 @media (max-width: 860px) {
+  .orders-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
+  .orders-page .orders-field input,
+  .orders-page .orders-field select,
+  .orders-page .orders-field textarea,
+  .orders-page .orders-filter select {
+    font-size: 1rem;
+  }
+
   .orders-layout {
     grid-template-columns: 1fr;
   }
@@ -485,9 +499,64 @@
   .internal-tools-grid {
     grid-template-columns: 1fr;
   }
+
+  .internal-hub,
+  .internal-hub .orders-shell,
+  .internal-tools-grid,
+  .internal-tool-card {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .internal-tool-card > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .internal-hub {
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .internal-tool-card h2,
+  .internal-tool-card p,
+  .internal-hub-topbar h1,
+  .internal-hub-topbar p {
+    overflow-wrap: anywhere;
+  }
 }
 
 @media (max-width: 600px) {
+  .orders-login {
+    min-height: calc(100svh - 4.35rem);
+    padding: 1rem;
+  }
+
+  .orders-login-card {
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+
+  .internal-hub {
+    min-height: auto;
+    align-items: start;
+    padding: 1.25rem 0;
+  }
+
+  .internal-hub .container {
+    width: 100%;
+    padding-inline: 1rem;
+  }
+
+  .internal-tool-card {
+    min-height: auto;
+    padding: 1.15rem;
+  }
+
+  .internal-tool-card .btn {
+    margin-top: 0.4rem;
+  }
+
   .orders-dashboard {
     padding-top: 1.4rem;
   }

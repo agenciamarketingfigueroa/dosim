@@ -27,8 +27,14 @@
   gap: 0.7rem;
 }
 
-[data-quote-personalized-order][hidden] {
+[data-quote-size-options][hidden],
+[data-quote-personalized-order][hidden],
+[data-quote-size-field][hidden] {
   display: none;
+}
+
+[data-quote-personalized-order][hidden] + [data-quote-size-field] {
+  grid-column: 1 / -1;
 }
 
 .quote-form .orders-field select,
@@ -309,6 +315,20 @@
 @media (max-width: 900px) {
   .quote-layout {
     grid-template-columns: 1fr;
+  }
+
+  .quote-layout,
+  .quote-form-panel,
+  .quote-summary-panel {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .quote-page .quote-form input,
+  .quote-page .quote-form select,
+  .quote-page .quote-form textarea {
+    font-size: 1rem;
   }
 
   .quote-summary-panel {

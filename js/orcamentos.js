@@ -17,8 +17,10 @@
       modality: get("[data-quote-modality]"),
       product: get("[data-quote-product]"),
       flavor: get("[data-quote-flavor]"),
+      sizeOptions: get("[data-quote-size-options]"),
       personalizedOrder: get("[data-quote-personalized-order]"),
       personalizedType: get("[data-quote-personalized-type]"),
+      sizeField: get("[data-quote-size-field]"),
       size: get("[data-quote-size]"),
       units: get("[data-quote-units]"),
       grams: get("[data-quote-grams]"),
@@ -62,6 +64,9 @@
       fields.modality,
       fields.product,
       fields.flavor,
+      fields.sizeOptions,
+      fields.personalizedOrder,
+      fields.sizeField,
       fields.size,
       fields.units,
       fields.grams,
@@ -162,8 +167,8 @@
     const getSelectedProduct = () => getProducts().find((product) => product.id === fields.product.value) || null;
     const getSelectedFlavor = () => (FLAVORS[fields.type.value] || []).find((flavor) => flavor.id === fields.flavor.value) || null;
     const getSelectedSize = () => PERSONALIZED_SIZES[fields.size.value] || PERSONALIZED_SIZES[6];
-    const getUnitWeight = () =>
-      fields.modality.value === "personalizado" ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT;
+    const usesSelectableSize = () => ["gramatura", "personalizado"].includes(fields.modality.value);
+    const getUnitWeight = () => (usesSelectableSize() ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT);
 
     let shippingQuote = null;
     let isCalculatingShipping = false;
@@ -198,18 +203,21 @@
 
     const updatePersonalizedVisibility = () => {
       const personalized = fields.modality.value === "personalizado";
+      const selectableSize = usesSelectableSize();
+      fields.sizeOptions.hidden = !selectableSize;
       fields.personalizedOrder.hidden = !personalized;
+      fields.sizeField.hidden = !selectableSize;
       fields.personalizedType.required = personalized;
-      fields.size.required = personalized;
+      fields.size.required = selectableSize;
       const unitWeight = getUnitWeight();
-      fields.quantityNote.textContent = personalized
+      fields.quantityNote.textContent = selectableSize
         ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
         : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
     };
 
     const setDefaultQuantity = () => {
       const product = getSelectedProduct();
-      if (fields.modality.value === "personalizado") {
+      if (usesSelectableSize()) {
         const grams = 500;
         fields.grams.value = String(grams);
         fields.units.value = String(Math.round(grams / getUnitWeight()));
@@ -361,7 +369,7 @@
       const isDelivery = getFulfillment() === "entrega";
       const shipping = isDelivery && shippingQuote?.available ? shippingQuote.amount : 0;
       fields.summaryProduct.textContent =
-        fields.modality.value === "personalizado"
+        usesSelectableSize()
           ? `${getPresentationLabel()} · ${getSelectedSize().label}`
           : getPresentationLabel();
       fields.summaryQuantity.textContent = units && grams ? `${Math.round(units)} un. · aprox. ${formatWeight(grams)}` : "Informe a quantidade";
@@ -436,8 +444,11 @@
         `*Quantidade:* ${Math.round(positiveNumber(fields.units.value))} unidades (aprox. ${formatWeight(positiveNumber(fields.grams.value))})`
       );
 
-      if (personalized) {
+      if (usesSelectableSize()) {
         lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams} g por unidade)`);
+      }
+
+      if (personalized) {
         lines.push(
           fields.personalizedType.value === "primeiro-pedido"
             ? "*Personalização:* primeiro pedido, com confecção do clichê"
