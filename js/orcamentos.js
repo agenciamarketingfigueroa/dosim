@@ -24,9 +24,14 @@
       size: get("[data-quote-size]"),
       units: get("[data-quote-units]"),
       grams: get("[data-quote-grams]"),
+      quantityInstructions: get("[data-quote-quantity-instructions]"),
+      unitsLabel: get("[data-quote-units-label]"),
+      gramsLabel: get("[data-quote-grams-label]"),
       quantityNote: get("[data-quote-quantity-note]"),
       deliveryDate: get("[data-quote-delivery-date]"),
       productPrice: get("[data-quote-product-price]"),
+      productPriceLabel: get("[data-quote-product-price-label]"),
+      productPriceHelp: get("[data-quote-product-price-help]"),
       deliveryPanel: get("[data-quote-delivery-panel]"),
       street: get("[data-quote-street]"),
       number: get("[data-quote-number]"),
@@ -47,6 +52,8 @@
       summaryFlavor: get("[data-quote-summary-flavor]"),
       summaryDate: get("[data-quote-summary-date]"),
       summaryFulfillment: get("[data-quote-summary-fulfillment]"),
+      summaryUnitPriceRow: get("[data-quote-summary-unit-price-row]"),
+      summaryUnitPrice: get("[data-quote-summary-unit-price]"),
       summaryProductPrice: get("[data-quote-summary-product-price]"),
       summaryShippingRow: get("[data-quote-summary-shipping-row]"),
       summaryShipping: get("[data-quote-summary-shipping]"),
@@ -70,8 +77,15 @@
       fields.size,
       fields.units,
       fields.grams,
+      fields.quantityInstructions,
+      fields.unitsLabel,
+      fields.gramsLabel,
       fields.deliveryDate,
       fields.productPrice,
+      fields.productPriceLabel,
+      fields.productPriceHelp,
+      fields.summaryUnitPriceRow,
+      fields.summaryUnitPrice,
     ];
     if (requiredFields.some((field) => !(field instanceof HTMLElement))) return;
 
@@ -167,8 +181,14 @@
     const getSelectedProduct = () => getProducts().find((product) => product.id === fields.product.value) || null;
     const getSelectedFlavor = () => (FLAVORS[fields.type.value] || []).find((flavor) => flavor.id === fields.flavor.value) || null;
     const getSelectedSize = () => PERSONALIZED_SIZES[fields.size.value] || PERSONALIZED_SIZES[6];
+    const isPresentable = () => fields.modality.value === "presenteavel";
     const usesSelectableSize = () => ["gramatura", "personalizado"].includes(fields.modality.value);
     const getUnitWeight = () => (usesSelectableSize() ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT);
+    const getProductionUnits = () => {
+      const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
+      const product = getSelectedProduct();
+      return isPresentable() && product?.packageUnits ? units * product.packageUnits : units;
+    };
 
     let shippingQuote = null;
     let isCalculatingShipping = false;
@@ -181,7 +201,12 @@
         select.disabled = true;
         return;
       }
-      options.forEach((item) => select.add(new Option(item.label, item.id)));
+      options.forEach((item) => {
+        const label = isPresentable() && Number.isFinite(item.packagePrice)
+          ? `${item.label} · ${formatCurrency(item.packagePrice)} por presenteável`
+          : item.label;
+        select.add(new Option(label, item.id));
+      });
       select.disabled = false;
     };
 
@@ -201,6 +226,38 @@
       setOptions(fields.flavor, FLAVORS[fields.type.value] || [], "Sabor sob consulta");
     };
 
+    const updateQuantityPresentation = () => {
+      const presentable = isPresentable();
+      const product = getSelectedProduct();
+      const productionUnits = getProductionUnits();
+      const grams = positiveNumber(fields.grams.value);
+
+      fields.quantityInstructions.textContent = presentable
+        ? "Informe quantos presenteáveis serão pedidos. A produção será calculada automaticamente."
+        : "Preencha unidades ou gramatura. O outro campo será calculado automaticamente.";
+      fields.unitsLabel.textContent = presentable ? "Quantidade de presenteáveis" : "Unidades";
+      fields.gramsLabel.textContent = presentable ? "Gramatura aproximada da produção" : "Gramatura";
+      fields.grams.readOnly = presentable;
+      fields.productPriceLabel.textContent = presentable ? "Valor por presenteável" : "Valor dos produtos";
+      fields.productPriceHelp.textContent = presentable
+        ? "Valor unitário sugerido. O total será calculado pela quantidade de presenteáveis."
+        : "O valor sugerido pode ser ajustado antes do envio.";
+
+      if (presentable && product?.packageUnits) {
+        const packageDescription = `${product.packageUnits} ${product.packageUnits === 1 ? "biscoito" : "biscoitos"}`;
+        const productionDescription = productionUnits
+          ? ` Produção estimada: ${productionUnits.toLocaleString("pt-BR")} ${productionUnits === 1 ? "biscoito" : "biscoitos"}${grams ? `, aprox. ${formatWeight(grams)}` : ""}.`
+          : "";
+        fields.quantityNote.textContent = `Cada ${product.label} contém ${packageDescription}.${productionDescription}`;
+        return;
+      }
+
+      const unitWeight = getUnitWeight();
+      fields.quantityNote.textContent = usesSelectableSize()
+        ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
+        : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
+    };
+
     const updatePersonalizedVisibility = () => {
       const personalized = fields.modality.value === "personalizado";
       const selectableSize = usesSelectableSize();
@@ -209,45 +266,42 @@
       fields.sizeField.hidden = !selectableSize;
       fields.personalizedType.required = personalized;
       fields.size.required = selectableSize;
-      const unitWeight = getUnitWeight();
-      fields.quantityNote.textContent = selectableSize
-        ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
-        : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
+      updateQuantityPresentation();
     };
 
     const setDefaultQuantity = () => {
-      const product = getSelectedProduct();
       if (usesSelectableSize()) {
         const grams = 500;
         fields.grams.value = String(grams);
         fields.units.value = String(Math.round(grams / getUnitWeight()));
+        updateQuantityPresentation();
         return;
       }
-      const units = product?.packageUnits || 25;
+      const units = isPresentable() ? 1 : 25;
       fields.units.value = String(units);
-      fields.grams.value = String(units * GRAMS_PER_UNIT);
+      fields.grams.value = String(getProductionUnits() * GRAMS_PER_UNIT);
+      updateQuantityPresentation();
     };
 
     const syncFromUnits = () => {
       const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
       fields.units.value = units ? String(units) : "";
-      fields.grams.value = units ? String(units * getUnitWeight()) : "";
+      fields.grams.value = units ? String(getProductionUnits() * getUnitWeight()) : "";
+      updateQuantityPresentation();
     };
 
     const syncFromGrams = () => {
       const grams = positiveNumber(fields.grams.value);
       fields.grams.value = grams ? String(Math.round(grams)) : "";
-      fields.units.value = grams ? String(Math.max(1, Math.round(grams / getUnitWeight()))) : "";
-    };
-
-    const normalizePresentableQuantity = () => {
       const product = getSelectedProduct();
-      if (!product?.packageUnits) return;
-      const requestedUnits = Math.max(1, Math.round(positiveNumber(fields.units.value)) || product.packageUnits);
-      const packages = Math.ceil(requestedUnits / product.packageUnits);
-      const units = packages * product.packageUnits;
-      fields.units.value = String(units);
-      fields.grams.value = String(units * GRAMS_PER_UNIT);
+      const gramsPerSelection = isPresentable() && product?.packageUnits
+        ? product.packageUnits * GRAMS_PER_UNIT
+        : getUnitWeight();
+      fields.units.value = grams ? String(Math.max(1, Math.round(grams / gramsPerSelection))) : "";
+      if (isPresentable()) {
+        fields.grams.value = fields.units.value ? String(getProductionUnits() * GRAMS_PER_UNIT) : "";
+      }
+      updateQuantityPresentation();
     };
 
     const calculateSuggestedPrice = () => {
@@ -257,8 +311,8 @@
       const grams = positiveNumber(fields.grams.value);
       if (!product || product.manual || !units || !grams) return 0;
 
-      if (fields.modality.value === "presenteavel" && product.packageUnits) {
-        return Math.ceil(units / product.packageUnits) * product.packagePrice;
+      if (isPresentable() && product.packageUnits) {
+        return product.packagePrice;
       }
 
       const price500 = fields.modality.value === "personalizado" ? product.price500 : flavor?.price500;
@@ -277,10 +331,15 @@
     const getPresentationLabel = () => {
       const product = getSelectedProduct();
       if (!product) return "—";
-      if (fields.modality.value !== "presenteavel" || !product.packageUnits) return product.label;
+      if (!isPresentable() || !product.packageUnits) return product.label;
       const units = positiveNumber(fields.units.value);
-      const packages = Math.max(1, Math.ceil(units / product.packageUnits));
-      return `${packages} × ${product.label}`;
+      const presentables = Math.max(1, Math.round(units));
+      return `${presentables} × ${product.label}`;
+    };
+
+    const getProductTotal = () => {
+      const enteredPrice = positiveNumber(fields.productPrice.value);
+      return isPresentable() ? enteredPrice * Math.round(positiveNumber(fields.units.value)) : enteredPrice;
     };
 
     const buildDeliveryAddress = () =>
@@ -365,14 +424,20 @@
 
       const units = positiveNumber(fields.units.value);
       const grams = positiveNumber(fields.grams.value);
-      const productPrice = positiveNumber(fields.productPrice.value);
+      const enteredPrice = positiveNumber(fields.productPrice.value);
+      const productPrice = getProductTotal();
+      const productionUnits = getProductionUnits();
       const isDelivery = getFulfillment() === "entrega";
       const shipping = isDelivery && shippingQuote?.available ? shippingQuote.amount : 0;
       fields.summaryProduct.textContent =
         usesSelectableSize()
           ? `${getPresentationLabel()} · ${getSelectedSize().label}`
           : getPresentationLabel();
-      fields.summaryQuantity.textContent = units && grams ? `${Math.round(units)} un. · aprox. ${formatWeight(grams)}` : "Informe a quantidade";
+      fields.summaryQuantity.textContent = units && grams
+        ? isPresentable()
+          ? `${Math.round(units)} ${Math.round(units) === 1 ? "presenteável" : "presenteáveis"} · ${productionUnits.toLocaleString("pt-BR")} ${productionUnits === 1 ? "biscoito" : "biscoitos"} · aprox. ${formatWeight(grams)}`
+          : `${Math.round(units)} un. · aprox. ${formatWeight(grams)}`
+        : "Informe a quantidade";
       fields.summaryModality.textContent = MODALITY_LABELS[fields.modality.value] || "—";
       fields.summaryFlavor.textContent = flavor?.label || "Sob consulta";
       fields.summaryDate.textContent = formatDate(fields.deliveryDate.value);
@@ -381,6 +446,8 @@
           ? `Entrega · ${shippingQuote.routeKm.toFixed(1).replace(".", ",")} km`
           : "Entrega · frete pendente"
         : "Retirada na DoSim";
+      fields.summaryUnitPriceRow.hidden = !isPresentable();
+      fields.summaryUnitPrice.textContent = isPresentable() ? `${formatCurrency(enteredPrice)} / presenteável` : "—";
       fields.summaryProductPrice.textContent = formatCurrency(productPrice);
       fields.summaryShippingRow.hidden = !isDelivery;
       fields.summaryShipping.textContent = shippingQuote?.available ? formatCurrency(shipping) : "A calcular";
@@ -421,7 +488,8 @@
     };
 
     const buildMessage = () => {
-      const productPrice = positiveNumber(fields.productPrice.value);
+      const enteredPrice = positiveNumber(fields.productPrice.value);
+      const productPrice = getProductTotal();
       const isDelivery = getFulfillment() === "entrega";
       const shipping = isDelivery && shippingQuote?.available ? shippingQuote.amount : 0;
       const flavor = getSelectedFlavor();
@@ -440,9 +508,20 @@
         "",
         `🤎 *${getPresentationLabel()}*`,
         `${TYPE_LABELS[fields.type.value]} · ${MODALITY_LABELS[fields.modality.value]}`,
-        `*Sabor:* ${flavor?.label || "Sob consulta"}`,
-        `*Quantidade:* ${Math.round(positiveNumber(fields.units.value))} unidades (aprox. ${formatWeight(positiveNumber(fields.grams.value))})`
+        `*Sabor:* ${flavor?.label || "Sob consulta"}`
       );
+
+      if (isPresentable()) {
+        const presentables = Math.round(positiveNumber(fields.units.value));
+        const productionUnits = getProductionUnits();
+        lines.push(
+          `*Quantidade:* ${presentables} ${presentables === 1 ? "presenteável" : "presenteáveis"}`,
+          `*Produção estimada:* ${productionUnits} ${productionUnits === 1 ? "biscoito" : "biscoitos"} (aprox. ${formatWeight(positiveNumber(fields.grams.value))})`,
+          `*Valor unitário:* ${formatCurrency(enteredPrice)} por presenteável`
+        );
+      } else {
+        lines.push(`*Quantidade:* ${Math.round(positiveNumber(fields.units.value))} unidades (aprox. ${formatWeight(positiveNumber(fields.grams.value))})`);
+      }
 
       if (usesSelectableSize()) {
         lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams} g por unidade)`);
@@ -540,7 +619,7 @@
       applySuggestedPrice();
     });
     fields.units.addEventListener("change", () => {
-      if (fields.modality.value === "presenteavel") normalizePresentableQuantity();
+      syncFromUnits();
       applySuggestedPrice();
     });
     fields.grams.addEventListener("input", () => {
@@ -548,7 +627,7 @@
       applySuggestedPrice();
     });
     fields.grams.addEventListener("change", () => {
-      if (fields.modality.value === "presenteavel") normalizePresentableQuantity();
+      syncFromGrams();
       applySuggestedPrice();
     });
     fields.productPrice.addEventListener("input", updateSummary);

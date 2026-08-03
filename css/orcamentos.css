@@ -55,6 +55,12 @@
   resize: vertical;
 }
 
+.quote-form .orders-field input[readonly] {
+  background: var(--surface-muted, #f6f4f0);
+  color: var(--muted);
+  cursor: default;
+}
+
 .quote-form .orders-field select:focus,
 .quote-form .orders-field textarea:focus,
 .quote-form .orders-field input:focus {
