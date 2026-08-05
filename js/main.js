@@ -1376,7 +1376,8 @@
       const productName = card?.querySelector(".card-title")?.textContent?.trim();
       const weight = option.querySelector("span")?.textContent?.trim();
       const price = option.querySelector("strong")?.textContent?.trim();
-      if (!productName || !weight || !price) {
+      const isUnavailable = card?.getAttribute("data-unavailable") === "true";
+      if (!productName || !weight || !price || isUnavailable) {
         return;
       }
 
