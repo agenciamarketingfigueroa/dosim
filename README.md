@@ -15,21 +15,10 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 |   |-- icons/
 |   |   `-- favicon.svg
 |   `-- img/
-|       |-- hero-1600x900.svg
-|       |-- logo-placeholder.svg
+|       |-- dosim-banner1920x1080.svg
+|       |-- logo-dosim.svg
 |       |-- og-1200x630.svg
-|       |-- portfolio-01.svg
-|       |-- portfolio-02.svg
-|       |-- portfolio-03.svg
-|       |-- portfolio-04.svg
-|       |-- portfolio-05.svg
-|       |-- portfolio-06.svg
-|       |-- portfolio-07.svg
-|       |-- portfolio-08.svg
-|       |-- portfolio-09.svg
-|       |-- portfolio-10.svg
-|       |-- portfolio-11.svg
-|       `-- portfolio-12.svg
+|       `-- [imagens dos produtos].svg
 |-- css/
 |   `-- styles.css
 |-- data/
@@ -43,10 +32,14 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 |-- contato.html
 |-- corporativo.html
 |-- encomendar.html
+|-- gramatura.html
 |-- index.html
 |-- portfolio.html
 |-- produtos.html
 |-- sazonais.html
+|-- 404.html
+|-- robots.txt
+|-- sitemap.xml
 `-- README.md
 ```
 
@@ -77,18 +70,23 @@ Depois acesse `http://localhost:5500`.
    - Branch: `main` (ou sua branch principal)
    - Folder: `/ (root)`
 4. Salve e aguarde o GitHub publicar.
-5. A URL ficará no formato: `https://SEU-USUARIO.github.io/SEU-REPO/`.
+5. O domínio de produção é `https://dosim.com.br/`.
+
+## URLs públicas
+
+O GitHub Pages entrega os arquivos `.html` também em URLs limpas. Use sempre os endereços sem extensão nos links,
+metadados e divulgações, por exemplo: `/produtos`, `/gramatura` e `/contato`. As versões com `.html` permanecem
+acessíveis por compatibilidade, mas os canonicals e o sitemap apontam para as URLs limpas.
 
 ## Como trocar as imagens
 
-As imagens atuais são placeholders em SVG. Substitua mantendo os mesmos nomes de arquivo (ou atualize os caminhos no HTML).
+Substitua imagens mantendo os mesmos nomes de arquivo ou atualize os caminhos no HTML.
 
 Tamanhos recomendados:
 
-- `assets/img/hero-1600x900.svg` -> **1600x900**
+- `assets/img/dosim-banner1920x1080.svg` -> **1920x1080**
 - `assets/img/og-1200x630.svg` -> **1200x630**
-- `assets/img/logo-placeholder.svg` -> **360x360** (ou proporção de logo horizontal, ajustando no CSS)
-- `assets/img/portfolio-01.svg` até `portfolio-12.svg` -> **1200x1200**
+- imagens do portfólio -> preferencialmente **1200x1200**
 
 Formatos recomendados para produção: `.jpg` ou `.webp` (foto) e `.svg` (arte vetorial/logo).
 
@@ -102,7 +100,7 @@ Formatos recomendados para produção: `.jpg` ou `.webp` (foto) e `.svg` (arte v
    - `descricao`
    - `destaque` (`true` ou `false`)
 3. Salve o arquivo.
-4. Recarregue a página `produtos.html` para ver tabela e cards atualizados.
+4. Recarregue a página `/produtos` para ver tabela e cards atualizados.
 
 ## Custos das receitas
 
@@ -134,7 +132,7 @@ O cálculo é uma estimativa exibida ao cliente e é incluído na mensagem de pe
 
 ## Controle local de pedidos
 
-A página `pedidos.html` permite cadastrar manualmente nome do cliente, data de entrega, sabores e quantidades. Os pedidos recebem numeração sequencial automática e podem ser editados, concluídos, reabertos ou excluídos.
+A página `/pedidos` permite cadastrar manualmente nome do cliente, data de entrega, sabores e quantidades. Os pedidos recebem numeração sequencial automática e podem ser editados, concluídos, reabertos ou excluídos.
 
 Os dados são armazenados no `localStorage` do navegador e não são sincronizados entre dispositivos. Use **Exportar backup** regularmente para evitar perda de dados caso o armazenamento do navegador seja apagado. A senha da página é apenas uma barreira visual em um site estático; autenticação realmente segura exige backend.
 

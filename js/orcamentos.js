@@ -2,7 +2,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const auth = globalThis.DoSimInternalAuth;
     if (!auth?.isAuthenticated()) {
-      globalThis.location.replace("area-interna.html");
+      globalThis.location.replace("/area-interna");
       return;
     }
 
@@ -686,7 +686,7 @@
     fields.reset.addEventListener("click", resetQuote);
     fields.logout.addEventListener("click", () => {
       auth.logout();
-      globalThis.location.replace("area-interna.html");
+      globalThis.location.replace("/area-interna");
     });
 
     const today = new Date();

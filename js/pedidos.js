@@ -14,7 +14,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const auth = globalThis.DoSimInternalAuth;
     if (!auth?.isAuthenticated()) {
-      globalThis.location.replace("area-interna.html");
+      globalThis.location.replace("/area-interna");
       return;
     }
 
@@ -412,7 +412,7 @@
     if (logoutButton instanceof HTMLButtonElement) {
       logoutButton.addEventListener("click", () => {
         auth.logout();
-        globalThis.location.replace("area-interna.html");
+        globalThis.location.replace("/area-interna");
       });
     }
 
