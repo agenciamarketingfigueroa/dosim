@@ -96,6 +96,20 @@
       5: { label: "5 cm", unitWeightGrams: 10 },
       6: { label: "6 cm", unitWeightGrams: 20 },
     };
+    const SAVORY_TYPES = new Set(["salgado", "congelado"]);
+    const SAVORY_SIZE = { label: "5 cm / 4 mm", unitWeightGrams: 8 };
+    const SAVORY_PRICE_TIERS = {
+      salgado: {
+        200: { units: 25, price: 18 },
+        300: { units: 37, price: 26 },
+        500: { units: 62, price: 40 },
+      },
+      congelado: {
+        200: { units: 25, price: 16.9 },
+        300: { units: 37, price: 24.9 },
+        500: { units: 62, price: 36.9 },
+      },
+    };
     const SHIPPING_RULES = {
       origin: { lat: -19.87986, lng: -44.0284 },
       priceBands: [
@@ -130,8 +144,8 @@
         { id: "misto", label: "Misto", price500: 49 },
       ],
       "ninho-nutella": [{ id: "ninho-nutella", label: "Ninho com Nutella", price500: 55 }],
-      salgado: [{ id: "queijo", label: "Queijo", price500: 49 }],
-      congelado: [{ id: "queijo-assar", label: "Queijo para assar", price500: 40 }],
+      salgado: [{ id: "queijo", label: "Queijo", price500: 40 }],
+      congelado: [{ id: "queijo-assar", label: "Queijo para assar", price500: 36.9 }],
     };
     const PRODUCTS = {
       presenteavel: {
@@ -182,8 +196,12 @@
     const getSelectedFlavor = () => (FLAVORS[fields.type.value] || []).find((flavor) => flavor.id === fields.flavor.value) || null;
     const getSelectedSize = () => PERSONALIZED_SIZES[fields.size.value] || PERSONALIZED_SIZES[6];
     const isPresentable = () => fields.modality.value === "presenteavel";
-    const usesSelectableSize = () => ["gramatura", "personalizado"].includes(fields.modality.value);
-    const getUnitWeight = () => (usesSelectableSize() ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT);
+    const isSavoryByWeight = () => fields.modality.value === "gramatura" && SAVORY_TYPES.has(fields.type.value);
+    const usesSelectableSize = () => ["gramatura", "personalizado"].includes(fields.modality.value) && !isSavoryByWeight();
+    const getUnitWeight = () => (isSavoryByWeight() ? SAVORY_SIZE.unitWeightGrams : usesSelectableSize() ? getSelectedSize().unitWeightGrams : GRAMS_PER_UNIT);
+    const getSavoryTierByGrams = (grams) => SAVORY_PRICE_TIERS[fields.type.value]?.[Math.round(grams)] || null;
+    const getSavoryTierByUnits = (units) =>
+      Object.entries(SAVORY_PRICE_TIERS[fields.type.value] || {}).find(([, tier]) => tier.units === units) || null;
     const getProductionUnits = () => {
       const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
       const product = getSelectedProduct();
@@ -253,7 +271,9 @@
       }
 
       const unitWeight = getUnitWeight();
-      fields.quantityNote.textContent = usesSelectableSize()
+      fields.quantityNote.textContent = isSavoryByWeight()
+        ? `Conversão aproximada para o salgado de ${SAVORY_SIZE.label}: ${SAVORY_SIZE.unitWeightGrams} g por unidade.`
+        : usesSelectableSize()
         ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
         : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
     };
@@ -270,6 +290,14 @@
     };
 
     const setDefaultQuantity = () => {
+      if (isSavoryByWeight()) {
+        const grams = 500;
+        const tier = getSavoryTierByGrams(grams);
+        fields.grams.value = String(grams);
+        fields.units.value = String(tier.units);
+        updateQuantityPresentation();
+        return;
+      }
       if (usesSelectableSize()) {
         const grams = 500;
         fields.grams.value = String(grams);
@@ -286,7 +314,8 @@
     const syncFromUnits = () => {
       const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
       fields.units.value = units ? String(units) : "";
-      fields.grams.value = units ? String(getProductionUnits() * getUnitWeight()) : "";
+      const savoryTier = isSavoryByWeight() ? getSavoryTierByUnits(units) : null;
+      fields.grams.value = units ? String(savoryTier?.[0] || getProductionUnits() * getUnitWeight()) : "";
       updateQuantityPresentation();
     };
 
@@ -297,7 +326,11 @@
       const gramsPerSelection = isPresentable() && product?.packageUnits
         ? product.packageUnits * GRAMS_PER_UNIT
         : getUnitWeight();
-      fields.units.value = grams ? String(Math.max(1, Math.round(grams / gramsPerSelection))) : "";
+      const savoryTier = isSavoryByWeight() ? getSavoryTierByGrams(grams) : null;
+      const convertedUnits = isSavoryByWeight()
+        ? Math.floor(grams / gramsPerSelection)
+        : Math.round(grams / gramsPerSelection);
+      fields.units.value = grams ? String(savoryTier?.units || Math.max(1, convertedUnits)) : "";
       if (isPresentable()) {
         fields.grams.value = fields.units.value ? String(getProductionUnits() * GRAMS_PER_UNIT) : "";
       }
@@ -313,6 +346,11 @@
 
       if (isPresentable() && product.packageUnits) {
         return product.packagePrice;
+      }
+
+      if (isSavoryByWeight()) {
+        const tier = getSavoryTierByGrams(grams);
+        if (tier) return tier.price;
       }
 
       const price500 = fields.modality.value === "personalizado" ? product.price500 : flavor?.price500;
@@ -430,7 +468,9 @@
       const isDelivery = getFulfillment() === "entrega";
       const shipping = isDelivery && shippingQuote?.available ? shippingQuote.amount : 0;
       fields.summaryProduct.textContent =
-        usesSelectableSize()
+        isSavoryByWeight()
+          ? `${getPresentationLabel()} · ${SAVORY_SIZE.label}`
+          : usesSelectableSize()
           ? `${getPresentationLabel()} · ${getSelectedSize().label}`
           : getPresentationLabel();
       fields.summaryQuantity.textContent = units && grams
@@ -525,6 +565,8 @@
 
       if (usesSelectableSize()) {
         lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams} g por unidade)`);
+      } else if (isSavoryByWeight()) {
+        lines.push(`*Tamanho:* ${SAVORY_SIZE.label} (aprox. ${SAVORY_SIZE.unitWeightGrams} g por unidade)`);
       }
 
       if (personalized) {

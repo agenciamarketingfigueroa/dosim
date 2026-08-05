@@ -1,11 +1,11 @@
 # Tabela de custos — receitas de biscoitos
 
-Atualizada em 29/07/2026.
+Atualizada em 05/08/2026.
 
 ## Premissas de custo
 
 - Rendimento: 18 biscoitos por receita.
-- Rendimento do biscoito salgado: 30 biscoitos por receita.
+- Rendimento do biscoito salgado: aproximadamente 62 biscoitos de 8 g por receita (cerca de 500 g).
 - Baunilha: 15 ml por receita.
 - Papel-manteiga: 80 cm por receita.
 - Ovo: custo de 1 ovo inteiro por receita, embora seja usada 1 gema.
@@ -22,7 +22,7 @@ Atualizada em 29/07/2026.
 | Ninho | R$ 10,17 | R$ 0,57 |
 | Canela | R$ 10,17 | R$ 0,57 |
 | Ovo Maltine | R$ 11,03 | R$ 0,61 |
-| Salgado | R$ 11,84 | R$ 0,39 |
+| Salgado | R$ 11,84 | R$ 0,19 |
 
 ## Valores de referência usados
 
@@ -56,4 +56,4 @@ R$ 4,79 (manteiga) + R$ 1,29 (açúcar) + R$ 0,83 (ovo) + R$ 0,76 (farinha) + R$
 
 R$ 1,00 (250 g de farinha) + R$ 2,81 (40 g de queijo ralado Italac) + R$ 0,01 (3 g de sal) + R$ 7,19 (150 g de manteiga) + R$ 0,83 (1 ovo) = R$ 11,84.
 
-Rendimento de 30 biscoitos: R$ 11,84 / 30 = R$ 0,39 por biscoito.
+Rendimento aproximado de 62 biscoitos de 8 g: R$ 11,84 / 62 = R$ 0,19 por biscoito.
