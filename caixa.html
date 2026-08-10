@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/caixa.css" />
     <script src="js/main.js?v=20260805-2" defer></script>
     <script src="js/internal-auth.js" defer></script>
-    <script src="js/caixa.js?v=20260810-1" defer></script>
+    <script src="js/caixa.js?v=20260810-2" defer></script>
   </head>
   <body class="orders-page cash-page">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -51,6 +51,31 @@
             </div>
           </div>
 
+          <div class="cash-tabs" role="tablist" aria-label="Seções do caixa">
+            <button
+              id="cash-records-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="cash-records-panel"
+              tabindex="0"
+              data-cash-tab="records"
+            >
+              Lançamentos
+            </button>
+            <button
+              id="cash-analytics-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="cash-analytics-panel"
+              tabindex="-1"
+              data-cash-tab="analytics"
+            >
+              Dashboard
+            </button>
+          </div>
+
           <div class="cash-period-bar" aria-label="Período do resumo">
             <div>
               <span class="cash-period-label">Período do resumo</span>
@@ -64,30 +89,13 @@
             <button class="btn btn-secondary btn-sm" type="button" data-cash-all-periods>Todo o período</button>
           </div>
 
-          <div class="cash-stats" aria-label="Resumo financeiro">
-            <article class="is-sales">
-              <span>Vendas</span>
-              <strong data-cash-sales>R$ 0,00</strong>
-              <small data-cash-sales-count>0 vendas</small>
-            </article>
-            <article class="is-expenses">
-              <span>Saídas</span>
-              <strong data-cash-expenses>R$ 0,00</strong>
-              <small data-cash-expenses-count>0 lançamentos</small>
-            </article>
-            <article class="is-balance">
-              <span>Resultado</span>
-              <strong data-cash-balance>R$ 0,00</strong>
-              <small>vendas menos saídas</small>
-            </article>
-            <article>
-              <span>Ticket médio</span>
-              <strong data-cash-average>R$ 0,00</strong>
-              <small>por venda registrada</small>
-            </article>
-          </div>
-
-          <div class="cash-layout">
+          <section
+            id="cash-records-panel"
+            role="tabpanel"
+            aria-labelledby="cash-records-tab"
+            data-cash-tab-panel="records"
+          >
+            <div class="cash-layout">
             <section class="orders-panel cash-form-panel">
               <div class="orders-panel-heading">
                 <div>
@@ -117,6 +125,18 @@
                     <span>Descrição</span>
                     <input type="text" maxlength="100" placeholder="Ex.: Encomenda da Ana" required data-cash-description />
                   </label>
+                  <div class="cash-product-fields" data-cash-product-fields>
+                    <label class="orders-field">
+                      <span>Biscoito vendido</span>
+                      <select required data-cash-product>
+                        <option value="">Selecione o biscoito</option>
+                      </select>
+                    </label>
+                    <label class="orders-field">
+                      <span>Quantidade</span>
+                      <input type="number" min="1" max="99999" step="1" value="1" required data-cash-quantity />
+                    </label>
+                  </div>
                   <label class="orders-field">
                     <span>Categoria</span>
                     <select required data-cash-category></select>
@@ -179,6 +199,112 @@
               <div class="cash-list" data-cash-list></div>
             </section>
           </div>
+          </section>
+
+          <section
+            id="cash-analytics-panel"
+            class="cash-analytics"
+            role="tabpanel"
+            aria-labelledby="cash-analytics-tab"
+            data-cash-tab-panel="analytics"
+            hidden
+          >
+            <div class="cash-stats" aria-label="Resumo financeiro">
+              <article class="is-sales">
+                <span>Vendas</span>
+                <strong data-cash-sales>R$ 0,00</strong>
+                <small data-cash-sales-count>0 vendas</small>
+              </article>
+              <article class="is-expenses">
+                <span>Saídas</span>
+                <strong data-cash-expenses>R$ 0,00</strong>
+                <small data-cash-expenses-count>0 lançamentos</small>
+              </article>
+              <article class="is-balance">
+                <span>Resultado</span>
+                <strong data-cash-balance>R$ 0,00</strong>
+                <small>vendas menos saídas</small>
+              </article>
+              <article>
+                <span>Ticket médio</span>
+                <strong data-cash-average>R$ 0,00</strong>
+                <small>por venda registrada</small>
+              </article>
+            </div>
+
+            <div class="cash-insights" aria-label="Destaques das vendas">
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">★</span>
+                <div>
+                  <small>Mais vendido</small>
+                  <strong data-cash-top-product>—</strong>
+                  <span data-cash-top-product-detail>Nenhuma unidade registrada</span>
+                </div>
+              </article>
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">#</span>
+                <div>
+                  <small>Unidades vendidas</small>
+                  <strong data-cash-units>0</strong>
+                  <span data-cash-units-detail>0 tipos de biscoito</span>
+                </div>
+              </article>
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">↗</span>
+                <div>
+                  <small>Melhor dia</small>
+                  <strong data-cash-best-day>—</strong>
+                  <span data-cash-best-day-detail>Nenhuma venda registrada</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="cash-charts-grid">
+              <article class="orders-panel cash-chart-card cash-product-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Preferência dos clientes</p>
+                    <h2>Biscoitos mais vendidos</h2>
+                  </div>
+                  <span>por unidade</span>
+                </div>
+                <p class="orders-empty" data-cash-product-empty>Nenhum biscoito registrado neste período.</p>
+                <div class="cash-bar-chart" data-cash-product-chart></div>
+              </article>
+
+              <article class="orders-panel cash-chart-card cash-trend-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Faturamento</p>
+                    <h2>Evolução das vendas</h2>
+                  </div>
+                  <span data-cash-trend-caption>por dia</span>
+                </div>
+                <p class="orders-empty" data-cash-trend-empty>Nenhuma venda neste período.</p>
+                <div class="cash-line-chart" data-cash-trend-chart></div>
+              </article>
+
+              <article class="orders-panel cash-chart-card cash-payment-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Recebimentos</p>
+                    <h2>Formas de pagamento</h2>
+                  </div>
+                  <span>por valor</span>
+                </div>
+                <p class="orders-empty" data-cash-payment-empty>Nenhuma venda neste período.</p>
+                <div class="cash-donut-layout" data-cash-payment-chart hidden>
+                  <div class="cash-donut" data-cash-payment-donut aria-hidden="true">
+                    <div>
+                      <strong data-cash-payment-total>R$ 0</strong>
+                      <span>recebido</span>
+                    </div>
+                  </div>
+                  <div class="cash-donut-legend" data-cash-payment-legend></div>
+                </div>
+              </article>
+            </div>
+          </section>
 
           <aside class="cash-backup-note">
             <strong>Importante:</strong> como este site não possui banco de dados, exporte a sessão regularmente. Ao
