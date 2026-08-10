@@ -136,6 +136,12 @@ A página `/pedidos` permite cadastrar manualmente nome do cliente, data de entr
 
 Os dados são armazenados no `localStorage` do navegador e não são sincronizados entre dispositivos. Use **Exportar backup** regularmente para evitar perda de dados caso o armazenamento do navegador seja apagado. A senha da página é apenas uma barreira visual em um site estático; autenticação realmente segura exige backend.
 
+## Caixa e controle de vendas
+
+A página `/caixa`, acessível pela área interna, registra vendas e saídas com data, categoria, forma de pagamento e valor. O painel mostra vendas, despesas, resultado e ticket médio por mês ou em todo o período, além de permitir busca, filtros, edição e exclusão dos lançamentos.
+
+Assim como os pedidos, o caixa usa apenas o `localStorage`. **Exportar sessão** gera um arquivo JSON com todos os lançamentos; **Importar sessão** restaura esse arquivo e substitui os dados locais do navegador atual. Exporte uma cópia com frequência e antes de trocar de dispositivo ou limpar os dados do navegador.
+
 ## WhatsApp e contatos oficiais no projeto
 
 - WhatsApp: `https://wa.me/5531996154698`

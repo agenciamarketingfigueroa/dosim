@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Caixa e Vendas | DoSim</title>
+    <meta name="theme-color" content="#6f4e37" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/pedidos.css" />
+    <link rel="stylesheet" href="css/caixa.css" />
+    <script src="js/main.js?v=20260805-2" defer></script>
+    <script src="js/internal-auth.js" defer></script>
+    <script src="js/caixa.js?v=20260810-1" defer></script>
+  </head>
+  <body class="orders-page cash-page">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/" aria-label="Página inicial da DoSim">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </a>
+      </div>
+    </header>
+
+    <main id="conteudo" class="orders-main">
+      <section class="orders-dashboard" data-cash-dashboard hidden>
+        <div class="container orders-shell">
+          <div class="orders-topbar">
+            <div>
+              <p class="eyebrow">Financeiro</p>
+              <h1 class="section-title">Caixa e vendas</h1>
+              <p class="section-copy">Os dados ficam salvos somente neste navegador.</p>
+            </div>
+            <div class="orders-toolbar">
+              <a class="btn btn-secondary btn-sm" href="/area-interna">Área interna</a>
+              <button class="btn btn-secondary btn-sm" type="button" data-cash-export>Exportar sessão</button>
+              <label class="btn btn-secondary btn-sm orders-import-label">
+                Importar sessão
+                <input type="file" accept="application/json,.json" data-cash-import />
+              </label>
+              <button class="orders-logout" type="button" data-cash-logout>Sair</button>
+            </div>
+          </div>
+
+          <div class="cash-period-bar" aria-label="Período do resumo">
+            <div>
+              <span class="cash-period-label">Período do resumo</span>
+              <strong data-cash-period-label>Mês atual</strong>
+            </div>
+            <label class="orders-filter cash-period-filter">
+              <span class="sr-only">Selecionar mês</span>
+              <input type="month" data-cash-month />
+            </label>
+            <button class="btn btn-secondary btn-sm" type="button" data-cash-current-month>Mês atual</button>
+            <button class="btn btn-secondary btn-sm" type="button" data-cash-all-periods>Todo o período</button>
+          </div>
+
+          <div class="cash-stats" aria-label="Resumo financeiro">
+            <article class="is-sales">
+              <span>Vendas</span>
+              <strong data-cash-sales>R$ 0,00</strong>
+              <small data-cash-sales-count>0 vendas</small>
+            </article>
+            <article class="is-expenses">
+              <span>Saídas</span>
+              <strong data-cash-expenses>R$ 0,00</strong>
+              <small data-cash-expenses-count>0 lançamentos</small>
+            </article>
+            <article class="is-balance">
+              <span>Resultado</span>
+              <strong data-cash-balance>R$ 0,00</strong>
+              <small>vendas menos saídas</small>
+            </article>
+            <article>
+              <span>Ticket médio</span>
+              <strong data-cash-average>R$ 0,00</strong>
+              <small>por venda registrada</small>
+            </article>
+          </div>
+
+          <div class="cash-layout">
+            <section class="orders-panel cash-form-panel">
+              <div class="orders-panel-heading">
+                <div>
+                  <p class="eyebrow" data-cash-form-eyebrow>Novo lançamento</p>
+                  <h2 data-cash-form-title>Registrar movimentação</h2>
+                </div>
+              </div>
+
+              <form data-cash-form>
+                <div class="cash-type-switch" role="group" aria-label="Tipo do lançamento">
+                  <label>
+                    <input type="radio" name="cash-type" value="sale" checked data-cash-type />
+                    <span>Venda</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="cash-type" value="expense" data-cash-type />
+                    <span>Saída</span>
+                  </label>
+                </div>
+
+                <div class="cash-form-grid">
+                  <label class="orders-field">
+                    <span>Data</span>
+                    <input type="date" required data-cash-date />
+                  </label>
+                  <label class="orders-field cash-field-description">
+                    <span>Descrição</span>
+                    <input type="text" maxlength="100" placeholder="Ex.: Encomenda da Ana" required data-cash-description />
+                  </label>
+                  <label class="orders-field">
+                    <span>Categoria</span>
+                    <select required data-cash-category></select>
+                  </label>
+                  <label class="orders-field">
+                    <span>Forma de pagamento</span>
+                    <select required data-cash-payment>
+                      <option value="Pix">Pix</option>
+                      <option value="Dinheiro">Dinheiro</option>
+                      <option value="Cartão de crédito">Cartão de crédito</option>
+                      <option value="Cartão de débito">Cartão de débito</option>
+                      <option value="Transferência">Transferência</option>
+                      <option value="Outro">Outro</option>
+                    </select>
+                  </label>
+                  <label class="orders-field">
+                    <span>Valor</span>
+                    <div class="cash-money-input">
+                      <span>R$</span>
+                      <input type="text" inputmode="decimal" placeholder="0,00" required data-cash-amount />
+                    </div>
+                  </label>
+                  <label class="orders-field cash-field-notes">
+                    <span>Observação <small>(opcional)</small></span>
+                    <input type="text" maxlength="160" placeholder="Detalhes do pagamento ou da compra" data-cash-notes />
+                  </label>
+                </div>
+
+                <p class="orders-form-error" data-cash-form-error aria-live="polite"></p>
+                <div class="orders-form-actions">
+                  <button class="btn btn-primary" type="submit" data-cash-submit>Salvar lançamento</button>
+                  <button class="btn btn-secondary" type="button" data-cash-cancel-edit hidden>Cancelar edição</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="orders-panel cash-list-panel">
+              <div class="cash-list-heading">
+                <div>
+                  <p class="eyebrow">Movimentações</p>
+                  <h2>Histórico do caixa</h2>
+                </div>
+                <div class="cash-list-filters">
+                  <label class="orders-filter">
+                    <span class="sr-only">Buscar lançamentos</span>
+                    <input type="search" placeholder="Buscar descrição" data-cash-search />
+                  </label>
+                  <label class="orders-filter">
+                    <span class="sr-only">Filtrar tipo</span>
+                    <select data-cash-type-filter>
+                      <option value="all">Entradas e saídas</option>
+                      <option value="sale">Somente vendas</option>
+                      <option value="expense">Somente saídas</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <p class="orders-empty" data-cash-empty>Nenhum lançamento neste período.</p>
+              <div class="cash-list" data-cash-list></div>
+            </section>
+          </div>
+
+          <aside class="cash-backup-note">
+            <strong>Importante:</strong> como este site não possui banco de dados, exporte a sessão regularmente. Ao
+            importar em outro aparelho ou navegador, o arquivo substituirá os dados locais atuais.
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="orders-toast" role="status" aria-live="polite" data-cash-toast hidden></div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-logo">
+          <img src="assets/img/logo-dosim.svg" alt="Logo da DoSim" />
+        </div>
+        <div class="footer-links">
+          <span>Uso interno</span>
+          <span>&copy; <span data-current-year></span> DoSim</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
