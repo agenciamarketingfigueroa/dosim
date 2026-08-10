@@ -66,6 +66,8 @@
     const quantityInput = document.querySelector("[data-cash-quantity]");
     const sizeField = document.querySelector("[data-cash-size-field]");
     const sizeSelect = document.querySelector("[data-cash-size]");
+    const customSizeField = document.querySelector("[data-cash-custom-size-field]");
+    const customSizeInput = document.querySelector("[data-cash-custom-size]");
     const formError = document.querySelector("[data-cash-form-error]");
     const formEyebrow = document.querySelector("[data-cash-form-eyebrow]");
     const formTitle = document.querySelector("[data-cash-form-title]");
@@ -122,6 +124,8 @@
       !(quantityInput instanceof HTMLInputElement) ||
       !(sizeField instanceof HTMLElement) ||
       !(sizeSelect instanceof HTMLSelectElement) ||
+      !(customSizeField instanceof HTMLElement) ||
+      !(customSizeInput instanceof HTMLInputElement) ||
       !(monthInput instanceof HTMLInputElement) ||
       !(list instanceof HTMLElement)
     ) {
@@ -165,6 +169,15 @@
       });
     };
 
+    const updateCustomSizeField = () => {
+      const shouldShow =
+        getSelectedType() === "sale" && getSelectedProductKind() === "weight" && sizeSelect.value === "Outra";
+      customSizeField.hidden = !shouldShow;
+      customSizeInput.disabled = !shouldShow;
+      customSizeInput.required = shouldShow;
+      if (!shouldShow) customSizeInput.value = "";
+    };
+
     const updateProductOptions = (preferredProduct = "") => {
       const kind = getSelectedProductKind();
       const products = kind === "weight" ? WEIGHT_PRODUCTS : PRESENTABLE_PRODUCTS;
@@ -179,6 +192,7 @@
       sizeField.hidden = kind !== "weight";
       sizeSelect.disabled = kind !== "weight";
       sizeSelect.required = kind === "weight";
+      updateCustomSizeField();
     };
 
     const updateProductFields = (
@@ -199,7 +213,16 @@
           if (input instanceof HTMLInputElement) input.disabled = false;
         });
         updateProductOptions(preferredProduct);
-        sizeSelect.value = preferredKind === "weight" && PACKAGE_SIZES.includes(preferredSize) ? preferredSize : "";
+        const customSizeMatch = /^([1-9]\d{0,5}) g$/.exec(preferredSize);
+        if (preferredKind === "weight" && PACKAGE_SIZES.includes(preferredSize)) {
+          sizeSelect.value = preferredSize;
+        } else if (preferredKind === "weight" && customSizeMatch) {
+          sizeSelect.value = "Outra";
+          customSizeInput.value = customSizeMatch[1];
+        } else {
+          sizeSelect.value = "";
+        }
+        updateCustomSizeField();
         quantityInput.value = String(Math.max(1, Number.parseInt(preferredQuantity, 10) || 1));
       } else {
         productKindInputs.forEach((input) => {
@@ -209,6 +232,7 @@
         sizeSelect.value = "";
         sizeSelect.disabled = true;
         sizeSelect.required = false;
+        updateCustomSizeField();
         quantityInput.value = "1";
       }
     };
@@ -573,7 +597,13 @@
       const amountCents = parseMoney(amountInput.value);
       const productKind = type === "sale" ? getSelectedProductKind() : "";
       const product = type === "sale" ? productSelect.value : "";
-      const packageSize = type === "sale" && productKind === "weight" ? sizeSelect.value : "";
+      const customSize = Number.parseInt(customSizeInput.value, 10);
+      const packageSize =
+        type === "sale" && productKind === "weight"
+          ? sizeSelect.value === "Outra"
+            ? `${customSize} g`
+            : sizeSelect.value
+          : "";
       const quantity = type === "sale" ? Number.parseInt(quantityInput.value, 10) : 0;
       const availableProducts = productKind === "weight" ? WEIGHT_PRODUCTS : PRESENTABLE_PRODUCTS;
       if (
@@ -583,7 +613,7 @@
         amountCents <= 0 ||
         (type === "sale" &&
           (!availableProducts.includes(product) ||
-            (productKind === "weight" && !PACKAGE_SIZES.includes(packageSize)) ||
+            (productKind === "weight" && !isValidPackageSize(packageSize)) ||
             !Number.isInteger(quantity) ||
             quantity < 1 ||
             quantity > 99999))
@@ -734,6 +764,11 @@
         sizeSelect.value = "";
         setFormError();
       });
+    });
+    sizeSelect.addEventListener("change", () => {
+      updateCustomSizeField();
+      if (!customSizeField.hidden) customSizeInput.focus();
+      setFormError();
     });
     tabButtons.forEach((button, index) => {
       if (!(button instanceof HTMLButtonElement)) return;
@@ -898,6 +933,10 @@
     return "Produto";
   }
 
+  function isValidPackageSize(value) {
+    return PACKAGE_SIZES.includes(value) || /^[1-9]\d{0,5} g$/.test(value);
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -939,7 +978,7 @@
           quantity <= 99999) ||
         (productKind === "weight" &&
           WEIGHT_PRODUCTS.includes(product) &&
-          (!packageSize || PACKAGE_SIZES.includes(packageSize)) &&
+          (!packageSize || isValidPackageSize(packageSize)) &&
           quantity >= 1 &&
           quantity <= 99999);
       if (

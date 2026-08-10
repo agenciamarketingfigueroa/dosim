@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/caixa.css" />
     <script src="js/main.js?v=20260805-2" defer></script>
     <script src="js/internal-auth.js" defer></script>
-    <script src="js/caixa.js?v=20260810-3" defer></script>
+    <script src="js/caixa.js?v=20260810-4" defer></script>
   </head>
   <body class="orders-page cash-page">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -162,6 +162,21 @@
                       <label class="orders-field">
                         <span>Quantidade</span>
                         <input type="number" min="1" max="99999" step="1" value="1" required data-cash-quantity />
+                      </label>
+                      <label class="orders-field cash-custom-size-field" data-cash-custom-size-field hidden>
+                        <span>Gramatura personalizada</span>
+                        <div class="cash-unit-input">
+                          <input
+                            type="number"
+                            inputmode="numeric"
+                            min="1"
+                            max="999999"
+                            step="1"
+                            placeholder="Ex.: 750"
+                            data-cash-custom-size
+                          />
+                          <span>g</span>
+                        </div>
                       </label>
                     </div>
                   </div>

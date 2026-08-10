@@ -45,6 +45,7 @@
 .cash-analytics[hidden],
 [data-cash-tab-panel][hidden],
 .cash-product-fields[hidden],
+[data-cash-custom-size-field][hidden],
 .cash-bar-chart[hidden],
 .cash-line-chart[hidden],
 .cash-donut-layout[hidden] {
@@ -324,6 +325,38 @@
 
 .cash-product-fields.is-weight .cash-product-grid {
   grid-template-columns: minmax(0, 1fr) minmax(7rem, 0.4fr) minmax(7rem, 0.34fr);
+}
+
+.cash-custom-size-field {
+  width: min(14rem, 100%);
+  grid-column: 1 / -1;
+}
+
+.cash-unit-input {
+  min-height: 2.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.72rem;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.cash-unit-input:focus-within {
+  outline: 2px solid rgba(111, 78, 55, 0.25);
+  border-color: var(--line-strong);
+}
+
+.orders-field .cash-unit-input input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.cash-unit-input > span {
+  padding-right: 0.75rem;
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .orders-field small {

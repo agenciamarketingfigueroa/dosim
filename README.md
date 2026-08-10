@@ -138,7 +138,7 @@ Os dados são armazenados no `localStorage` do navegador e não são sincronizad
 
 ## Caixa e controle de vendas
 
-A página `/caixa`, acessível pela área interna, registra vendas e saídas com data, categoria, forma de pagamento e valor. Nas vendas, também são informados o presenteável ou o sabor vendido por gramatura, o peso da embalagem e a quantidade. A aba **Dashboard** mostra vendas, despesas, resultado, ticket médio, produtos mais vendidos, evolução do faturamento e distribuição por forma de pagamento para o mês selecionado ou para todo o período. A tela também permite busca, filtros, edição e exclusão dos lançamentos.
+A página `/caixa`, acessível pela área interna, registra vendas e saídas com data, categoria, forma de pagamento e valor. Nas vendas, também são informados o presenteável ou o sabor vendido por gramatura, o peso da embalagem (incluindo gramaturas personalizadas) e a quantidade. A aba **Dashboard** mostra vendas, despesas, resultado, ticket médio, produtos mais vendidos, evolução do faturamento e distribuição por forma de pagamento para o mês selecionado ou para todo o período. A tela também permite busca, filtros, edição e exclusão dos lançamentos.
 
 Assim como os pedidos, o caixa usa apenas o `localStorage`. **Exportar sessão** gera um arquivo JSON com todos os lançamentos; **Importar sessão** restaura esse arquivo e substitui os dados locais do navegador atual. Exporte uma cópia com frequência e antes de trocar de dispositivo ou limpar os dados do navegador.
 
