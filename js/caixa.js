@@ -14,7 +14,21 @@
     "Transferência",
     "Outro",
   ];
-  const PRODUCTS = [
+  const PRESENTABLE_PRODUCTS = [
+    "SimPles",
+    "3x Sim",
+    "Quarteto DoSim",
+    "Quarteto DoSim Ninho com Nutella",
+    "Chá das SIMco",
+    "07 Padrinhos",
+    "Encontro às 09",
+    "Sim Completo 25",
+    "Sim Completo 40",
+    "Sim Completo 55",
+    "Biscoito personalizado",
+    "Outro presenteável",
+  ];
+  const WEIGHT_PRODUCTS = [
     "Tradicional",
     "Chocolate",
     "Canela",
@@ -24,9 +38,9 @@
     "Queijo",
     "Queijo para Assar",
     "Misto",
-    "Personalizado",
-    "Outro",
+    "Outro sabor",
   ];
+  const PACKAGE_SIZES = ["200 g", "300 g", "500 g", "Outra"];
   const CHART_COLORS = ["#6f4e37", "#b98567", "#52745c", "#d2a85e", "#8c7188", "#67838a"];
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -46,8 +60,12 @@
     const amountInput = document.querySelector("[data-cash-amount]");
     const notesInput = document.querySelector("[data-cash-notes]");
     const productFields = document.querySelector("[data-cash-product-fields]");
+    const productKindInputs = Array.from(document.querySelectorAll("[data-cash-product-kind]"));
     const productSelect = document.querySelector("[data-cash-product]");
+    const productLabel = document.querySelector("[data-cash-product-label]");
     const quantityInput = document.querySelector("[data-cash-quantity]");
+    const sizeField = document.querySelector("[data-cash-size-field]");
+    const sizeSelect = document.querySelector("[data-cash-size]");
     const formError = document.querySelector("[data-cash-form-error]");
     const formEyebrow = document.querySelector("[data-cash-form-eyebrow]");
     const formTitle = document.querySelector("[data-cash-form-title]");
@@ -102,6 +120,8 @@
       !(productFields instanceof HTMLElement) ||
       !(productSelect instanceof HTMLSelectElement) ||
       !(quantityInput instanceof HTMLInputElement) ||
+      !(sizeField instanceof HTMLElement) ||
+      !(sizeSelect instanceof HTMLSelectElement) ||
       !(monthInput instanceof HTMLInputElement) ||
       !(list instanceof HTMLElement)
     ) {
@@ -132,7 +152,41 @@
       categorySelect.value = CATEGORIES[type].includes(preferredCategory) ? preferredCategory : CATEGORIES[type][0];
     };
 
-    const updateProductFields = (preferredProduct = "", preferredQuantity = 1) => {
+    const getSelectedProductKind = () => {
+      const selected = productKindInputs.find(
+        (input) => input instanceof HTMLInputElement && input.checked
+      );
+      return selected instanceof HTMLInputElement && selected.value === "weight" ? "weight" : "presentable";
+    };
+
+    const setSelectedProductKind = (kind) => {
+      productKindInputs.forEach((input) => {
+        if (input instanceof HTMLInputElement) input.checked = input.value === kind;
+      });
+    };
+
+    const updateProductOptions = (preferredProduct = "") => {
+      const kind = getSelectedProductKind();
+      const products = kind === "weight" ? WEIGHT_PRODUCTS : PRESENTABLE_PRODUCTS;
+      const placeholder = kind === "weight" ? "Selecione o sabor" : "Selecione o presenteável";
+      productSelect.innerHTML = [
+        `<option value="">${placeholder}</option>`,
+        ...products.map((product) => `<option value="${escapeHtml(product)}">${escapeHtml(product)}</option>`),
+      ].join("");
+      productSelect.value = products.includes(preferredProduct) ? preferredProduct : "";
+      if (productLabel instanceof HTMLElement) productLabel.textContent = kind === "weight" ? "Sabor" : "Presenteável";
+      productFields.classList.toggle("is-weight", kind === "weight");
+      sizeField.hidden = kind !== "weight";
+      sizeSelect.disabled = kind !== "weight";
+      sizeSelect.required = kind === "weight";
+    };
+
+    const updateProductFields = (
+      preferredProduct = "",
+      preferredQuantity = 1,
+      preferredKind = "presentable",
+      preferredSize = ""
+    ) => {
       const isSale = getSelectedType() === "sale";
       productFields.hidden = !isSale;
       productSelect.disabled = !isSale;
@@ -140,10 +194,21 @@
       productSelect.required = isSale;
       quantityInput.required = isSale;
       if (isSale) {
-        productSelect.value = PRODUCTS.includes(preferredProduct) ? preferredProduct : "";
+        setSelectedProductKind(preferredKind === "weight" ? "weight" : "presentable");
+        productKindInputs.forEach((input) => {
+          if (input instanceof HTMLInputElement) input.disabled = false;
+        });
+        updateProductOptions(preferredProduct);
+        sizeSelect.value = preferredKind === "weight" && PACKAGE_SIZES.includes(preferredSize) ? preferredSize : "";
         quantityInput.value = String(Math.max(1, Number.parseInt(preferredQuantity, 10) || 1));
       } else {
+        productKindInputs.forEach((input) => {
+          if (input instanceof HTMLInputElement) input.disabled = true;
+        });
         productSelect.value = "";
+        sizeSelect.value = "";
+        sizeSelect.disabled = true;
+        sizeSelect.required = false;
         quantityInput.value = "1";
       }
     };
@@ -241,7 +306,11 @@
                   <time datetime="${escapeHtml(entry.date)}">${escapeHtml(formatDate(entry.date))}</time>
                   <span>${escapeHtml(entry.category)}</span>
                   <span>${escapeHtml(entry.paymentMethod)}</span>
-                  ${entry.type === "sale" && entry.product ? `<span>${entry.quantity}× ${escapeHtml(entry.product)}</span>` : ""}
+                  ${
+                    entry.type === "sale" && entry.product
+                      ? `<span>${escapeHtml(getProductKindLabel(entry.productKind))}: ${entry.quantity}× ${escapeHtml(entry.product)}${entry.packageSize ? ` · ${escapeHtml(entry.packageSize)}` : ""}</span>`
+                      : ""
+                  }
                 </div>
                 <h3>${escapeHtml(entry.description)}</h3>
                 ${entry.notes ? `<p class="cash-entry-note">${escapeHtml(entry.notes)}</p>` : ""}
@@ -261,10 +330,20 @@
       const products = new Map();
       sales.forEach((entry) => {
         if (!entry.product || entry.quantity < 1) return;
-        const current = products.get(entry.product) || { name: entry.product, quantity: 0, revenueCents: 0 };
+        const displayName =
+          entry.productKind === "weight" && entry.packageSize
+            ? `${entry.product} · ${entry.packageSize}`
+            : entry.product;
+        const key = `${entry.productKind}:${entry.product}:${entry.packageSize}`;
+        const current = products.get(key) || {
+          name: displayName,
+          kind: entry.productKind,
+          quantity: 0,
+          revenueCents: 0,
+        };
         current.quantity += entry.quantity;
         current.revenueCents += entry.amountCents;
-        products.set(entry.product, current);
+        products.set(key, current);
       });
       return Array.from(products.values()).sort(
         (left, right) => right.quantity - left.quantity || right.revenueCents - left.revenueCents
@@ -283,12 +362,12 @@
       if (topProduct instanceof HTMLElement) topProduct.textContent = leadingProduct?.name || "—";
       if (topProductDetail instanceof HTMLElement) {
         topProductDetail.textContent = leadingProduct
-          ? `${pluralize(leadingProduct.quantity, "unidade", "unidades")} · ${formatMoney(leadingProduct.revenueCents)}`
-          : "Nenhuma unidade registrada";
+          ? `${pluralize(leadingProduct.quantity, "item", "itens")} · ${getProductKindLabel(leadingProduct.kind)}`
+          : "Nenhum item registrado";
       }
       if (unitsTotal instanceof HTMLElement) unitsTotal.textContent = String(totalUnits);
       if (unitsDetail instanceof HTMLElement) {
-        unitsDetail.textContent = pluralize(products.length, "tipo de biscoito", "tipos de biscoito");
+        unitsDetail.textContent = pluralize(products.length, "tipo de produto", "tipos de produto");
       }
       if (bestDay instanceof HTMLElement) bestDay.textContent = leadingDay ? formatShortDate(leadingDay[0]) : "—";
       if (bestDayDetail instanceof HTMLElement) {
@@ -311,12 +390,12 @@
             <div class="cash-bar-row">
               <div class="cash-bar-label">
                 <span><i style="background:${CHART_COLORS[index % CHART_COLORS.length]}"></i>${escapeHtml(product.name)}</span>
-                <strong>${pluralize(product.quantity, "un.", "un.")}</strong>
+                <strong>${pluralize(product.quantity, "item", "itens")}</strong>
               </div>
               <div class="cash-bar-track" aria-hidden="true">
                 <span style="width:${Math.max(4, (product.quantity / maximum) * 100)}%; background:${CHART_COLORS[index % CHART_COLORS.length]}"></span>
               </div>
-              <small>${formatMoney(product.revenueCents)} em vendas</small>
+              <small>${escapeHtml(getProductKindLabel(product.kind))} · ${formatMoney(product.revenueCents)} em vendas</small>
             </div>
           `
         )
@@ -472,7 +551,7 @@
       editingId = id;
       setSelectedType(entry.type);
       updateCategories(entry.category);
-      updateProductFields(entry.product, entry.quantity);
+      updateProductFields(entry.product, entry.quantity, entry.productKind, entry.packageSize);
       dateInput.value = entry.date;
       descriptionInput.value = entry.description;
       paymentSelect.value = entry.paymentMethod;
@@ -492,19 +571,26 @@
       const type = getSelectedType();
       const description = descriptionInput.value.trim();
       const amountCents = parseMoney(amountInput.value);
+      const productKind = type === "sale" ? getSelectedProductKind() : "";
       const product = type === "sale" ? productSelect.value : "";
+      const packageSize = type === "sale" && productKind === "weight" ? sizeSelect.value : "";
       const quantity = type === "sale" ? Number.parseInt(quantityInput.value, 10) : 0;
+      const availableProducts = productKind === "weight" ? WEIGHT_PRODUCTS : PRESENTABLE_PRODUCTS;
       if (
         !isValidDate(dateInput.value) ||
         !description ||
         !Number.isSafeInteger(amountCents) ||
         amountCents <= 0 ||
         (type === "sale" &&
-          (!PRODUCTS.includes(product) || !Number.isInteger(quantity) || quantity < 1 || quantity > 99999))
+          (!availableProducts.includes(product) ||
+            (productKind === "weight" && !PACKAGE_SIZES.includes(packageSize)) ||
+            !Number.isInteger(quantity) ||
+            quantity < 1 ||
+            quantity > 99999))
       ) {
         setFormError(
           type === "sale"
-            ? "Preencha a data, a descrição, o biscoito, a quantidade e um valor maior que zero."
+            ? "Preencha a data, a descrição, o produto, a gramatura quando necessária, a quantidade e o valor."
             : "Preencha a data, a descrição e um valor maior que zero."
         );
         return;
@@ -528,7 +614,9 @@
                   category: categorySelect.value,
                   paymentMethod: paymentSelect.value,
                   amountCents,
+                  productKind,
                   product,
+                  packageSize,
                   quantity,
                   notes: notesInput.value.trim(),
                   updatedAt: now,
@@ -550,7 +638,9 @@
               category: categorySelect.value,
               paymentMethod: paymentSelect.value,
               amountCents,
+              productKind,
               product,
+              packageSize,
               quantity,
               notes: notesInput.value.trim(),
               createdAt: now,
@@ -574,7 +664,7 @@
     const exportSession = () => {
       const backup = {
         app: BACKUP_APP,
-        version: 2,
+        version: 3,
         exportedAt: new Date().toISOString(),
         data: state,
       };
@@ -596,7 +686,9 @@
       try {
         if (file.size > MAX_BACKUP_SIZE) throw new Error("Arquivo muito grande");
         const parsed = JSON.parse(await file.text());
-        if (parsed?.app !== BACKUP_APP || ![1, 2].includes(parsed?.version)) throw new Error("Backup incompatível");
+        if (parsed?.app !== BACKUP_APP || ![1, 2, 3].includes(parsed?.version)) {
+          throw new Error("Backup incompatível");
+        }
         const imported = normalizeState(parsed.data);
         const message = `Esta importação substituirá os dados atuais por ${pluralize(
           imported.entries.length,
@@ -629,15 +721,17 @@
       });
     };
 
-    productSelect.innerHTML = [
-      '<option value="">Selecione o biscoito</option>',
-      ...PRODUCTS.map((product) => `<option value="${escapeHtml(product)}">${escapeHtml(product)}</option>`),
-    ].join("");
-
     typeInputs.forEach((input) => {
       input.addEventListener("change", () => {
         updateCategories();
         updateProductFields();
+        setFormError();
+      });
+    });
+    productKindInputs.forEach((input) => {
+      input.addEventListener("change", () => {
+        updateProductOptions();
+        sizeSelect.value = "";
         setFormError();
       });
     });
@@ -798,6 +892,12 @@
     return `${count} ${count === 1 ? singular : plural}`;
   }
 
+  function getProductKindLabel(kind) {
+    if (kind === "weight") return "Por gramatura";
+    if (kind === "presentable") return "Presenteável";
+    return "Produto";
+  }
+
   function escapeHtml(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -808,14 +908,40 @@
   }
 
   function normalizeState(value) {
-    if (!value || typeof value !== "object" || ![1, 2].includes(value.version) || !Array.isArray(value.entries)) {
+    if (!value || typeof value !== "object" || ![1, 2, 3].includes(value.version) || !Array.isArray(value.entries)) {
       throw new Error("Estado inválido");
     }
     if (value.entries.length > 100000) throw new Error("Muitos lançamentos");
     const ids = new Set();
     const entries = value.entries.map((entry) => {
-      const product = typeof entry?.product === "string" ? entry.product : "";
+      let product = typeof entry?.product === "string" ? entry.product : "";
       const quantity = Number.isInteger(entry?.quantity) ? entry.quantity : 0;
+      let productKind = ["presentable", "weight"].includes(entry?.productKind) ? entry.productKind : "";
+      let packageSize = typeof entry?.packageSize === "string" ? entry.packageSize : "";
+
+      if (!productKind && WEIGHT_PRODUCTS.includes(product)) productKind = "weight";
+      if (!productKind && PRESENTABLE_PRODUCTS.includes(product)) productKind = "presentable";
+      if (product === "Personalizado") {
+        product = "Biscoito personalizado";
+        productKind = "presentable";
+      }
+      if (product === "Outro") {
+        product = "Outro sabor";
+        productKind = "weight";
+      }
+      if (productKind === "presentable") packageSize = "";
+
+      const hasValidProduct =
+        (!product && !productKind && quantity === 0) ||
+        (productKind === "presentable" &&
+          PRESENTABLE_PRODUCTS.includes(product) &&
+          quantity >= 1 &&
+          quantity <= 99999) ||
+        (productKind === "weight" &&
+          WEIGHT_PRODUCTS.includes(product) &&
+          (!packageSize || PACKAGE_SIZES.includes(packageSize)) &&
+          quantity >= 1 &&
+          quantity <= 99999);
       if (
         !entry ||
         typeof entry.id !== "string" ||
@@ -832,8 +958,7 @@
         !Number.isSafeInteger(entry.amountCents) ||
         entry.amountCents <= 0 ||
         typeof entry.notes !== "string" ||
-        (entry.type === "sale" &&
-          !((!product && quantity === 0) || (PRODUCTS.includes(product) && quantity >= 1 && quantity <= 99999)))
+        (entry.type === "sale" && !hasValidProduct)
       ) {
         throw new Error("Lançamento inválido");
       }
@@ -846,22 +971,24 @@
         category: entry.category,
         paymentMethod: entry.paymentMethod,
         amountCents: entry.amountCents,
+        productKind: entry.type === "sale" ? productKind : "",
         product: entry.type === "sale" ? product : "",
+        packageSize: entry.type === "sale" ? packageSize : "",
         quantity: entry.type === "sale" ? quantity : 0,
         notes: entry.notes.trim().slice(0, 160),
         createdAt: typeof entry.createdAt === "string" ? entry.createdAt.slice(0, 40) : "",
         updatedAt: typeof entry.updatedAt === "string" ? entry.updatedAt.slice(0, 40) : "",
       };
     });
-    return { version: 2, entries };
+    return { version: 3, entries };
   }
 
   function loadState() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? normalizeState(JSON.parse(saved)) : { version: 2, entries: [] };
+      return saved ? normalizeState(JSON.parse(saved)) : { version: 3, entries: [] };
     } catch {
-      return { version: 2, entries: [] };
+      return { version: 3, entries: [] };
     }
   }
 

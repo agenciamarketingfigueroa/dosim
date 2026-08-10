@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/caixa.css" />
     <script src="js/main.js?v=20260805-2" defer></script>
     <script src="js/internal-auth.js" defer></script>
-    <script src="js/caixa.js?v=20260810-2" defer></script>
+    <script src="js/caixa.js?v=20260810-3" defer></script>
   </head>
   <body class="orders-page cash-page">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -126,19 +126,47 @@
                     <input type="text" maxlength="100" placeholder="Ex.: Encomenda da Ana" required data-cash-description />
                   </label>
                   <div class="cash-product-fields" data-cash-product-fields>
-                    <label class="orders-field">
-                      <span>Biscoito vendido</span>
-                      <select required data-cash-product>
-                        <option value="">Selecione o biscoito</option>
-                      </select>
-                    </label>
-                    <label class="orders-field">
-                      <span>Quantidade</span>
-                      <input type="number" min="1" max="99999" step="1" value="1" required data-cash-quantity />
-                    </label>
+                    <div class="cash-product-heading">
+                      <div>
+                        <strong>Produto vendido</strong>
+                        <small>Selecione como o cliente comprou</small>
+                      </div>
+                      <div class="cash-product-kind" role="group" aria-label="Tipo do produto">
+                        <label>
+                          <input type="radio" name="cash-product-kind" value="presentable" checked data-cash-product-kind />
+                          <span>Presenteável</span>
+                        </label>
+                        <label>
+                          <input type="radio" name="cash-product-kind" value="weight" data-cash-product-kind />
+                          <span>Por gramatura</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="cash-product-grid">
+                      <label class="orders-field cash-product-select-field">
+                        <span data-cash-product-label>Presenteável</span>
+                        <select required data-cash-product>
+                          <option value="">Selecione o produto</option>
+                        </select>
+                      </label>
+                      <label class="orders-field" data-cash-size-field hidden>
+                        <span>Gramatura</span>
+                        <select data-cash-size>
+                          <option value="">Selecione</option>
+                          <option value="200 g">200 g</option>
+                          <option value="300 g">300 g</option>
+                          <option value="500 g">500 g</option>
+                          <option value="Outra">Outra</option>
+                        </select>
+                      </label>
+                      <label class="orders-field">
+                        <span>Quantidade</span>
+                        <input type="number" min="1" max="99999" step="1" value="1" required data-cash-quantity />
+                      </label>
+                    </div>
                   </div>
-                  <label class="orders-field">
-                    <span>Categoria</span>
+                  <label class="orders-field cash-field-category">
+                    <span>Categoria financeira</span>
                     <select required data-cash-category></select>
                   </label>
                   <label class="orders-field">
@@ -152,7 +180,7 @@
                       <option value="Outro">Outro</option>
                     </select>
                   </label>
-                  <label class="orders-field">
+                  <label class="orders-field cash-field-amount">
                     <span>Valor</span>
                     <div class="cash-money-input">
                       <span>R$</span>
@@ -238,15 +266,15 @@
                 <div>
                   <small>Mais vendido</small>
                   <strong data-cash-top-product>—</strong>
-                  <span data-cash-top-product-detail>Nenhuma unidade registrada</span>
+                  <span data-cash-top-product-detail>Nenhum item registrado</span>
                 </div>
               </article>
               <article>
                 <span class="cash-insight-icon" aria-hidden="true">#</span>
                 <div>
-                  <small>Unidades vendidas</small>
+                  <small>Itens vendidos</small>
                   <strong data-cash-units>0</strong>
-                  <span data-cash-units-detail>0 tipos de biscoito</span>
+                  <span data-cash-units-detail>0 tipos de produto</span>
                 </div>
               </article>
               <article>
@@ -264,11 +292,11 @@
                 <div class="cash-chart-heading">
                   <div>
                     <p class="eyebrow">Preferência dos clientes</p>
-                    <h2>Biscoitos mais vendidos</h2>
+                    <h2>Produtos mais vendidos</h2>
                   </div>
-                  <span>por unidade</span>
+                  <span>por quantidade</span>
                 </div>
-                <p class="orders-empty" data-cash-product-empty>Nenhum biscoito registrado neste período.</p>
+                <p class="orders-empty" data-cash-product-empty>Nenhum produto registrado neste período.</p>
                 <div class="cash-bar-chart" data-cash-product-chart></div>
               </article>
 
