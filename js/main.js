@@ -1704,13 +1704,13 @@
     }
 
     const pathname = window.location.pathname.toLowerCase();
-    if (pathname.endsWith("/links/") || pathname.endsWith("/links/index.html")) {
+    if (pathname === "/links" || pathname.endsWith("/links/") || pathname.endsWith("/links/index.html")) {
       return;
     }
 
     const linksButton = document.createElement("a");
     linksButton.className = "links-float";
-    linksButton.href = new URL("links/", window.location.href).href;
+    linksButton.href = "/links/";
     linksButton.setAttribute("aria-label", "Abrir pagina /links");
     linksButton.textContent = "Abrir /links";
     document.body.appendChild(linksButton);
