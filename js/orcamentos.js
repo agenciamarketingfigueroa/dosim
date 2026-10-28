@@ -94,7 +94,8 @@
     const PERSONALIZED_SIZES = {
       4: { label: "4 cm", unitWeightGrams: 8 },
       5: { label: "5 cm", unitWeightGrams: 10 },
-      6: { label: "6 cm", unitWeightGrams: 20 },
+      // Estimate by area from the measured 5 cm / 10 g biscuit, at equal thickness.
+      6: { label: "6 cm", unitWeightGrams: 14.4 },
     };
     const SAVORY_TYPES = new Set(["salgado", "congelado"]);
     const SAVORY_SIZE = { label: "5 cm / 4 mm", unitWeightGrams: 8 };
@@ -183,7 +184,7 @@
         const kilograms = grams / 1000;
         return `${kilograms.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} kg`;
       }
-      return `${Math.round(grams).toLocaleString("pt-BR")} g`;
+      return `${grams.toLocaleString("pt-BR", { maximumFractionDigits: 1 })} g`;
     };
     const formatDate = (value) => {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return "A combinar";
@@ -274,7 +275,7 @@
       fields.quantityNote.textContent = isSavoryByWeight()
         ? `Conversão aproximada para o salgado de ${SAVORY_SIZE.label}: ${SAVORY_SIZE.unitWeightGrams} g por unidade.`
         : usesSelectableSize()
-        ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight} g por unidade.`
+        ? `Conversão aproximada para a forma de ${getSelectedSize().label}: ${unitWeight.toLocaleString("pt-BR")} g por unidade.`
         : `Conversão aproximada: ${GRAMS_PER_UNIT} g por unidade.`;
     };
 
@@ -315,13 +316,13 @@
       const units = Math.max(0, Math.round(positiveNumber(fields.units.value)));
       fields.units.value = units ? String(units) : "";
       const savoryTier = isSavoryByWeight() ? getSavoryTierByUnits(units) : null;
-      fields.grams.value = units ? String(savoryTier?.[0] || getProductionUnits() * getUnitWeight()) : "";
+      fields.grams.value = units ? String(savoryTier?.[0] || Math.round(getProductionUnits() * getUnitWeight() * 10) / 10) : "";
       updateQuantityPresentation();
     };
 
     const syncFromGrams = () => {
       const grams = positiveNumber(fields.grams.value);
-      fields.grams.value = grams ? String(Math.round(grams)) : "";
+      fields.grams.value = grams ? String(Math.round(grams * 10) / 10) : "";
       const product = getSelectedProduct();
       const gramsPerSelection = isPresentable() && product?.packageUnits
         ? product.packageUnits * GRAMS_PER_UNIT
@@ -564,7 +565,7 @@
       }
 
       if (usesSelectableSize()) {
-        lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams} g por unidade)`);
+        lines.push(`*Tamanho da forma:* ${getSelectedSize().label} (aprox. ${getSelectedSize().unitWeightGrams.toLocaleString("pt-BR")} g por unidade)`);
       } else if (isSavoryByWeight()) {
         lines.push(`*Tamanho:* ${SAVORY_SIZE.label} (aprox. ${SAVORY_SIZE.unitWeightGrams} g por unidade)`);
       }

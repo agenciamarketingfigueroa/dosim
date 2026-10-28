@@ -2,7 +2,8 @@
   const WHATSAPP_NUMBER = "5531996154698";
   const PERSONALIZED_PRICING = {
     pricedSize: "6 cm",
-    unitWeightGrams: 20,
+    // Estimate by area from the measured 5 cm / 10 g biscuit, at equal thickness.
+    unitWeightGrams: 14.4,
     referenceWeightGrams: 500,
     referencePrice: 49,
     moldFee: 40,
@@ -399,7 +400,7 @@
     const discountRate = Number(packageData.discountRate) || 0;
     const commitmentMonths = Number(packageData.commitmentMonths) || 1;
     const pricePerGram = PERSONALIZED_PRICING.referencePrice / PERSONALIZED_PRICING.referenceWeightGrams;
-    const weightGrams = quantity * PERSONALIZED_PRICING.unitWeightGrams;
+    const weightGrams = roundCurrency(quantity * PERSONALIZED_PRICING.unitWeightGrams);
     const baseProduction = roundCurrency(weightGrams * pricePerGram);
     const discountAmount = roundCurrency(baseProduction * discountRate);
     const production = roundCurrency(baseProduction - discountAmount);
@@ -502,7 +503,7 @@
 
   function formatWeight(grams) {
     if (grams < 1000) {
-      return `${grams} g`;
+      return `${grams.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} g`;
     }
 
     return `${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 }).format(grams / 1000)} kg`;

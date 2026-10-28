@@ -1,0 +1,40 @@
+01-personalizados|Sua logo também~pode virar biscoito.|Personalize a recepção do seu negócio.|PEÇA SEU ORÇAMENTO
+01-personalizados|Receba clientes~com a sua marca.|Biscoitos personalizados para sua sala de espera.|PERSONALIZE OS SEUS
+01-personalizados|A primeira impressão~pode ser deliciosa.|Coloque sua marca nos biscoitos da recepção.|FALE COM A DOSIM
+01-personalizados|Seu brinde de marca~merece ser lembrado.|Biscoitos personalizados para presentear clientes.|PEÇA SEU ORÇAMENTO
+01-personalizados|Surpreenda clientes~com a sua logo.|Um biscoito feito para representar seu negócio.|PERSONALIZE OS SEUS
+01-personalizados|Seu café de reunião~com a sua marca.|Biscoitos personalizados para receber bem.|FALE COM A DOSIM
+01-personalizados|Transforme a espera~em um bom momento.|Sirva biscoitos com a identidade do seu negócio.|PEÇA SEU ORÇAMENTO
+01-personalizados|Presenteie clientes~com a sua marca.|Biscoitos personalizados para ocasiões especiais.|PERSONALIZE OS SEUS
+01-personalizados|Sua logo em cada~detalhe do biscoito.|Crie um personalizado com a identidade do negócio.|FALE COM A DOSIM
+01-personalizados|Sua marca pode~receber por você.|Personalize biscoitos para sua recepção.|PEÇA SEU ORÇAMENTO
+02-halloween|Faça seu Halloween~mais gostoso.|Biscoitos temáticos para a sua festa.|PEÇA SEU ORÇAMENTO
+02-halloween|Gostosuras que~dão até susto.|Biscoitos de fantasma para seu Halloween.|ENCOMENDE OS SEUS
+02-halloween|Uma bruxinha para~adoçar sua festa.|Biscoitos de Halloween feitos para encantar.|PEÇA SEU ORÇAMENTO
+02-halloween|Seu Halloween pede~mais gostosuras.|Biscoitos de chocolate e temas assustadores.|ENCOMENDE OS SEUS
+02-halloween|Monte uma festa~de arrepiar o paladar.|Abóboras, bruxinhas e outros temas em biscoito.|FALE COM A DOSIM
+03-aniversario-infantil|A fazendinha fica~ainda mais gostosa.|Biscoitos personalizados para a festa infantil.|PEÇA SEU ORÇAMENTO
+03-aniversario-infantil|Leve o safari~para a mesa da festa.|Biscoitos temáticos para celebrar com encanto.|PERSONALIZE SUA FESTA
+03-aniversario-infantil|Ursinhos que viram~uma doce lembrança.|Personalize os biscoitos do aniversário infantil.|PEÇA SEU ORÇAMENTO
+03-aniversario-infantil|Uma festa de dino~pede biscoitos de dino.|Personalize a comemoração do seu pequeno.|FALE COM A DOSIM
+03-aniversario-infantil|Uma festa de princesa~merece esse detalhe.|Biscoitos personalizados para encantar convidados.|PEÇA SEU ORÇAMENTO
+04-aniversario-adulto-empresa|Seu aniversário merece~um detalhe só seu.|Personalize biscoitos para celebrar a data.|PEÇA SEU ORÇAMENTO
+04-aniversario-adulto-empresa|Comemore cada ano~com mais sabor.|Biscoitos personalizados para sua festa.|FALE COM A DOSIM
+04-aniversario-adulto-empresa|Aniversário da empresa?~Celebre com sua marca.|Biscoitos personalizados para a comemoração.|PEÇA SEU ORÇAMENTO
+04-aniversario-adulto-empresa|Sua empresa faz anos.~Seus clientes ganham.|Presenteie com biscoitos personalizados.|PERSONALIZE OS SEUS
+04-aniversario-adulto-empresa|Faça da sua festa~uma doce lembrança.|Biscoitos personalizados para aniversários.|FALE COM A DOSIM
+05-batizado|Uma lembrança especial~para o batizado.|Biscoitos personalizados para seus convidados.|PEÇA SEU ORÇAMENTO
+05-batizado|Celebre esse dia~com fé e carinho.|Biscoitos personalizados para o batizado.|FALE COM A DOSIM
+05-batizado|Seu batizado merece~uma doce lembrança.|Personalize os biscoitos para a celebração.|PEÇA SEU ORÇAMENTO
+05-batizado|Um anjinho para~lembrar esse dia.|Biscoitos personalizados para batizados.|ENCOMENDE OS SEUS
+05-batizado|Abençoe a mesa~com um doce detalhe.|Lembrancinhas personalizadas para batizado.|FALE COM A DOSIM
+06-cha-revelacao|Rosa ou azul?~Celebre com biscoitos.|Personalize a mesa do seu chá revelação.|PEÇA SEU ORÇAMENTO
+06-cha-revelacao|A grande surpresa~começa na mesa.|Biscoitos rosa e azul para chá revelação.|ENCOMENDE OS SEUS
+06-cha-revelacao|Dois ursinhos.~Uma grande surpresa.|Biscoitos personalizados para chá revelação.|PEÇA SEU ORÇAMENTO
+06-cha-revelacao|Deixe a revelação~ainda mais doce.|Biscoitos rosa e azul para compartilhar.|FALE COM A DOSIM
+06-cha-revelacao|Seu chá revelação~merece esse detalhe.|Biscoitos personalizados para seus convidados.|PEÇA SEU ORÇAMENTO
+07-cha-de-bebe|Seu chá de bebê~merece biscoitos únicos.|Personalize cada detalhe da celebração.|PEÇA SEU ORÇAMENTO
+07-cha-de-bebe|Uma doce lembrança~para o chá de bebê.|Biscoitos personalizados para presentear.|ENCOMENDE OS SEUS
+07-cha-de-bebe|A chegada do bebê~merece ser celebrada.|Biscoitos temáticos para o seu chá.|PEÇA SEU ORÇAMENTO
+07-cha-de-bebe|Faça lembrancinhas~que encantam e adoçam.|Biscoitos personalizados para chá de bebê.|FALE COM A DOSIM
+07-cha-de-bebe|Celebre a espera~com um toque doce.|Biscoitos personalizados para seus convidados.|PEÇA SEU ORÇAMENTO

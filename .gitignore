@@ -1,1 +1,4 @@
 .DS_Store
+
+# Local creative export bundles (GitHub limits individual files to 100 MiB).
+/output/criativos/**/*.zip

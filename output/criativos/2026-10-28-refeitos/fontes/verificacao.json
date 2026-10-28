@@ -1,0 +1,352 @@
+﻿[
+    {
+        "valid":  true,
+        "sha256":  "93685825859227A4153366911586C5A92C09853134096AF4CFEA4E0139BC3693",
+        "width":  1080,
+        "id":  "DOS01",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "142DC02DE00458CA11E488C357D99ACCF015F163BD64453A2FED0FBD00988E65",
+        "width":  1080,
+        "id":  "DOS02",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "B4E36D296A7CD364EDC4EAC2F771179595F05B3C26D385DB10F8648D5BD88D4B",
+        "width":  1080,
+        "id":  "DOS03",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "924A78CC5D3142F9B3D779E2014297FA331B1A83C943BDD6FCAEA82C2DD96BF7",
+        "width":  1080,
+        "id":  "DOS04",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "B01C2627617B38D10A26BD8E74D2C445E31DEDD08EE1A2455D9A212B0AADE1A9",
+        "width":  1080,
+        "id":  "DOS05",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5F8AFAAD165D5580BCA9498740BB52690700B01B8F4F0D9BFB9E197B4E849899",
+        "width":  1080,
+        "id":  "DOS06",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5F3EF61AB90D49385729E30F6F6C7375B52D677C93DE8B9E0FB6DD1E0B66890E",
+        "width":  1080,
+        "id":  "DOS07",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "A10E435D6510523E7F08987EF5255F04C06863E0806A708B0C15AAC0374823BB",
+        "width":  1080,
+        "id":  "DOS08",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "6C48323D7F57643E69D15C4DCFD14B8ADDCD0EEF3C8B1ED93DD0B6229447B33B",
+        "width":  1080,
+        "id":  "DOS09",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "6AF3CB74A2141721EB58E1808E6E385EF412142BDB794FAABCFDAB8736A7731C",
+        "width":  1080,
+        "id":  "DOS10",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "15A4645122B34304F876AA895616F3B836204B6EF11FB059AD9D3B0E77852335",
+        "width":  1080,
+        "id":  "DOS11",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "56CF33BD95B9E895F0E869BFCBB1D14E7627B05722B1162A02469AFCCD3DA7BA",
+        "width":  1080,
+        "id":  "DOS12",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "73E82C5D9EDE4F63A4BC29C728A457F1DF778E0F62DE450BC3CCAC058CA4A05A",
+        "width":  1080,
+        "id":  "DOS13",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "9B8CC23756088E8609CCB239363238845F9CBCC1BAD2DD6789F51C0AE7DF61DE",
+        "width":  1080,
+        "id":  "DOS14",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5F2F424BD6594F0AE1F55182D9F0880062020EFB1D6845F715B92994E19218D0",
+        "width":  1080,
+        "id":  "DOS15",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "054C090990EDF9DD1699C8798EA5BB003571821A6879A4B62AC3737AC618E220",
+        "width":  1080,
+        "id":  "DOS16",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "4CB69B50A7AD56880EC07C250982320B0B81A253DA241723C6B593A2A335F893",
+        "width":  1080,
+        "id":  "DOS17",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "CABD06E3B7B597F66A08285481CFDDA5AE82739737EFD4F7695337FCC6D6ACDB",
+        "width":  1080,
+        "id":  "DOS18",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "E303D04526373D0FFF07D17C387FA409C6A20DF5E21B2F4B2ADC23933F8F2AD3",
+        "width":  1080,
+        "id":  "DOS19",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "68700B550B863FF4EEC03E03D326498812BDE18A15C4538E4ABEE1503F7BCD41",
+        "width":  1080,
+        "id":  "DOS20",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "1826FB7EF8B416C4EB2B8EA38506CEFD765A58AB25FF8390425CB94B82B4EAA7",
+        "width":  1080,
+        "id":  "DOS21",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "75F540A8A245DB28C1E121345DCA482CAADBD9AB9DC558658A8C2FAF8D5140E4",
+        "width":  1080,
+        "id":  "DOS22",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5B8AAF887029D1EFF83BF7DD63C94E38E3D0AFA1B999BCAC2515D13BEEEA2DC9",
+        "width":  1080,
+        "id":  "DOS23",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5E603595A8B62AB053E14FBE5DFC79ED3B0A6928423A885A62872FBC2C92706C",
+        "width":  1080,
+        "id":  "DOS24",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "F8F1E968FAC693036D94FBC94D6F2D5CAD3ACFC27AA7731FF692B5DC80612345",
+        "width":  1080,
+        "id":  "DOS25",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "C7923FEA18C03B428FE2D256F088D2772231398273872985BBEB178B5EB4B2C6",
+        "width":  1080,
+        "id":  "DOS26",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "235AAFCEB5A05889021686ED2826EF38EB479EB5AE80A3FBFF53277BC2BDA493",
+        "width":  1080,
+        "id":  "DOS27",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "00BD6A23F617303BFF197EA9E61BE25C76BE3566B1D522EFC34D60ECCC393383",
+        "width":  1080,
+        "id":  "DOS28",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "C26C3774905D3541B8BE7995B3B5B135C068E178D5718E8B3742920E88777ADC",
+        "width":  1080,
+        "id":  "DOS29",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "F75972B6FBEF016A087FCE38DD6F0C0A10048F813B91E9C53FD8D1D809DCDA09",
+        "width":  1080,
+        "id":  "DOS30",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "2773A565C34A6F355DEBCA141CA40D92E3AF1DA3668387CCD9A6ED60BDC67AAA",
+        "width":  1080,
+        "id":  "DOS31",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "856F8B642C505D6664E2A206610AF76CC45F19CBEDB5586E1DF5ABC252736109",
+        "width":  1080,
+        "id":  "DOS32",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "B95A37BC64276C8F5D653240A857CA6A8387EFA3BB6179F8A38C427457C071BF",
+        "width":  1080,
+        "id":  "DOS33",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "38C956BF6E599D647822F59AFC392FCFC701834F930FD2556922537C47FEB820",
+        "width":  1080,
+        "id":  "DOS34",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "36CF08372A1B8162DF05C926781FAB0E21AAD00C0F222911E80BEF160C917A91",
+        "width":  1080,
+        "id":  "DOS35",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "C5A509E122EF72D1840939BE9806A40CACD89495FBB00705A4A36A686ECF19EE",
+        "width":  1080,
+        "id":  "DOS36",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "484D2473C66172E6EBC599DA9C5154DCF7D5E2CCFC8029EBF220132059E21D73",
+        "width":  1080,
+        "id":  "DOS37",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "71E82033C08CB3EE3FB18391174B255AA9253A0831C759C2448A98AA6DD63590",
+        "width":  1080,
+        "id":  "DOS38",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "5CC5C1CBC349732A08EA90AF3BA41C4CA0AB39F063CBF7DAF8EF6F4DF97024BA",
+        "width":  1080,
+        "id":  "DOS39",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "65809B399FBFB4E1920FEC916630DD8C5D858079CEAEE677C62550AF01B457C7",
+        "width":  1080,
+        "id":  "DOS40",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "F027896CD0B393A33F8C5AC0A17F866E6EFA055430C5346EF06DE08010C436C2",
+        "width":  1080,
+        "id":  "DOS41",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "7ABB8AE1865D53D8BBAD05B4431D4E7B1FE783F9094A60450C905378032FCC36",
+        "width":  1080,
+        "id":  "DOS42",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "7410E67616091216F0B36A9DC298F9788D8440585BB1A01FF58352A3F3A5F9BD",
+        "width":  1080,
+        "id":  "DOS43",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "F46FF4E76A5011828AB3DE8FC90BF4BBF22D9BC02F47AAB44F1708C2FBA4A830",
+        "width":  1080,
+        "id":  "DOS44",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "A2D0C31DA1AED3267F73D3B323F6AAB394754A694A67D49CC9FEC2D76EB0E3BC",
+        "width":  1080,
+        "id":  "DOS45",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "DE5F6556FF02E8C93325CD774AF5F1C5DB2EB93587E58207CA5BA3BFC8D92A64",
+        "width":  1080,
+        "id":  "DOS46",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "66AF679BA3328834847CE80763F9A61502D118D522FB4E972C353009B7792222",
+        "width":  1080,
+        "id":  "DOS47",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "80C5DF342E0CF9F84CA7BDBF222CA9E5CC785DD3BB0B886879C8CB7BA4B802A5",
+        "width":  1080,
+        "id":  "DOS48",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "6C0F6D1A2C1D5511F2F1202CE3458C18A67C0625A045B801EB8FDCC71420B40C",
+        "width":  1080,
+        "id":  "DOS49",
+        "height":  1080
+    },
+    {
+        "valid":  true,
+        "sha256":  "C2EB6B7C8A07FEC18611D02B5EB59B6B2FAFAF0D71B8746445DF4E65C45A3369",
+        "width":  1080,
+        "id":  "DOS50",
+        "height":  1080
+    }
+]
