@@ -1,4 +1,4 @@
-﻿# DoSim Confeitaria - Site Estático (GitHub Pages)
+# DoSim Confeitaria - Site Estático (GitHub Pages)
 
 Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, com foco em:
 
@@ -101,6 +101,18 @@ Formatos recomendados para produção: `.jpg` ou `.webp` (foto) e `.svg` (arte v
    - `destaque` (`true` ou `false`)
 3. Salve o arquivo.
 4. Recarregue a página `/produtos` para ver tabela e cards atualizados.
+
+## Triagem de encomendas
+
+A página `/atendimento` apresenta uma pergunta por tela, nesta ordem: categoria; molde (somente logo); sabores com seleção múltipla; quantidade conhecida ou a definir; apresentação; data; nome e observações. Quando a quantidade é conhecida, uma tela adicional pede o número de biscoitos, caixinhas ou o peso total em gramas. O botão **Quero pedir agora** da home e a página `/encomendar` levam ao quiz.
+
+- Interface em `atendimento.html`, `css/quiz.css` e `js/quiz.js`; regras, validação e resumo em `js/quiz-model.js`.
+- Categorias: negócios, aniversários, temáticos, presenteáveis e gramatura. Campos de outros caminhos não entram no resumo.
+- Não há pergunta de tamanho nem de finalidade de uso. A opção de ajuda nos sabores é exclusiva; os demais sabores permitem múltipla seleção.
+- O fluxo não calcula preços, não confirma estoque ou data e não coleta arquivos da logo. Esses detalhes são alinhados no atendimento.
+- O cliente pode voltar, revisar, deixar data/quantidade a definir e abrir o resumo no WhatsApp `5531996154698`. O envio da mensagem é confirmado pelo próprio cliente no WhatsApp.
+- As respostas ficam apenas na memória da página; não há banco, armazenamento local nem envio automático.
+- Verificação das regras: `node --test tests/quiz.test.cjs`.
 
 ## Custos das receitas
 

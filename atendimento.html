@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monte sua encomenda | DoSim Confeitaria</title>
+  <meta name="description" content="Conte sua ideia, escolha os detalhes e leve um resumo da sua encomenda de biscoitos ao WhatsApp da DoSim." />
+  <link rel="canonical" href="https://dosim.com.br/atendimento" />
+  <meta property="og:title" content="Sua ideia pode virar biscoito. | DoSim" />
+  <meta property="og:description" content="Responda algumas perguntas e agilize seu orçamento pelo WhatsApp." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:url" content="https://dosim.com.br/atendimento" />
+  <meta property="og:image" content="https://dosim.com.br/assets/img/og-1200x630.svg" />
+  <meta name="theme-color" content="#f6f4f0" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
+  <link rel="stylesheet" href="css/quiz.css?v=20261028-2" />
+  <script src="js/quiz-model.js?v=20261028-2" defer></script>
+  <script src="js/quiz.js?v=20261028-2" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para as perguntas</a>
+  <header class="quiz-header">
+    <a href="/" aria-label="Página inicial da DoSim"><img src="assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="132" height="64" /></a>
+    <span class="header-note">Um biscoito. Muitas possibilidades.</span>
+  </header>
+  <main id="conteudo" class="quiz-layout">
+    <section class="quiz-card" aria-label="Monte sua encomenda">
+      <noscript><p>Ative o JavaScript para responder às perguntas ou <a href="https://wa.me/5531996154698">fale diretamente com a DoSim no WhatsApp</a>.</p></noscript>
+      <div id="quiz-app" hidden>
+        <div class="progress-caption"><span id="step-count"></span><span id="step-label"></span></div>
+        <progress id="quiz-progress" max="5" value="1" aria-label="Progresso do pedido"></progress>
+        <form id="quiz-form" novalidate>
+          <h1 id="step-title" tabindex="-1"></h1>
+          <p id="step-help" class="step-help"></p>
+          <div id="step-fields"></div>
+          <p id="quiz-error" class="error" role="alert" hidden></p>
+          <div class="quiz-actions">
+            <button id="quiz-back" class="back" type="button">← Voltar</button>
+            <button id="quiz-next" class="primary" type="submit">Continuar <span aria-hidden="true">→</span></button>
+          </div>
+          <p id="handoff-help" class="handoff-help" hidden>O WhatsApp abrirá com seu resumo. Toque em enviar por lá para conversar com a DoSim. Valores e disponibilidade serão confirmados no atendimento.</p>
+        </form>
+      </div>
+      <p class="direct-help">Prefere conversar? <a href="https://wa.me/5531996154698?text=Ol%C3%A1%2C%20DoSim!%20Preciso%20de%20ajuda%20com%20uma%20encomenda." target="_blank" rel="noopener noreferrer">Fale com a gente</a></p>
+    </section>
+  </main>
+  <footer class="quiz-footer">DoSim Confeitaria <span>Pequenos detalhes. Momentos especiais.</span></footer>
+</body>
+</html>
