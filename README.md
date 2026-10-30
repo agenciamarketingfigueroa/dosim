@@ -4,7 +4,7 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 
 - Catálogo com preços via `data/precos.json`
 - Orçamento via WhatsApp com mensagens prontas
-- Visual premium minimalista (fofo-adulto)
+- Visual de confeitaria afetiva: creme, rosa goiabada, verde suave, xadrez e detalhes florais
 - Estrutura mobile-first, responsiva e acessível
 
 ## Estrutura de arquivos
@@ -42,6 +42,22 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 |-- sitemap.xml
 `-- README.md
 ```
+
+## Identidade visual e coleções
+
+A reformulação de outubro de 2026 usa o tema compartilhado em `css/cute.css`, carregado depois dos estilos de cada página. A logo é o vetor original em `assets/img/logo-escura-confeitaria.svg`; o desenho da Giaza, o coração no i e o subtítulo permanecem no arquivo original. Nenhuma foto de `assets/img` foi alterada.
+
+O catálogo fica em `/colecoes/`, com seis categorias e 31 temas. As páginas temáticas usam ilustrações vetoriais de referência em `assets/collections`, identificadas como sugestões, e links de orçamento com o nome do tema no WhatsApp. Os preços e os prazos são alinhados no atendimento. Páscoa e Dia dos Namorados foram mantidos junto das novas ocasiões.
+
+Para atualizar textos, formas e frases, edite `data/colecoes.json` e execute:
+
+```bash
+node scripts/build-collections.cjs
+node scripts/check-site.cjs
+node --test tests/quiz.test.cjs tests/collections.test.cjs
+```
+
+O gerador produz o índice, as categorias, as páginas de tema e suas ilustrações. `colecoes/index.html` é a entrada canônica; `colecoes.html` é uma cópia compatível. Não edite as páginas geradas diretamente. Ao adicionar ou remover temas, atualize também o sitemap. A busca funciona com acentos, múltiplas palavras e frases; sem JavaScript, todas as coleções continuam acessíveis. O site conserva a hospedagem estática existente no GitHub Pages.
 
 ## Rodar localmente
 

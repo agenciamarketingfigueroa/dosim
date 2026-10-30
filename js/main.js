@@ -40,8 +40,15 @@
       item.addEventListener("click", closeMenu);
     });
 
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.classList.contains("is-open")) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
     window.addEventListener("resize", () => {
-      if (window.innerWidth >= 920) {
+      if (window.innerWidth >= 1050) {
         closeMenu();
       }
     });
