@@ -167,14 +167,14 @@
     const PRODUCTS = {
       presenteavel: {
         amanteigado: [
-          { id: "individual", label: "Individual · embalado separadamente", packageUnits: 1, packagePrice: 4, individualPackaging: true },
+          { id: "individual", label: "Individual (embalado separadamente)", packageUnits: 1, packagePrice: 4, individualPackaging: true },
           { id: "3x-sim", label: "3x Sim", packageUnits: 3, packagePrice: 12 },
           { id: "quarteto", label: "Quarteto DoSim", packageUnits: 4, packagePrice: 12 },
           { id: "cha-simco", label: "Chá das SIMco", packageUnits: 6, packagePrice: 22 },
           { id: "encontro-09", label: "Encontro às 09", packageUnits: 9, packagePrice: 18 },
         ],
         "ninho-nutella": [
-          { id: "individual-ninho", label: "Individual · Ninho com Nutella · embalado separadamente", packageUnits: 1, packagePrice: 4.5, individualPackaging: true },
+          { id: "individual-ninho", label: "Individual (embalado separadamente)", packageUnits: 1, packagePrice: 4.5, individualPackaging: true },
           { id: "quarteto-ninho", label: "Quarteto DoSim · Ninho com Nutella", packageUnits: 4, packagePrice: 14 },
         ],
       },
@@ -240,7 +240,7 @@
       }
       options.forEach((item) => {
         const label = item.individualPackaging
-          ? `${item.label} · preço por quantidade`
+          ? item.label
           : isPresentable() && Number.isFinite(item.packagePrice)
           ? `${item.label} · ${formatCurrency(item.packagePrice)} por presenteável`
           : item.label;
