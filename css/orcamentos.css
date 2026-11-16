@@ -129,6 +129,31 @@
   font-weight: 700;
 }
 
+.quote-packaging-costs {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted, #f6f4f0);
+}
+
+.quote-packaging-costs[hidden] {
+  display: none;
+}
+
+.quote-packaging-costs h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.quote-packaging-costs p {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.quote-packaging-costs small {
+  color: var(--muted);
+}
+
 .quote-choice-grid {
   margin-top: 0.55rem;
   display: grid;

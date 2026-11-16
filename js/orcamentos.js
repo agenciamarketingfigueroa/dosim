@@ -28,6 +28,8 @@
       unitsLabel: get("[data-quote-units-label]"),
       gramsLabel: get("[data-quote-grams-label]"),
       quantityNote: get("[data-quote-quantity-note]"),
+      packagingCosts: get("[data-quote-packaging-costs]"),
+      packagingCostTotal: get("[data-quote-packaging-cost-total]"),
       deliveryDate: get("[data-quote-delivery-date]"),
       productPrice: get("[data-quote-product-price]"),
       productPriceLabel: get("[data-quote-product-price-label]"),
@@ -91,6 +93,20 @@
 
     const DOSIM_WHATSAPP = "5531996154698";
     const GRAMS_PER_UNIT = 20;
+    const INDIVIDUAL_PACKAGING = { packPrice: 8.9, packUnits: 100 };
+    // Highest threshold first: the selected tier applies to every biscuit in the order.
+    const INDIVIDUAL_PRICE_TIERS = {
+      amanteigado: [
+        { minimum: 50, label: "50 ou mais", price: 2.5 },
+        { minimum: 20, label: "20 a 49", price: 3 },
+        { minimum: 1, label: "1 a 19", price: 4 },
+      ],
+      "ninho-nutella": [
+        { minimum: 50, label: "50 ou mais", price: 3 },
+        { minimum: 20, label: "20 a 49", price: 3.5 },
+        { minimum: 1, label: "1 a 19", price: 4.5 },
+      ],
+    };
     const PERSONALIZED_SIZES = {
       4: { label: "4 cm", unitWeightGrams: 8 },
       5: { label: "5 cm", unitWeightGrams: 10 },
@@ -151,12 +167,14 @@
     const PRODUCTS = {
       presenteavel: {
         amanteigado: [
+          { id: "individual", label: "Individual · embalado separadamente", packageUnits: 1, packagePrice: 4, individualPackaging: true },
           { id: "3x-sim", label: "3x Sim", packageUnits: 3, packagePrice: 12 },
           { id: "quarteto", label: "Quarteto DoSim", packageUnits: 4, packagePrice: 12 },
           { id: "cha-simco", label: "Chá das SIMco", packageUnits: 6, packagePrice: 22 },
           { id: "encontro-09", label: "Encontro às 09", packageUnits: 9, packagePrice: 18 },
         ],
         "ninho-nutella": [
+          { id: "individual-ninho", label: "Individual · Ninho com Nutella · embalado separadamente", packageUnits: 1, packagePrice: 4.5, individualPackaging: true },
           { id: "quarteto-ninho", label: "Quarteto DoSim · Ninho com Nutella", packageUnits: 4, packagePrice: 14 },
         ],
       },
@@ -221,7 +239,9 @@
         return;
       }
       options.forEach((item) => {
-        const label = isPresentable() && Number.isFinite(item.packagePrice)
+        const label = item.individualPackaging
+          ? `${item.label} · preço por quantidade`
+          : isPresentable() && Number.isFinite(item.packagePrice)
           ? `${item.label} · ${formatCurrency(item.packagePrice)} por presenteável`
           : item.label;
         select.add(new Option(label, item.id));
@@ -251,6 +271,12 @@
       const productionUnits = getProductionUnits();
       const grams = positiveNumber(fields.grams.value);
 
+      fields.packagingCosts.hidden = !product?.individualPackaging;
+      const packagingCost = product?.individualPackaging
+        ? productionUnits * INDIVIDUAL_PACKAGING.packPrice / INDIVIDUAL_PACKAGING.packUnits
+        : 0;
+      fields.packagingCostTotal.textContent = formatCurrency(packagingCost);
+
       fields.quantityInstructions.textContent = presentable
         ? "Informe quantos presenteáveis serão pedidos. A produção será calculada automaticamente."
         : "Preencha unidades ou gramatura. O outro campo será calculado automaticamente.";
@@ -261,6 +287,12 @@
       fields.productPriceHelp.textContent = presentable
         ? "Valor unitário sugerido. O total será calculado pela quantidade de presenteáveis."
         : "O valor sugerido pode ser ajustado antes do envio.";
+
+      if (product?.individualPackaging) {
+        const tiers = INDIVIDUAL_PRICE_TIERS[fields.type.value];
+        const prices = [...tiers].reverse().map((tier) => `${tier.label} un.: ${formatCurrency(tier.price)} cada`).join(" · ");
+        fields.productPriceHelp.textContent = `${prices}. Desconto automático para todas as unidades, com embalagem simples incluída. Você pode ajustar o valor antes do envio; ao mudar a quantidade, a sugestão será recalculada.`;
+      }
 
       if (presentable && product?.packageUnits) {
         const packageDescription = `${product.packageUnits} ${product.packageUnits === 1 ? "biscoito" : "biscoitos"}`;
@@ -346,6 +378,9 @@
       if (!product || product.manual || !units || !grams) return 0;
 
       if (isPresentable() && product.packageUnits) {
+        if (product.individualPackaging) {
+          return INDIVIDUAL_PRICE_TIERS[fields.type.value].find((tier) => units >= tier.minimum)?.price || 0;
+        }
         return product.packagePrice;
       }
 
