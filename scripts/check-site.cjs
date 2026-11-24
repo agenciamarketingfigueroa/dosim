@@ -27,6 +27,11 @@ function resolveLocal(url) {
 }
 for(const page of pages){
   const html=fs.readFileSync(path.join(root,page),'utf8');
+  const googleLoaders = html.match(/<script\b[^>]*\bsrc=["']https:\/\/www\.googletagmanager\.com\/(?:gtm\.js|gtag\/js)\?/gi) || [];
+  const startsWithContainer = /<head>\s*<script async src="https:\/\/www\.googletagmanager\.com\/gtm\.js\?id=GTM-MFJCJSGP"><\/script>/i.test(html);
+  if (googleLoaders.length !== 1 || !startsWithContainer) {
+    errors.push(`${page}: expected one Google container at the start of the head`);
+  }
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   if(new Set(ids).size!==ids.length)errors.push(`${page}: duplicate IDs`);
   if(!page.startsWith('link/')&&!html.includes('/css/cute.css'))errors.push(`${page}: missing theme`);
