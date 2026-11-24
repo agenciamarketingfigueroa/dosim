@@ -35,74 +35,90 @@
     <meta name="twitter:description" content="Veja produtos e apresentações artesanais da DoSim para presentes, celebrações e empresas." />
     <meta name="twitter:image" content="https://dosim.com.br/assets/img/og-1200x630.svg" />
     <meta name="theme-color" content="#fffaf1" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/main.js?v=20261029" defer></script>
-    <script src="js/portfolio.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/main.js?v=20261124" defer></script>
+    <script src="/js/portfolio.js" defer></script>
       <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  <link rel="stylesheet" href="/css/papel.css">
+    <link rel="stylesheet" href="/css/caderno.css">
   </head>
-  <body>
+  <body class="dosim-public">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos">Presentes</a></li><li><a href="/gramatura">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+    <header class="site-header paper-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          <li><a href="/#inspiracoes">Inspirações</a></li>
+          <li><a href="/#como-encomendar">Como encomendar</a></li>
+          <li><a href="/#nossa-historia">Sobre</a></li>
+          <li><details class="catalog-menu"><summary>Catálogo</summary>
+            <div class="catalog-links"><a href="/colecoes/">Coleções</a>
+              <a href="/produtos">Presentes</a>
+              <a href="/gramatura">Sabores</a>
+              <a href="/biscoitos-personalizados">Personalizados</a>
+              <a href="/portfolio" aria-current="page">Portfólio</a>
+              <a href="/corporativo">Empresas</a>
+              <a href="/contato">Contato</a></div>
+          </details></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-order" href="/atendimento">Pedir orçamento <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
 
-    <main id="conteudo" class="section">
+    <main data-page="portfolio" id="conteudo" class="section">
       <div class="container">
-        <h1 class="section-heading">Portfólio de biscoitos artesanais</h1>
+        <div class="album-opening"><div class="album-copy"><h1 class="section-heading">Portfólio de biscoitos artesanais</h1>
         <p class="section-subheading">
           Explore referências visuais da DoSim para inspirar sua encomenda.
-        </p>
-
+        </p></div><div class="album-pair"><div><img src="/assets/img/sim-completo.webp" alt="Lata DoSim com biscoitos." width="825" height="1024" decoding="async"></div><div><img src="/assets/img/07-padrinhos.webp" alt="Biscoitos de chocolate em caixa comprida com laço." width="825" height="1024" decoding="async"></div></div></div>
         <div class="filter-row" role="toolbar" aria-label="Filtros do portfólio">
-          <button class="filter-chip is-active" type="button" data-filter="todos" aria-label="Mostrar todos os estilos">
+          <button class="filter-chip is-active" type="button" data-filter="todos" aria-pressed="true" aria-label="Mostrar todos os estilos">
             Todos
           </button>
-          <button class="filter-chip" type="button" data-filter="presenteaveis" aria-label="Filtrar por presenteáveis">
+          <button class="filter-chip" type="button" data-filter="presenteaveis" aria-pressed="false" aria-label="Filtrar por presenteáveis">
             Presenteáveis
           </button>
-          <button class="filter-chip" type="button" data-filter="corporativo" aria-label="Filtrar por estilo corporativo">
+          <button class="filter-chip" type="button" data-filter="corporativo" aria-pressed="false" aria-label="Filtrar por estilo corporativo">
             Corporativo
           </button>
         </div>
 
         <div class="grid portfolio-grid" id="portfolio-grid">
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/3x-Sim.svg" data-title="3x Sim" data-alt="Embalagem presenteável 3x Sim da DoSim">
-            <img src="assets/img/3x-Sim.svg" alt="Embalagem presenteável 3x Sim da DoSim" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/3x-Sim.webp" data-title="3x Sim" data-alt="Embalagem presenteável 3x Sim da DoSim">
+            <img src="/assets/img/3x-Sim.webp" alt="Embalagem presenteável 3x Sim da DoSim" loading="lazy" decoding="async" />
             <span class="portfolio-caption">3x Sim</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/quarteto-dosim.svg" data-title="Quarteto DoSim" data-alt="Caixa presenteável Quarteto DoSim com biscoitos artesanais">
-            <img src="assets/img/quarteto-dosim.svg" alt="Caixa presenteável Quarteto DoSim com biscoitos artesanais" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/quarteto-dosim.webp" data-title="Quarteto DoSim" data-alt="Caixa presenteável Quarteto DoSim com biscoitos artesanais">
+            <img src="/assets/img/quarteto-dosim.webp" alt="Caixa presenteável Quarteto DoSim com biscoitos artesanais" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Quarteto DoSim</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="corporativo" data-image="assets/img/corporativo.svg" data-title="Personalizado corporativo" data-alt="Biscoitos personalizados para ação corporativa">
-            <img src="assets/img/corporativo.svg" alt="Biscoitos personalizados para ação corporativa" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="corporativo" data-image="/assets/img/corporativo.webp" data-title="Personalizado corporativo" data-alt="Biscoitos personalizados para ação corporativa">
+            <img src="/assets/img/corporativo.webp" alt="Biscoitos personalizados para ação corporativa" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Personalizado corporativo</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/encontro-as-09.svg" data-title="Encontro às 09" data-alt="Caixa presenteável Encontro às 09 da DoSim">
-            <img src="assets/img/encontro-as-09.svg" alt="Caixa presenteável Encontro às 09 da DoSim" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/encontro-as-09.webp" data-title="Encontro às 09" data-alt="Caixa presenteável Encontro às 09 da DoSim">
+            <img src="/assets/img/encontro-as-09.webp" alt="Caixa presenteável Encontro às 09 da DoSim" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Encontro às 09</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/cha-das-simco.svg" data-title="Chá das SIMco" data-alt="Caneca presenteável Chá das SIMco com biscoitos">
-            <img src="assets/img/cha-das-simco.svg" alt="Caneca presenteável Chá das SIMco com biscoitos" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/cha-das-simco.webp" data-title="Chá das SIMco" data-alt="Caneca presenteável Chá das SIMco com biscoitos">
+            <img src="/assets/img/cha-das-simco.webp" alt="Caneca presenteável Chá das SIMco com biscoitos" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Chá das SIMco</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/07-padrinhos.svg" data-title="07 Padrinhos" data-alt="Caixa presenteável 07 Padrinhos da DoSim">
-            <img src="assets/img/07-padrinhos.svg" alt="Caixa presenteável 07 Padrinhos da DoSim" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/07-padrinhos.webp" data-title="07 Padrinhos" data-alt="Caixa presenteável 07 Padrinhos da DoSim">
+            <img src="/assets/img/07-padrinhos.webp" alt="Caixa presenteável 07 Padrinhos da DoSim" loading="lazy" decoding="async" />
             <span class="portfolio-caption">07 Padrinhos</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/ninho-com-nutella.svg" data-title="Ninho com Nutella" data-alt="Biscoitos de Ninho com Nutella da DoSim">
-            <img src="assets/img/ninho-com-nutella.svg" alt="Biscoitos de Ninho com Nutella da DoSim" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/ninho-com-nutella.webp" data-title="Ninho com Nutella" data-alt="Biscoitos de Ninho com Nutella da DoSim">
+            <img src="/assets/img/ninho-com-nutella.webp" alt="Biscoitos de Ninho com Nutella da DoSim" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Ninho com Nutella</span>
           </button>
-          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="assets/img/sim-completo.svg" data-title="Sim Completo" data-alt="Lata presenteável Sim Completo da DoSim">
-            <img src="assets/img/sim-completo.svg" alt="Lata presenteável Sim Completo da DoSim" loading="lazy" decoding="async" />
+          <button class="portfolio-item" type="button" data-tags="presenteaveis" data-image="/assets/img/sim-completo.webp" data-title="Sim Completo" data-alt="Lata presenteável Sim Completo da DoSim">
+            <img src="/assets/img/sim-completo.webp" alt="Lata presenteável Sim Completo da DoSim" loading="lazy" decoding="async" />
             <span class="portfolio-caption">Sim Completo</span>
           </button>
         </div>
@@ -119,15 +135,30 @@
       </div>
     </main>
 
-    <div id="lightbox" class="lightbox" role="dialog" aria-label="Visualização ampliada" aria-modal="true" hidden>
+    <dialog id="lightbox" class="lightbox" aria-label="Visualização ampliada">
       <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Fechar visualização">&times;</button>
       <div class="lightbox-content">
-        <img id="lightbox-image" src="" alt="" />
+        <img id="lightbox-image" alt="" />
         <p id="lightbox-caption" class="lightbox-caption"></p>
       </div>
-    </div>
+    </dialog>
 
-    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+    <footer class="site-footer paper-footer">
+    <div class="container footer-inner">
+      <a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="124" height="62" loading="lazy"></a>
+      <nav class="footer-links" aria-label="Catálogo e atendimento">
+        <a href="/colecoes/">Coleções</a>
+        <a href="/produtos">Presentes</a>
+        <a href="/gramatura">Sabores</a>
+        <a href="/biscoitos-personalizados">Personalizados</a>
+        <a href="/portfolio">Portfólio</a>
+        <a href="/corporativo">Empresas</a>
+        <a href="/contato">Contato</a>
+      </nav>
+      <div class="footer-links"><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><a href="/area-interna">Área interna</a></div>
+  </footer>
   </body>
 </html>
 

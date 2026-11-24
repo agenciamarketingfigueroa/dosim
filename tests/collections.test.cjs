@@ -38,13 +38,13 @@ test('clearing an empty search restores every theme and keyboard focus', () => {
   assert.equal(page.input.focused, true);
 });
 
-test('each theme has a specific WhatsApp brief and an honest illustration label', () => {
+test('each theme has a specific WhatsApp brief and caption-free images', () => {
   for (const theme of themes) {
     const html = fs.readFileSync(path.join(root, 'colecoes', theme.id, 'index.html'), 'utf8');
     const href = html.match(/href="(https:\/\/wa\.me\/5531996154698\?text=[^"]+)"/)[1].replaceAll('&amp;', '&');
     const url = new URL(href);
     assert.ok(url.searchParams.get('text').includes(theme.name), theme.name);
-    assert.ok(html.includes('Sugestão ilustrada'), theme.name);
+    assert.doesNotMatch(html, /illustration-label|<figcaption>/, theme.name);
     assert.ok(html.includes('Valores, quantidade mínima e prazo são confirmados no atendimento.'), theme.name);
   }
 });

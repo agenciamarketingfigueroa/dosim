@@ -8,12 +8,27 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     setupMobileMenu();
-    setupSmoothScroll();
     setupContactForm();
     injectCatalogMediaPlaceholders();
     setupCatalogWhatsAppCart();
     setupRevealAnimation();
-    injectWhatsAppFloat();
+    if (document.querySelector(".paper-home")) {
+      // Bookmarks for sections that now have their own destination.
+      const formerSections = {
+        "#contato": "/contato#detalhes",
+        "#sabores": "/gramatura",
+        "#mais-vendidos": "/produtos",
+        "#corporativo": "/empresarial",
+      };
+      const followFormerSection = () => {
+        const destination = formerSections[window.location.hash];
+        if (destination) window.location.replace(destination);
+      };
+      followFormerSection();
+      window.addEventListener("hashchange", followFormerSection);
+    } else {
+      injectWhatsAppFloat();
+    }
     updateFooterYear();
   });
 
@@ -25,7 +40,10 @@
       return;
     }
 
+    const catalog = nav.querySelector(".catalog-menu");
     const closeMenu = () => {
+      if (catalog) catalog.open = false;
+      toggle.setAttribute("aria-label", "Abrir menu principal");
       toggle.setAttribute("aria-expanded", "false");
       nav.classList.remove("is-open");
     };
@@ -34,6 +52,8 @@
       const isExpanded = toggle.getAttribute("aria-expanded") === "true";
       toggle.setAttribute("aria-expanded", String(!isExpanded));
       nav.classList.toggle("is-open", !isExpanded);
+      toggle.setAttribute("aria-label", isExpanded ? "Abrir menu principal" : "Fechar menu principal");
+      if (isExpanded && catalog) catalog.open = false;
     });
 
     nav.querySelectorAll("a").forEach((item) => {
@@ -41,36 +61,23 @@
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && nav.classList.contains("is-open")) {
+      if (event.key === "Escape" && catalog?.open) {
+        catalog.open = false;
+        catalog.querySelector("summary").focus();
+      } else if (event.key === "Escape" && nav.classList.contains("is-open")) {
         closeMenu();
         toggle.focus();
       }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!nav.contains(event.target) && !toggle.contains(event.target)) closeMenu();
     });
 
     window.addEventListener("resize", () => {
       if (window.innerWidth >= 1050) {
         closeMenu();
       }
-    });
-  }
-
-  function setupSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", (event) => {
-        const hash = anchor.getAttribute("href");
-        if (!hash || hash.length < 2) {
-          return;
-        }
-
-        const target = document.querySelector(hash);
-        if (!target) {
-          return;
-        }
-
-        event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.replaceState(null, "", hash);
-      });
     });
   }
 
@@ -212,6 +219,10 @@
     const drawer = document.createElement("aside");
     drawer.className = "cart-drawer";
     drawer.setAttribute("data-cart-drawer", "");
+    drawer.setAttribute("role", "dialog");
+    drawer.setAttribute("aria-modal", "true");
+    drawer.setAttribute("aria-label", "Seu carrinho");
+    drawer.inert = true;
     drawer.setAttribute("aria-hidden", "true");
     drawer.innerHTML = `
       <div class="cart-drawer-header">
@@ -535,7 +546,7 @@
         id: item.id,
         name: itemName,
         price: normalizeText(item.price),
-        imageSrc: normalizeText(item.imageSrc),
+        imageSrc: normalizeText(item.imageSrc).replace(/^(?:\.\/)?assets\//, "/assets/"),
         imageAlt: normalizeText(item.imageAlt) || (itemName ? `Foto do produto ${itemName}` : "Foto do produto DoSim"),
         qty: clampQty(item.qty),
         catalogType,
@@ -824,23 +835,33 @@
       document.body.classList.toggle("cart-open", isOpen);
     };
 
+    let cartReturnFocus;
     const openCart = () => {
+      cartReturnFocus = document.activeElement;
       const toggle = document.querySelector(".menu-toggle");
       const nav = document.querySelector(".site-nav");
       if (toggle && nav) {
         toggle.setAttribute("aria-expanded", "false");
         nav.classList.remove("is-open");
+        toggle.setAttribute("aria-label", "Abrir menu principal");
+        if (nav.contains(cartReturnFocus) && toggle.offsetWidth) cartReturnFocus = toggle;
       }
 
       setCartViewportState(true);
       overlay.hidden = false;
       drawer.classList.add("is-open");
       overlay.classList.add("is-open");
+      drawer.inert = false;
       drawer.setAttribute("aria-hidden", "false");
+      closeButton.focus();
       cartFloatButton.classList.remove("is-visible");
     };
 
     const closeCart = () => {
+      if (drawer.inert) return;
+      drawer.inert = true;
+      const trigger = cartReturnFocus?.offsetWidth ? cartReturnFocus : cartOpenButton;
+      trigger?.focus({ preventScroll: true });
       drawer.classList.remove("is-open");
       overlay.classList.remove("is-open");
       drawer.setAttribute("aria-hidden", "true");
@@ -1045,6 +1066,20 @@
     cartFloatButton?.addEventListener("click", openCart);
     closeButton?.addEventListener("click", closeCart);
     overlay.addEventListener("click", closeCart);
+    drawer.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab") return;
+      const controls = Array.from(drawer.querySelectorAll("button, input, select, textarea, a[href]"))
+        .filter(control => control.offsetWidth && !control.disabled && control.tabIndex >= 0);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeCart();

@@ -26,7 +26,7 @@
         "Olá, DoSim Confeitaria! Quero solicitar um orçamento.",
         "",
         `Nome: ${nome || "Não informado"}`,
-        `Data do evento: ${formatDate(dataEventoRaw)}`,
+        ...(dataEventoRaw ? [`Data do evento: ${formatDate(dataEventoRaw)}`] : []),
         `Tipo: ${tipo || "Não informado"}`,
         `Quantidade estimada: ${quantidade || "Sob consulta"}`,
         `Preferências: ${preferencias || "Sob consulta"}`,

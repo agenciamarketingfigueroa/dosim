@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="DoSim" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DoSim" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Orçamentos | Área Interna DoSim</title>
+    <meta name="theme-color" content="#6f4e37" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/pedidos.css" />
+    <link rel="stylesheet" href="/css/orcamentos.css?v=20261116-1" />
+    <script src="/js/main.js?v=20261029" defer></script>
+    <script src="/js/internal-auth.js" defer></script>
+    <script src="/js/orcamentos.js?v=20261116-2" defer></script>
+      <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  </head>
+  <body class="orders-page quote-page">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos">Presentes</a></li><li><a href="/gramatura">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+
+    <main id="conteudo" class="orders-main quote-main">
+      <div class="container orders-shell">
+        <div class="orders-topbar">
+          <div>
+            <p class="eyebrow">Área interna</p>
+            <h1 class="section-title">Montar orçamento</h1>
+            <p class="section-copy">Escolha os detalhes e deixe a DoSim organizar a conta com você.</p>
+          </div>
+          <div class="orders-toolbar">
+            <a class="btn btn-secondary btn-sm" href="/area-interna">Área interna</a>
+            <a class="btn btn-secondary btn-sm" href="/pedidos">Pedidos</a>
+            <button class="orders-logout" type="button" data-quote-logout>Sair</button>
+          </div>
+        </div>
+
+        <div class="quote-layout">
+          <section class="orders-panel quote-form-panel">
+            <div class="orders-panel-heading">
+              <div>
+                <p class="eyebrow">Nova proposta</p>
+                <h2>Dados do orçamento</h2>
+              </div>
+            </div>
+
+            <form class="quote-form" data-quote-form>
+              <div class="quote-fields-two">
+                <label class="orders-field">
+                  <span>Nome do cliente</span>
+                  <input type="text" autocomplete="name" maxlength="80" required data-quote-customer />
+                </label>
+                <label class="orders-field">
+                  <span>WhatsApp do cliente <small>opcional</small></span>
+                  <input type="tel" inputmode="tel" autocomplete="tel" data-quote-customer-whatsapp />
+                </label>
+              </div>
+
+              <div class="quote-fields-two">
+                <label class="orders-field">
+                  <span>Tipo de biscoito</span>
+                  <select required data-quote-type>
+                    <option value="">Selecione</option>
+                    <option value="amanteigado">Amanteigado DoSim</option>
+                    <option value="ninho-nutella">Ninho com Nutella</option>
+                    <option value="salgado">Salgado de queijo</option>
+                    <option value="congelado">Queijo para assar · congelado</option>
+                  </select>
+                </label>
+                <label class="orders-field">
+                  <span>Modalidade</span>
+                  <select required data-quote-modality>
+                    <option value="">Selecione</option>
+                    <option value="presenteavel">Presenteável</option>
+                    <option value="gramatura">Por gramatura</option>
+                    <option value="personalizado">Personalizado</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="quote-fields-two">
+                <label class="orders-field">
+                  <span>Produto ou apresentação</span>
+                  <select required disabled data-quote-product>
+                    <option value="">Escolha o tipo e a modalidade</option>
+                  </select>
+                </label>
+                <label class="orders-field">
+                  <span>Sabor</span>
+                  <select required disabled data-quote-flavor>
+                    <option value="">Escolha o tipo de biscoito</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="quote-fields-two" data-quote-size-options hidden>
+                <label class="orders-field" data-quote-personalized-order hidden>
+                  <span>Personalização</span>
+                  <select data-quote-personalized-type>
+                    <option value="reposicao">Clichê existente · somente produção</option>
+                    <option value="primeiro-pedido">Primeiro pedido · acrescentar R$ 40,00 do clichê</option>
+                  </select>
+                </label>
+                <label class="orders-field" data-quote-size-field>
+                  <span>Tamanho da forma</span>
+                  <select data-quote-size>
+                    <option value="4">4 cm · aprox. 8 g por unidade</option>
+                    <option value="5">5 cm · aprox. 10 g por unidade</option>
+                    <option value="6" selected>6 cm · aprox. 14,4 g por unidade</option>
+                  </select>
+                </label>
+              </div>
+
+              <fieldset class="quote-quantity-group">
+                <legend>Quantidade</legend>
+                <p data-quote-quantity-instructions>
+                  Preencha unidades ou gramatura. O outro campo será calculado automaticamente.
+                </p>
+                <div class="quote-fields-two">
+                  <label class="orders-field">
+                    <span data-quote-units-label>Unidades</span>
+                    <input type="number" min="1" step="1" inputmode="numeric" data-quote-units />
+                  </label>
+                  <label class="orders-field">
+                    <span data-quote-grams-label>Gramatura</span>
+                    <div class="quote-input-suffix">
+                      <input type="number" min="1" step="0.1" inputmode="decimal" data-quote-grams />
+                      <span>g</span>
+                    </div>
+                  </label>
+                </div>
+                <p class="quote-inline-note" data-quote-quantity-note>Conversão aproximada: 20 g por unidade.</p>
+              </fieldset>
+
+              <section class="quote-packaging-costs" data-quote-packaging-costs hidden aria-labelledby="quote-packaging-title">
+                <h3 id="quote-packaging-title">Custo da embalagem individual</h3>
+                <p>Pacote com 100 embalagens: R$ 8,90 · R$ 0,089 por unidade.</p>
+                <p>Custo das embalagens deste pedido: <strong data-quote-packaging-cost-total>R$ 0,00</strong></p>
+                <small>Controle interno, somente das embalagens. O preço de venda abaixo já inclui a embalagem; este custo não é somado ao total nem enviado ao cliente.</small>
+              </section>
+
+              <div class="quote-fields-two">
+                <label class="orders-field">
+                  <span>Data de entrega</span>
+                  <input type="date" required data-quote-delivery-date />
+                </label>
+                <label class="orders-field">
+                  <span data-quote-product-price-label>Valor dos produtos</span>
+                  <div class="quote-input-prefix">
+                    <span>R$</span>
+                    <input type="number" min="0" step="0.01" inputmode="decimal" required data-quote-product-price />
+                  </div>
+                  <small data-quote-product-price-help>O valor sugerido pode ser ajustado antes do envio.</small>
+                </label>
+              </div>
+
+              <fieldset class="quote-fulfillment">
+                <legend>Como o cliente vai receber?</legend>
+                <div class="quote-choice-grid">
+                  <label class="quote-choice-card">
+                    <input type="radio" name="quoteFulfillment" value="retirada" checked />
+                    <span>Retirada</span>
+                  </label>
+                  <label class="quote-choice-card">
+                    <input type="radio" name="quoteFulfillment" value="entrega" />
+                    <span>Entrega</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <section class="quote-delivery-panel" data-quote-delivery-panel hidden>
+                <h3>Endereço de entrega</h3>
+                <div class="quote-address-grid">
+                  <label class="orders-field quote-address-street">
+                    <span>Rua</span>
+                    <input type="text" autocomplete="street-address" data-quote-street />
+                  </label>
+                  <label class="orders-field">
+                    <span>Número</span>
+                    <input type="text" autocomplete="address-line2" data-quote-number />
+                  </label>
+                  <label class="orders-field">
+                    <span>Bairro</span>
+                    <input type="text" data-quote-neighborhood />
+                  </label>
+                  <label class="orders-field">
+                    <span>Cidade</span>
+                    <input type="text" autocomplete="address-level2" value="Contagem" data-quote-city />
+                  </label>
+                  <label class="orders-field">
+                    <span>CEP</span>
+                    <input type="text" inputmode="numeric" autocomplete="postal-code" data-quote-cep />
+                  </label>
+                  <label class="orders-field">
+                    <span>Complemento <small>opcional</small></span>
+                    <input type="text" autocomplete="address-line2" data-quote-complement />
+                  </label>
+                  <label class="orders-field quote-address-full">
+                    <span>Ponto de referência <small>opcional</small></span>
+                    <input type="text" data-quote-reference />
+                  </label>
+                </div>
+                <div class="quote-shipping-action">
+                  <p data-quote-shipping-status>Preencha o endereço para calcular o frete.</p>
+                  <button class="btn btn-secondary btn-sm" type="button" data-quote-calculate-shipping>
+                    Calcular frete
+                  </button>
+                </div>
+              </section>
+
+              <label class="orders-field">
+                <span>Observações <small>opcional</small></span>
+                <textarea rows="3" maxlength="300" data-quote-notes></textarea>
+              </label>
+
+              <p class="orders-form-error" data-quote-error aria-live="polite"></p>
+            </form>
+          </section>
+
+          <aside class="orders-panel quote-summary-panel" aria-labelledby="quote-summary-title">
+            <div class="orders-panel-heading">
+              <div>
+                <p class="eyebrow">Prévia</p>
+                <h2 id="quote-summary-title">Resumo DoSim</h2>
+              </div>
+            </div>
+
+            <div class="quote-summary-empty" data-quote-summary-empty>
+              Comece escolhendo o tipo de biscoito e a modalidade.
+            </div>
+
+            <div class="quote-summary" data-quote-summary hidden>
+              <div class="quote-summary-highlight">
+                <span data-quote-summary-product>—</span>
+                <strong data-quote-summary-quantity>—</strong>
+              </div>
+              <dl class="quote-summary-list">
+                <div>
+                  <dt>Modalidade</dt>
+                  <dd data-quote-summary-modality>—</dd>
+                </div>
+                <div>
+                  <dt>Sabor</dt>
+                  <dd data-quote-summary-flavor>—</dd>
+                </div>
+                <div>
+                  <dt>Entrega</dt>
+                  <dd data-quote-summary-date>—</dd>
+                </div>
+                <div>
+                  <dt>Recebimento</dt>
+                  <dd data-quote-summary-fulfillment>Retirada</dd>
+                </div>
+              </dl>
+
+              <div class="quote-totals">
+                <div data-quote-summary-unit-price-row hidden>
+                  <span>Valor unitário</span>
+                  <strong data-quote-summary-unit-price>—</strong>
+                </div>
+                <div>
+                  <span>Produtos</span>
+                  <strong data-quote-summary-product-price>R$ 0,00</strong>
+                </div>
+                <div data-quote-summary-shipping-row hidden>
+                  <span>Frete</span>
+                  <strong data-quote-summary-shipping>—</strong>
+                </div>
+                <div class="quote-total-final">
+                  <span>Total estimado</span>
+                  <strong data-quote-summary-total>R$ 0,00</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-summary-actions">
+              <button class="btn btn-primary btn-block" type="button" data-quote-whatsapp>
+                Enviar para o WhatsApp da DoSim
+              </button>
+              <button class="btn btn-secondary btn-block" type="button" data-quote-copy>Copiar mensagem</button>
+              <button class="orders-logout" type="button" data-quote-reset>Limpar orçamento</button>
+            </div>
+            <p class="quote-action-status" data-quote-status aria-live="polite"></p>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+  </body>
+</html>

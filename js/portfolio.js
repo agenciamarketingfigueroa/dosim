@@ -15,8 +15,10 @@
       button.addEventListener("click", () => {
         const filter = (button.dataset.filter || "todos").toLowerCase();
 
-        filterButtons.forEach((chip) => chip.classList.remove("is-active"));
-        button.classList.add("is-active");
+        filterButtons.forEach((chip) => {
+          chip.classList.toggle("is-active", chip === button);
+          chip.setAttribute("aria-pressed", String(chip === button));
+        });
 
         items.forEach((item) => {
           const tags = (item.dataset.tags || "")
@@ -41,34 +43,19 @@
         lightboxImage.alt = item.dataset.alt || "Imagem ampliada do portfólio DoSim";
         lightboxCaption.textContent = item.dataset.title || "Portfólio DoSim";
 
-        lightbox.hidden = false;
+        lightbox.showModal();
         document.body.classList.add("lock-scroll");
         lightboxClose?.focus();
       });
     });
 
-    const closeLightbox = () => {
-      if (!lightbox || lightbox.hidden) {
-        return;
-      }
-
-      lightbox.hidden = true;
-      document.body.classList.remove("lock-scroll");
-      lightboxImage.src = "";
-    };
-
-    lightboxClose?.addEventListener("click", closeLightbox);
-
+    lightboxClose?.addEventListener("click", () => lightbox.close());
     lightbox?.addEventListener("click", (event) => {
-      if (event.target === lightbox) {
-        closeLightbox();
-      }
+      if (event.target === lightbox) lightbox.close();
     });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeLightbox();
-      }
+    lightbox?.addEventListener("close", () => {
+      document.body.classList.remove("lock-scroll");
+      lightboxImage.removeAttribute("src");
     });
   });
 })();

@@ -32,31 +32,46 @@
     <meta name="twitter:description" content="Escolha biscoitos doces ou salgados em pacotes de 200 g, 300 g e 500 g." />
     <meta name="twitter:image" content="https://dosim.com.br/assets/img/og-1200x630.svg" />
     <meta name="theme-color" content="#fffaf1" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/main.js?v=20261029" defer></script>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/main.js?v=20261124" defer></script>
       <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  <link rel="stylesheet" href="/css/papel.css">
+    <link rel="stylesheet" href="/css/caderno.css">
   </head>
-  <body>
+  <body class="dosim-public">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos">Presentes</a></li><li><a href="/gramatura" aria-current="page">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+    <header class="site-header paper-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          <li><a href="/#inspiracoes">Inspirações</a></li>
+          <li><a href="/#como-encomendar">Como encomendar</a></li>
+          <li><a href="/#nossa-historia">Sobre</a></li>
+          <li><details class="catalog-menu"><summary>Catálogo</summary>
+            <div class="catalog-links"><a href="/colecoes/">Coleções</a>
+              <a href="/produtos">Presentes</a>
+              <a href="/gramatura" aria-current="page">Sabores</a>
+              <a href="/biscoitos-personalizados">Personalizados</a>
+              <a href="/portfolio">Portfólio</a>
+              <a href="/corporativo">Empresas</a>
+              <a href="/contato">Contato</a></div>
+          </details></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-order" href="/atendimento">Pedir orçamento <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
 
     <main id="conteudo" data-catalog-page>
       <section class="section-block page-hero">
-        <div class="container narrow" data-reveal>
+        <div class="container album-opening"><div class="album-copy">
           <p class="eyebrow">Catálogo por peso</p>
-          <h1 class="section-title">Biscoitos artesanais por gramatura</h1>
-          <p class="section-copy">
-            Biscoitos doces e salgados com mais quantidade e melhor custo-benefício em embalagens de 200g, 300g e 500g.
-          </p>
+          <h1 class="section-title">Biscoitos por gramatura</h1>
+            <p class="section-copy">Escolha um sabor e toque no peso desejado para adicionar ao carrinho.</p>
           <div class="cta-group">
             <a
               class="btn btn-primary"
@@ -68,12 +83,15 @@
             <a class="btn btn-secondary" href="/produtos">Ver presenteáveis</a>
           </div>
         </div>
+          <div class="album-pair"><div><img src="/assets/img/tradicional-gramas.webp" alt="Amanteigados tradicionais em embalagem com laço." width="825" height="1024" decoding="async"></div><div><img src="/assets/img/ninho-com-nutella.webp" alt="Biscoito recheado de Ninho com Nutella." width="825" height="1024" decoding="async"></div></div>
+        </div>
       </section>
 
       <section class="section-block section-soft">
         <div class="container">
           <div class="catalog-grid">
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/tradicional-gramas.svg" data-photo-alt="Foto do produto Tradicional por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/tradicional-gramas.webp" alt="Foto do produto Tradicional por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -92,7 +110,8 @@
               >
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/chocolate-gramas.svg" data-photo-alt="Foto do produto Chocolate por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/chocolate-gramas.webp" alt="Foto do produto Chocolate por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -111,7 +130,8 @@
               >
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/canela-gramas.svg" data-photo-alt="Foto do produto Canela por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/canela-gramas.webp" alt="Foto do produto Canela por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -130,7 +150,8 @@
               >
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/capuccino-gramas.svg" data-photo-alt="Foto do produto Capuccino por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/capuccino-gramas.webp" alt="Foto do produto Capuccino por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -149,7 +170,8 @@
               >
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/ninho-gramas.svg" data-photo-alt="Foto do produto Ninho com Nutella por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/ninho-gramas.webp" alt="Foto do produto Ninho com Nutella por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -168,7 +190,8 @@
               >
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/ovomaltine-gramas.svg" data-photo-alt="Foto do produto Ovomaltine por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/ovomaltine-gramas.webp" alt="Foto do produto Ovomaltine por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -190,9 +213,8 @@
             <article
               class="catalog-card weight-card"
               data-reveal
-              data-photo-src="assets/img/biscoito-salgado.webp"
-              data-photo-alt="Foto do biscoito salgado de queijo por gramatura"
             >
+              <div class="catalog-media"><img src="/assets/img/biscoito-salgado.webp" alt="Foto do biscoito salgado de queijo por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Salgado · pronto (assado)</span>
               </div>
@@ -215,9 +237,10 @@
               class="catalog-card weight-card"
               data-reveal
               data-unavailable="true"
-              data-photo-src="assets/img/biscoito-salgado-congelado.webp"
-              data-photo-alt="Foto do biscoito de queijo para assar por gramatura"
+
+
             >
+              <div class="catalog-media"><img src="/assets/img/biscoito-salgado-congelado.webp" alt="Foto do biscoito de queijo para assar por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Salgado · congelado</span>
               </div>
@@ -230,7 +253,8 @@
               <button class="btn btn-secondary btn-sm" type="button" disabled>Indisponível no momento</button>
             </article>
 
-            <article class="catalog-card weight-card" data-reveal data-photo-src="assets/img/misto-gramas.svg" data-photo-alt="Foto do produto Misto por gramatura">
+            <article class="catalog-card weight-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/misto-gramas.webp" alt="Foto do produto Misto por gramatura" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -273,6 +297,21 @@
       </section>
     </main>
 
-    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+    <footer class="site-footer paper-footer">
+    <div class="container footer-inner">
+      <a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="124" height="62" loading="lazy"></a>
+      <nav class="footer-links" aria-label="Catálogo e atendimento">
+        <a href="/colecoes/">Coleções</a>
+        <a href="/produtos">Presentes</a>
+        <a href="/gramatura">Sabores</a>
+        <a href="/biscoitos-personalizados">Personalizados</a>
+        <a href="/portfolio">Portfólio</a>
+        <a href="/corporativo">Empresas</a>
+        <a href="/contato">Contato</a>
+      </nav>
+      <div class="footer-links"><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><a href="/area-interna">Área interna</a></div>
+  </footer>
   </body>
 </html>

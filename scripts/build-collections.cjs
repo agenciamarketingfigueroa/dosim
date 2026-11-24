@@ -1,20 +1,54 @@
 /* Build static collection pages for GitHub Pages. No browser/runtime dependency. */
 const fs = require('node:fs');
 const path = require('node:path');
+const { fotoDoTema, acervo } = require('./fotos-colecoes.cjs');
 const root = path.resolve(__dirname, '..');
+const { buildRoutes } = require('./build-routes.cjs');
 const { categories, themes } = JSON.parse(fs.readFileSync(path.join(root, 'data/colecoes.json'), 'utf8'));
 const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const wa = topic => 'https://wa.me/5531996154698?text=' + encodeURIComponent(`Olá, DoSim! Gostaria de um orçamento para biscoitos de ${topic}. Podemos conversar sobre formatos, quantidade, embalagem e data?`);
+const catalog = [
+  ['/colecoes/', 'Coleções'], ['/produtos', 'Presentes'], ['/gramatura', 'Sabores'],
+  ['/biscoitos-personalizados', 'Personalizados'], ['/portfolio', 'Portfólio'],
+  ['/corporativo', 'Empresas'], ['/contato', 'Contato']
+];
 function header(active = '') {
-  const links = [['/', 'Início'], ['/colecoes/', 'Coleções'], ['/produtos', 'Presentes'], ['/gramatura', 'Sabores'], ['/biscoitos-personalizados', 'Personalizados']];
-  return `<div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul>${links.map(([url,label])=>`<li><a href="${url}"${active===url?' aria-current="page"':''}>${label}</a></li>`).join('')}<li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>`;
+  const prefix = active === '/' ? '' : '/';
+  const links = catalog.map(([url, label]) =>
+    `<a href="${url}"${active === url ? ' aria-current="page"' : ''}>${label}</a>`
+  ).join('\n              ');
+  return `<header class="site-header paper-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          <li><a href="${prefix}#inspiracoes">Inspirações</a></li>
+          <li><a href="${prefix}#como-encomendar">Como encomendar</a></li>
+          <li><a href="${prefix}#nossa-historia">Sobre</a></li>
+          <li><details class="catalog-menu"><summary>Catálogo</summary>
+            <div class="catalog-links">${links}</div>
+          </details></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-order" href="/atendimento">Pedir orçamento <span aria-hidden="true">→</span></a>
+    </div>
+  </header>`;
 }
 function footer() {
-  return `<footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>`;
+  return `<footer class="site-footer paper-footer">
+    <div class="container footer-inner">
+      <a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="124" height="62" loading="lazy"></a>
+      <nav class="footer-links" aria-label="Catálogo e atendimento">
+        ${catalog.map(([url, label]) => `<a href="${url}">${label}</a>`).join('\n        ')}
+      </nav>
+      <div class="footer-links"><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><a href="/area-interna">Área interna</a></div>
+  </footer>`;
 }
 function document(title, description, url, main, active='/colecoes/') {
-  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | DoSim Confeitaria</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="https://dosim.com.br${url}"><meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:title" content="${esc(title)} | DoSim Confeitaria"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="https://dosim.com.br${url}"><meta property="og:image" content="https://dosim.com.br/assets/img/og-1200x630.svg"><meta name="theme-color" content="#fffaf1"><link rel="icon" href="/assets/img/fav-icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/css/cute.css?v=20261029"><script src="/js/main.js?v=20261029" defer></script><script src="/js/colecoes.js" defer></script></head><body><a class="skip-link" href="#conteudo">Pular para o conteúdo</a>${header(active)}${main}${footer()}</body></html>\n`;
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | DoSim Confeitaria</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="https://dosim.com.br${url}"><meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:title" content="${esc(title)} | DoSim Confeitaria"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="https://dosim.com.br${url}"><meta property="og:image" content="https://dosim.com.br/assets/img/og-1200x630.svg"><meta name="theme-color" content="#fffaf1"><link rel="icon" href="/assets/img/fav-icon.svg" type="image/svg+xml"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/css/cute.css?v=20261029"><link rel="stylesheet" href="/css/papel.css"><link rel="stylesheet" href="/css/caderno.css"><script src="/js/main.js?v=20261124" defer></script><script src="/js/colecoes.js" defer></script></head><body class="dosim-public"><a class="skip-link" href="#conteudo">Pular para o conteúdo</a>${header(active)}${main}${footer()}</body></html>\n`;
 }
 const icons = {
   heart:'<path d="M50 78 23 51C5 31 33 12 50 33 67 12 95 31 77 51Z"/>',
@@ -48,31 +82,48 @@ function art(icon) {
   for(let i=0;i<240;i++){let angle=i*Math.PI*2/240;let r=90+3.6*Math.cos(angle*20);outline.push(`${i?'L':'M'}${(150+r*Math.cos(angle)).toFixed(2)} ${(132+r*Math.sin(angle)).toFixed(2)}`)}
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 270" fill="none"><ellipse cx="151" cy="230" rx="86" ry="8" fill="#61442e" opacity=".07"/><path d="${outline.join(' ')}Z" fill="#dfb77d" stroke="#b98c55" stroke-width="2" transform="translate(0 4)"/><path d="${outline.join(' ')}Z" fill="#efd09b" stroke="#c39861" stroke-width="2"/><circle cx="150" cy="132" r="76" stroke="#c89f68" stroke-width="2"/><circle cx="150" cy="134" r="73" stroke="#f8e3bb" stroke-width="2"/><g stroke="#b08048" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(104 85) scale(.92)">${icons[icon]||icons.heart}</g><g fill="#bf925b" opacity=".5"><circle cx="114" cy="75" r="1"/><circle cx="197" cy="162" r="1.3"/><circle cx="99" cy="153" r="1"/><circle cx="172" cy="190" r="1"/><circle cx="172" cy="73" r="1"/></g><path d="m43 60 4-8 4 8 9 2-7 6 1 9-7-4-8 4 2-9-7-6Z" stroke="#ad7667" stroke-width="1.5"/><path d="M238 187c-11-14-27-1-15 10l15 13 15-13c12-11-4-24-15-10Z" stroke="#ad7667" stroke-width="1.5"/></svg>`;
 }
+function photo(t, lazy = false) {
+  const { src, alt } = fotoDoTema(t.id);
+  return `<img class="theme-photo" src="${src}" alt="${esc(alt)}" width="825" height="1024"${lazy ? ' loading="lazy"' : ''} decoding="async">`;
+}
+
+function album(c) {
+  const pairs = {
+    sazonais: ['sim-completo','cha-das-simco'],
+    empresarial: ['corporativo','encontro-as-09'],
+    'profissoes-e-formatura': ['3x-Sim','corporativo'],
+    festas: ['quarteto-dosim','07-padrinhos'],
+    religiosos: ['3x-Sim','quarteto-dosim'],
+    infantis: ['chocolate','encontro-as-09'],
+  };
+  const names = pairs[c?.id] || ['corporativo','quarteto-dosim'];
+  return `<div class="album-pair">${names.map(name => `<div><img src="/assets/img/${name}.webp" alt="${esc(acervo[name])}" width="825" height="1024"></div>`).join('')}</div>`;
+}
+
 function card(t) {
   const c = categories.find(c => c.id===t.category);
-  return `<article class="theme-card ${c.color}" data-theme-card data-search="${esc([t.name,c.name,t.description,...t.motifs,...t.phrases].join(' '))}"><a class="theme-picture" href="/colecoes/${t.id}/" tabindex="-1" aria-hidden="true"><img src="/assets/collections/${t.icon}.svg" alt="" width="300" height="270" loading="lazy"><span class="illustration-label">Sugestão ilustrada</span></a><div class="theme-card-body"><span class="theme-kicker">${esc(t.tag)}</span><h2><a href="/colecoes/${t.id}/">${esc(t.name)}</a></h2><p>${esc(t.description)}</p><a class="text-link" href="/colecoes/${t.id}/" aria-label="Ver ideias de ${esc(t.name)}">Conhecer a coleção <span aria-hidden="true">↗</span></a></div></article>`;
+  return `<article class="theme-card ${c.color}" data-theme-card data-search="${esc([t.name,c.name,t.description,...t.motifs,...t.phrases].join(' '))}"><a class="theme-picture" href="/colecoes/${t.id}/" tabindex="-1" aria-hidden="true">${photo(t,true)}</a><div class="theme-card-body"><span class="theme-kicker">${esc(t.tag)}</span><h2><a href="/colecoes/${t.id}/">${esc(t.name)}</a></h2><p>${esc(t.description)}</p><a class="text-link" href="/colecoes/${t.id}/" aria-label="Ver ideias de ${esc(t.name)}">Conhecer a coleção <span aria-hidden="true">↗</span></a></div></article>`;
 }
 function categoryNav(id='') { return `<nav class="collection-nav" aria-label="Categorias de biscoitos"><a href="/colecoes/"${!id?' aria-current="page"':''}>Todas</a>${categories.map(c=>`<a href="/${c.id}"${c.id===id?' aria-current="page"':''}>${esc(c.name)}</a>`).join('')}</nav>`; }
-const note = '<p class="collection-note">As ilustrações são sugestões de personalização inspiradas nos nossos biscoitos amanteigados. Formato, desenho, frase e embalagem são combinados no atendimento; a produção depende da aprovação do modelo e da disponibilidade de agenda.</p>';
+const note = '<p class="collection-note">No atendimento, combinamos o desenho, a frase e a embalagem. A produção depende da aprovação do modelo e da disponibilidade de agenda.</p>';
 const closing = `<section class="personal-note"><p class="eyebrow">Sua ideia também cabe aqui</p><h2>Vamos fazer do seu jeitinho?</h2><p>Conte a ocasião, a data e o que você imaginou. A gente cuida dos detalhes junto com você.</p><a class="btn btn-primary" href="/atendimento">Quero planejar meu pedido <span aria-hidden="true">↗</span></a></section>`;
 function listing(c) {
   const list=c?themes.filter(t=>t.category===c.id):themes;
-  const main=`<main id="conteudo"><section class="collection-hero"><div class="container"><div class="breadcrumb"><a href="/">Início</a><span aria-hidden="true">/</span>${c?'<a href="/colecoes/">Coleções</a><span aria-hidden="true">/</span>':''}<span>${esc(c?.name||'Coleções')}</span></div><p class="eyebrow">${c?esc(c.name):'O catálogo de momentos DoSim'}</p><h1>${c?esc(c.intro):'Tem carinho para<br>cada ocasião.'}</h1><p class="section-copy">${c?esc(c.description):'Para agradecer, comemorar ou só dizer “lembrei de você”. Escolha um tema e descubra o que podemos criar juntos.'}</p>${categoryNav(c?.id)}</div></section><section class="section-block"><div class="container" data-collection><div class="collection-toolbar"><p data-result-count role="status" aria-live="polite">${list.length} coleções para se inspirar</p><label class="collection-search">Encontre seu tema<input type="search" placeholder="Ex.: flores, Natal, casamento…" data-theme-search aria-controls="collection-results" autocomplete="off"></label></div><div class="collection-grid" id="collection-results">${list.map(card).join('')}</div><div class="empty-collection" data-no-results hidden><h2>Ainda não encontrou sua ideia?</h2><p>Tente outra palavra ou conte para a gente o que você imaginou.</p><button class="btn btn-secondary" type="button" data-clear-search>Limpar busca</button> <a class="btn btn-primary" href="/atendimento">Pedir um tema personalizado</a></div>${note}</div></section>${closing}</main>`;
+  const main=`<main id="conteudo"><section class="collection-hero"><div class="container"><div class="breadcrumb"><a href="/">Início</a><span aria-hidden="true">/</span>${c?'<a href="/colecoes/">Coleções</a><span aria-hidden="true">/</span>':''}<span>${esc(c?.name||'Coleções')}</span></div><div class="album-opening"><div class="album-copy"><p class="eyebrow">${c?esc(c.name):'Coleções DoSim'}</p><h1>${c?esc(c.intro):'Inspirações para<br>cada ocasião'}</h1><p class="section-copy">${c?esc(c.description):'Para agradecer, comemorar ou só dizer “lembrei de você”. Escolha um tema e descubra o que podemos criar juntos.'}</p></div>${album(c)}</div>${categoryNav(c?.id)}</div></section><section class="section-block"><div class="container" data-collection><div class="collection-toolbar"><p data-result-count role="status" aria-live="polite">${list.length} coleções para se inspirar</p><label class="collection-search">Encontre seu tema<input type="search" placeholder="Ex.: flores, Natal, casamento…" data-theme-search aria-controls="collection-results" autocomplete="off"></label></div><div class="collection-grid" id="collection-results">${list.map(card).join('')}</div><div class="empty-collection" data-no-results hidden><h2>Ainda não encontrou sua ideia?</h2><p>Tente outra palavra ou conte para a gente o que você imaginou.</p><button class="btn btn-secondary" type="button" data-clear-search>Limpar busca</button> <a class="btn btn-primary" href="/atendimento">Pedir um tema personalizado</a></div>${note}</div></section>${closing}</main>`;
   return document(c?`Biscoitos para ${c.name}`:'Coleções de biscoitos personalizados', c?.description||'Descubra biscoitos sazonais, empresariais, para profissões, festas, celebrações religiosas e temas infantis.', c?`/${c.id}`:'/colecoes/',main);
 }
 function detail(t) {
   const c=categories.find(c=>c.id===t.category);
   const related=themes.filter(other=>other.category===c.id&&other.id!==t.id).slice(0,3);
-  return document(`Biscoitos de ${t.name}`,t.description,`/colecoes/${t.id}/`,`<main id="conteudo"><section class="theme-detail"><div class="container"><nav class="breadcrumb" aria-label="Você está aqui"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/colecoes/">Coleções</a><span aria-hidden="true">/</span><a href="/${c.id}">${esc(c.name)}</a><span aria-hidden="true">/</span><span>${esc(t.name)}</span></nav><div class="theme-detail-grid"><figure class="theme-detail-art ${c.color}"><img src="/assets/collections/${t.icon}.svg" alt="Ilustração de referência de um biscoito com tema de ${esc(t.name)}" width="300" height="270"><figcaption>Sugestão ilustrada · personalização sob consulta</figcaption></figure><div><p class="eyebrow">${esc(t.tag)}</p><h1>${esc(t.name)}</h1><p class="section-copy">${esc(t.description)}</p><h2>Ideias de formatos e desenhos</h2><ul class="motif-list">${t.motifs.map(m=>`<li>${esc(m)}</li>`).join('')}</ul><h2>Palavras que viram carinho</h2><div class="phrase-list">${t.phrases.map(p=>`<span>“${esc(p)}”</span>`).join('')}</div><div class="cta-group"><a class="btn btn-primary" href="${esc(wa(t.name))}" target="_blank" rel="noopener noreferrer">Quero um orçamento desse tema ↗</a></div><p class="order-hint">Encomenda personalizada. Valores, quantidade mínima e prazo são confirmados no atendimento.</p></div></div>${note}</div></section><section class="section-block section-soft"><div class="container"><p class="eyebrow">Do seu jeito, com nosso carinho</p><h2 class="section-title">Como sua ideia vira biscoito</h2><div class="how-grid"><article><b>01</b><h3>Conte sua ideia</h3><p>Compartilhe o tema, a data, a quantidade que imagina e a mensagem que quer transmitir.</p></article><article><b>02</b><h3>Combinamos os detalhes</h3><p>Alinhamos os desenhos possíveis, as frases, a embalagem e o orçamento para sua ocasião.</p></article><article><b>03</b><h3>Um presente com afeto</h3><p>Com o modelo e o pedido aprovados, combinamos a produção e a entrega ou retirada.</p></article></div></div></section><section class="section-block"><div class="container"><div class="section-heading"><div><p class="eyebrow">Mais motivos para celebrar</p><h2 class="section-title">Você também pode gostar</h2></div><a class="text-link" href="/${c.id}">Ver ${esc(c.name.toLowerCase())} ↗</a></div><div class="collection-grid">${related.map(card).join('')}</div></div></section></main>`);
+  return document(`Biscoitos de ${t.name}`,t.description,`/colecoes/${t.id}/`,`<main id="conteudo"><section class="theme-detail"><div class="container"><nav class="breadcrumb" aria-label="Você está aqui"><a href="/">Início</a><span aria-hidden="true">/</span><a href="/colecoes/">Coleções</a><span aria-hidden="true">/</span><a href="/${c.id}">${esc(c.name)}</a><span aria-hidden="true">/</span><span>${esc(t.name)}</span></nav><div class="theme-detail-grid"><figure class="theme-detail-art album-print">${photo(t)}</figure><div><p class="eyebrow">${esc(t.tag)}</p><h1>${esc(t.name)}</h1><p class="section-copy">${esc(t.description)}</p><div class="motif-sample"><figure><img src="/assets/collections/${t.icon}.svg" alt="Desenho para o tema ${esc(t.name)}" width="100" height="90"></figure><div><h2>Ideias de formatos e desenhos</h2><ul class="motif-list">${t.motifs.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div></div><h2>Palavras que viram carinho</h2><div class="phrase-list">${t.phrases.map(p=>`<span>“${esc(p)}”</span>`).join('')}</div><div class="cta-group"><a class="btn btn-primary" href="${esc(wa(t.name))}" target="_blank" rel="noopener noreferrer">Quero um orçamento desse tema ↗</a></div><p class="order-hint">Encomenda personalizada. Valores, quantidade mínima e prazo são confirmados no atendimento.</p></div></div>${note}</div></section><section class="section-block section-soft"><div class="container"><p class="eyebrow">Do seu jeito, com nosso carinho</p><h2 class="section-title">Como sua ideia vira biscoito</h2><div class="how-grid"><article><b>01</b><h3>Conte sua ideia</h3><p>Compartilhe o tema, a data, a quantidade que imagina e a mensagem que quer transmitir.</p></article><article><b>02</b><h3>Combinamos os detalhes</h3><p>Alinhamos os desenhos possíveis, as frases, a embalagem e o orçamento para sua ocasião.</p></article><article><b>03</b><h3>Um presente com afeto</h3><p>Com o modelo e o pedido aprovados, combinamos a produção e a entrega ou retirada.</p></article></div></div></section><section class="section-block"><div class="container"><div class="section-heading"><div><p class="eyebrow">Mais motivos para celebrar</p><h2 class="section-title">Você também pode gostar</h2></div><a class="text-link" href="/${c.id}">Ver ${esc(c.name.toLowerCase())} ↗</a></div><div class="collection-grid">${related.map(card).join('')}</div></div></section></main>`);
 }
 function build() {
   fs.mkdirSync(path.join(root,'assets/collections'),{recursive:true});
   for(const icon of new Set([...themes.map(t=>t.icon),...categories.map(c=>c.icon)]))fs.writeFileSync(path.join(root,`assets/collections/${icon}.svg`),art(icon));
-  fs.mkdirSync(path.join(root,'colecoes'),{recursive:true});
-  fs.writeFileSync(path.join(root,'colecoes/index.html'),listing());
   fs.writeFileSync(path.join(root,'colecoes.html'),listing());
   for(const c of categories)fs.writeFileSync(path.join(root,`${c.id}.html`),listing(c));
   for(const t of themes){const dir=path.join(root,'colecoes',t.id);fs.mkdirSync(dir,{recursive:true});fs.writeFileSync(path.join(dir,'index.html'),detail(t));}
+  buildRoutes();
   console.log(`Generated ${themes.length} theme pages, ${categories.length} categories and collection index.`);
 }
 if(require.main===module) build();

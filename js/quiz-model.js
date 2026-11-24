@@ -81,7 +81,7 @@
     const unit = state.category === "gramatura" ? "g no total" : state.category === "presenteavel" ? "caixinha(s)" : "biscoito(s)";
     add("Quantidade", state.quantityMode === quantityOptions[0] ? `${Number(state.quantity).toLocaleString("pt-BR")} ${unit}` : "A definir com a DoSim");
     add("Apresentação", state.packaging);
-    add("Data desejada", state.date ? state.date.split("-").reverse().join("/") : "Sem data definida");
+    if (state.date) add("Data desejada", state.date.split("-").reverse().join("/"));
     add("Observações", state.notes);
     return rows;
   }

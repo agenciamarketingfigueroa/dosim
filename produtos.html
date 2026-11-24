@@ -32,32 +32,46 @@
     <meta name="twitter:description" content="Kits e caixas de biscoitos artesanais para presentear com sabor e afeto." />
     <meta name="twitter:image" content="https://dosim.com.br/assets/img/og-1200x630.svg" />
     <meta name="theme-color" content="#fffaf1" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/main.js?v=20261029" defer></script>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/main.js?v=20261124" defer></script>
       <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  <link rel="stylesheet" href="/css/papel.css">
+    <link rel="stylesheet" href="/css/caderno.css">
   </head>
-  <body>
+  <body class="dosim-public">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos" aria-current="page">Presentes</a></li><li><a href="/gramatura">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+    <header class="site-header paper-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          <li><a href="/#inspiracoes">Inspirações</a></li>
+          <li><a href="/#como-encomendar">Como encomendar</a></li>
+          <li><a href="/#nossa-historia">Sobre</a></li>
+          <li><details class="catalog-menu"><summary>Catálogo</summary>
+            <div class="catalog-links"><a href="/colecoes/">Coleções</a>
+              <a href="/produtos" aria-current="page">Presentes</a>
+              <a href="/gramatura">Sabores</a>
+              <a href="/biscoitos-personalizados">Personalizados</a>
+              <a href="/portfolio">Portfólio</a>
+              <a href="/corporativo">Empresas</a>
+              <a href="/contato">Contato</a></div>
+          </details></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-order" href="/atendimento">Pedir orçamento <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
 
     <main id="conteudo" data-catalog-page>
       <section class="section-block page-hero">
-        <div class="container narrow" data-reveal>
+        <div class="container album-opening"><div class="album-copy">
           <p class="eyebrow">Catálogo de presenteáveis</p>
-          <h1 class="section-title">Produtos Unitários &amp; Presenteáveis</h1>
-          <p class="section-copy">
-            Escolha o box ideal para presentear. Cada card mostra quantidade, etiqueta e preço final com ancoragem
-            para facilitar sua decisão.
-          </p>
+          <h1 class="section-title">Presentes em forma de biscoito</h1>
+            <p class="section-copy">Escolha a apresentação e confira os biscoitos de cada presente.</p>
           <div class="cta-group">
             <a
               class="btn btn-primary"
@@ -69,12 +83,15 @@
             <a class="btn btn-secondary" href="/gramatura">Ver opções por gramatura</a>
           </div>
         </div>
+          <div class="album-pair"><div><img src="/assets/img/encontro-as-09.webp" alt="Caixa kraft com biscoitos carimbados DoSim." width="825" height="1024" decoding="async"></div><div><img src="/assets/img/3x-Sim.webp" alt="Três biscoitos com a marca DoSim e laço marrom." width="825" height="1024" decoding="async"></div></div>
+        </div>
       </section>
 
       <section class="section-block section-soft">
         <div class="container">
           <div class="catalog-grid">
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/chocolate.svg" data-photo-alt="Foto do produto SimPles">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/chocolate.webp" alt="Foto do produto SimPles" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -83,7 +100,8 @@
               <button class="btn btn-secondary btn-sm" type="button" disabled>Indisponível no momento</button>
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/3x-Sim.svg" data-photo-alt="Foto do produto 3x Sim">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/3x-Sim.webp" alt="Foto do produto 3x Sim" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -101,7 +119,8 @@
               >
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/quarteto-dosim.svg" data-photo-alt="Foto do produto Quarteto DoSim">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/quarteto-dosim.webp" alt="Foto do produto Quarteto DoSim" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -119,7 +138,8 @@
               >
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/ninho-com-nutella.svg" data-photo-alt="Foto do produto Quarteto DoSim Ninho com Nutella">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/ninho-com-nutella.webp" alt="Foto do produto Quarteto DoSim Ninho com Nutella" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -137,7 +157,8 @@
               >
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/cha-das-simco.svg" data-photo-alt="Foto do produto Chá das SIMco">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/cha-das-simco.webp" alt="Foto do produto Chá das SIMco" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Restam 5 unidades</span>
               </div>
@@ -155,7 +176,8 @@
               >
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/07-padrinhos.svg" data-photo-alt="Foto do produto 07 Padrinhos">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/07-padrinhos.webp" alt="Foto do produto 07 Padrinhos" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -164,7 +186,8 @@
               <button class="btn btn-secondary btn-sm" type="button" disabled>Esgotado</button>
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/encontro-as-09.svg" data-photo-alt="Foto do produto Encontro às 09">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/encontro-as-09.webp" alt="Foto do produto Encontro às 09" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -182,7 +205,8 @@
               >
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 25 unidades">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/sim-completo.webp" alt="Foto do produto Sim Completo 25 unidades" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-hot">Mais vendido</span>
               </div>
@@ -191,7 +215,8 @@
               <button class="btn btn-secondary btn-sm" type="button" disabled>Esgotado</button>
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 40 unidades">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/sim-completo.webp" alt="Foto do produto Sim Completo 40 unidades" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -200,7 +225,8 @@
               <button class="btn btn-secondary btn-sm" type="button" disabled>Esgotado</button>
             </article>
 
-            <article class="catalog-card" data-reveal data-photo-src="assets/img/sim-completo.svg" data-photo-alt="Foto do produto Sim Completo 55 unidades">
+            <article class="catalog-card" data-reveal>
+              <div class="catalog-media"><img src="/assets/img/sim-completo.webp" alt="Foto do produto Sim Completo 55 unidades" width="825" height="1024" loading="lazy" decoding="async"></div>
               <div class="tag-row">
                 <span class="tag tag-new">Novidade</span>
               </div>
@@ -232,6 +258,21 @@
       </section>
     </main>
 
-    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+    <footer class="site-footer paper-footer">
+    <div class="container footer-inner">
+      <a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="124" height="62" loading="lazy"></a>
+      <nav class="footer-links" aria-label="Catálogo e atendimento">
+        <a href="/colecoes/">Coleções</a>
+        <a href="/produtos">Presentes</a>
+        <a href="/gramatura">Sabores</a>
+        <a href="/biscoitos-personalizados">Personalizados</a>
+        <a href="/portfolio">Portfólio</a>
+        <a href="/corporativo">Empresas</a>
+        <a href="/contato">Contato</a>
+      </nav>
+      <div class="footer-links"><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><a href="/area-interna">Área interna</a></div>
+  </footer>
   </body>
 </html>

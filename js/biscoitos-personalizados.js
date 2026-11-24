@@ -270,7 +270,7 @@
     clearQuantityError(quantityField, quantityErrorField);
     validateQuantity(packageKey, quantityField, quantityErrorField);
 
-    formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    formSection.scrollIntoView({ block: "start" });
     window.setTimeout(() => {
       packageField.focus({ preventScroll: true });
     }, 350);
@@ -295,7 +295,7 @@
 
     if (!state.selectedPackageKey) {
       setStatus(statusField, "Selecione um pacote acima para preencher o campo de pacote escolhido.", true);
-      document.getElementById("pacotes")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("pacotes")?.scrollIntoView({ block: "start" });
       return null;
     }
 
@@ -318,7 +318,7 @@
     if (requireConfiguredNumber && !isConfiguredWhatsAppNumber(WHATSAPP_NUMBER)) {
       setStatus(
         statusField,
-        "Configure WHATSAPP_NUMBER no topo de js/biscoitos-personalizados.js antes de usar o envio pelo WhatsApp.",
+        "O atendimento pelo WhatsApp está indisponível. Você pode copiar a mensagem abaixo.",
         true
       );
       return null;

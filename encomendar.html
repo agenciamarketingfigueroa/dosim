@@ -35,25 +35,42 @@
     <meta name="twitter:description" content="Envie os detalhes da sua encomenda e confirme disponibilidade diretamente com a DoSim." />
     <meta name="twitter:image" content="https://dosim.com.br/assets/img/og-1200x630.svg" />
     <meta name="theme-color" content="#fffaf1" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/fav-icon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/main.js?v=20261029" defer></script>
-    <script src="js/contato.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/main.js?v=20261124" defer></script>
+    <script src="/js/contato.js" defer></script>
       <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  <link rel="stylesheet" href="/css/papel.css">
+    <link rel="stylesheet" href="/css/caderno.css">
   </head>
-  <body>
+  <body class="dosim-public">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos">Presentes</a></li><li><a href="/gramatura">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+    <header class="site-header paper-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          <li><a href="/#inspiracoes">Inspirações</a></li>
+          <li><a href="/#como-encomendar">Como encomendar</a></li>
+          <li><a href="/#nossa-historia">Sobre</a></li>
+          <li><details class="catalog-menu"><summary>Catálogo</summary>
+            <div class="catalog-links"><a href="/colecoes/">Coleções</a>
+              <a href="/produtos">Presentes</a>
+              <a href="/gramatura">Sabores</a>
+              <a href="/biscoitos-personalizados">Personalizados</a>
+              <a href="/portfolio">Portfólio</a>
+              <a href="/corporativo">Empresas</a>
+              <a href="/contato">Contato</a></div>
+          </details></li>
+        </ul>
+      </nav>
+      <a class="btn btn-primary header-order" href="/atendimento">Pedir orçamento <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
 
-    <main id="conteudo" class="section">
+    <main data-page="encomendar" id="conteudo" class="section">
       <div class="container">
         <h1 class="section-heading">Como encomendar</h1>
         <p class="section-subheading">
@@ -131,9 +148,9 @@
                 ></textarea>
               </div>
 
-              <p class="text-small">Após o envio, abrimos uma mensagem pronta no WhatsApp para finalizar seu atendimento.</p>
-              <button class="btn btn-primary" type="submit" aria-label="Enviar orçamento no WhatsApp">
-                Enviar orçamento no WhatsApp
+              <p class="text-small">Confira a mensagem no WhatsApp e envie quando estiver pronta.</p>
+              <button class="btn btn-primary" type="submit" aria-label="Abrir orçamento no WhatsApp">
+                Abrir orçamento no WhatsApp
               </button>
             </form>
           </section>
@@ -141,7 +158,22 @@
       </div>
     </main>
 
-    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+    <footer class="site-footer paper-footer">
+    <div class="container footer-inner">
+      <a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="124" height="62" loading="lazy"></a>
+      <nav class="footer-links" aria-label="Catálogo e atendimento">
+        <a href="/colecoes/">Coleções</a>
+        <a href="/produtos">Presentes</a>
+        <a href="/gramatura">Sabores</a>
+        <a href="/biscoitos-personalizados">Personalizados</a>
+        <a href="/portfolio">Portfólio</a>
+        <a href="/corporativo">Empresas</a>
+        <a href="/contato">Contato</a>
+      </nav>
+      <div class="footer-links"><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div>
+    </div>
+    <div class="container footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><a href="/area-interna">Área interna</a></div>
+  </footer>
   </body>
 </html>
 

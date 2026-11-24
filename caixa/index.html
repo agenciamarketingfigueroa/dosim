@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="DoSim" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DoSim" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Caixa e Vendas | DoSim</title>
+    <meta name="theme-color" content="#6f4e37" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/fav-icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/pedidos.css" />
+    <link rel="stylesheet" href="/css/caixa.css" />
+    <script src="/js/main.js?v=20261029" defer></script>
+    <script src="/js/internal-auth.js" defer></script>
+    <script src="/js/caixa.js?v=20260810-4" defer></script>
+      <link rel="stylesheet" href="/css/cute.css?v=20261029" />
+  </head>
+  <body class="orders-page cash-page">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="announcement">Feito à mão <span aria-hidden="true">♥</span> para dizer, presentear e celebrar <span aria-hidden="true">♥</span> Contagem · MG</div>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="/" aria-label="DoSim Confeitaria — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="152" height="76"></a><button class="menu-toggle" type="button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button><nav id="menu-principal" class="site-nav" aria-label="Menu principal"><ul><li><a href="/">Início</a></li><li><a href="/colecoes/">Coleções</a></li><li><a href="/produtos">Presentes</a></li><li><a href="/gramatura">Sabores</a></li><li><a href="/biscoitos-personalizados">Personalizados</a></li><li><a class="nav-order" href="/atendimento">Vamos encomendar? <span aria-hidden="true">↗</span></a></li></ul></nav></div></header>
+
+    <main id="conteudo" class="orders-main">
+      <section class="orders-dashboard" data-cash-dashboard hidden>
+        <div class="container orders-shell">
+          <div class="orders-topbar">
+            <div>
+              <p class="eyebrow">Financeiro</p>
+              <h1 class="section-title">Caixa e vendas</h1>
+              <p class="section-copy">Os dados ficam salvos somente neste navegador.</p>
+            </div>
+            <div class="orders-toolbar">
+              <a class="btn btn-secondary btn-sm" href="/area-interna">Área interna</a>
+              <button class="btn btn-secondary btn-sm" type="button" data-cash-export>Exportar sessão</button>
+              <label class="btn btn-secondary btn-sm orders-import-label">
+                Importar sessão
+                <input type="file" accept="application/json,.json" data-cash-import />
+              </label>
+              <button class="orders-logout" type="button" data-cash-logout>Sair</button>
+            </div>
+          </div>
+
+          <div class="cash-tabs" role="tablist" aria-label="Seções do caixa">
+            <button
+              id="cash-records-tab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="cash-records-panel"
+              tabindex="0"
+              data-cash-tab="records"
+            >
+              Lançamentos
+            </button>
+            <button
+              id="cash-analytics-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="cash-analytics-panel"
+              tabindex="-1"
+              data-cash-tab="analytics"
+            >
+              Dashboard
+            </button>
+          </div>
+
+          <div class="cash-period-bar" aria-label="Período do resumo">
+            <div>
+              <span class="cash-period-label">Período do resumo</span>
+              <strong data-cash-period-label>Mês atual</strong>
+            </div>
+            <label class="orders-filter cash-period-filter">
+              <span class="sr-only">Selecionar mês</span>
+              <input type="month" data-cash-month />
+            </label>
+            <button class="btn btn-secondary btn-sm" type="button" data-cash-current-month>Mês atual</button>
+            <button class="btn btn-secondary btn-sm" type="button" data-cash-all-periods>Todo o período</button>
+          </div>
+
+          <section
+            id="cash-records-panel"
+            role="tabpanel"
+            aria-labelledby="cash-records-tab"
+            data-cash-tab-panel="records"
+          >
+            <div class="cash-layout">
+            <section class="orders-panel cash-form-panel">
+              <div class="orders-panel-heading">
+                <div>
+                  <p class="eyebrow" data-cash-form-eyebrow>Novo lançamento</p>
+                  <h2 data-cash-form-title>Registrar movimentação</h2>
+                </div>
+              </div>
+
+              <form data-cash-form>
+                <div class="cash-type-switch" role="group" aria-label="Tipo do lançamento">
+                  <label>
+                    <input type="radio" name="cash-type" value="sale" checked data-cash-type />
+                    <span>Venda</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="cash-type" value="expense" data-cash-type />
+                    <span>Saída</span>
+                  </label>
+                </div>
+
+                <div class="cash-form-grid">
+                  <label class="orders-field">
+                    <span>Data</span>
+                    <input type="date" required data-cash-date />
+                  </label>
+                  <label class="orders-field cash-field-description">
+                    <span>Descrição</span>
+                    <input type="text" maxlength="100" placeholder="Ex.: Encomenda da Ana" required data-cash-description />
+                  </label>
+                  <div class="cash-product-fields" data-cash-product-fields>
+                    <div class="cash-product-heading">
+                      <div>
+                        <strong>Produto vendido</strong>
+                        <small>Selecione como o cliente comprou</small>
+                      </div>
+                      <div class="cash-product-kind" role="group" aria-label="Tipo do produto">
+                        <label>
+                          <input type="radio" name="cash-product-kind" value="presentable" checked data-cash-product-kind />
+                          <span>Presenteável</span>
+                        </label>
+                        <label>
+                          <input type="radio" name="cash-product-kind" value="weight" data-cash-product-kind />
+                          <span>Por gramatura</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="cash-product-grid">
+                      <label class="orders-field cash-product-select-field">
+                        <span data-cash-product-label>Presenteável</span>
+                        <select required data-cash-product>
+                          <option value="">Selecione o produto</option>
+                        </select>
+                      </label>
+                      <label class="orders-field" data-cash-size-field hidden>
+                        <span>Gramatura</span>
+                        <select data-cash-size>
+                          <option value="">Selecione</option>
+                          <option value="200 g">200 g</option>
+                          <option value="300 g">300 g</option>
+                          <option value="500 g">500 g</option>
+                          <option value="Outra">Outra</option>
+                        </select>
+                      </label>
+                      <label class="orders-field">
+                        <span>Quantidade</span>
+                        <input type="number" min="1" max="99999" step="1" value="1" required data-cash-quantity />
+                      </label>
+                      <label class="orders-field cash-custom-size-field" data-cash-custom-size-field hidden>
+                        <span>Gramatura personalizada</span>
+                        <div class="cash-unit-input">
+                          <input
+                            type="number"
+                            inputmode="numeric"
+                            min="1"
+                            max="999999"
+                            step="1"
+                            placeholder="Ex.: 750"
+                            data-cash-custom-size
+                          />
+                          <span>g</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <label class="orders-field cash-field-category">
+                    <span>Categoria financeira</span>
+                    <select required data-cash-category></select>
+                  </label>
+                  <label class="orders-field">
+                    <span>Forma de pagamento</span>
+                    <select required data-cash-payment>
+                      <option value="Pix">Pix</option>
+                      <option value="Dinheiro">Dinheiro</option>
+                      <option value="Cartão de crédito">Cartão de crédito</option>
+                      <option value="Cartão de débito">Cartão de débito</option>
+                      <option value="Transferência">Transferência</option>
+                      <option value="Outro">Outro</option>
+                    </select>
+                  </label>
+                  <label class="orders-field cash-field-amount">
+                    <span>Valor</span>
+                    <div class="cash-money-input">
+                      <span>R$</span>
+                      <input type="text" inputmode="decimal" placeholder="0,00" required data-cash-amount />
+                    </div>
+                  </label>
+                  <label class="orders-field cash-field-notes">
+                    <span>Observação <small>(opcional)</small></span>
+                    <input type="text" maxlength="160" placeholder="Detalhes do pagamento ou da compra" data-cash-notes />
+                  </label>
+                </div>
+
+                <p class="orders-form-error" data-cash-form-error aria-live="polite"></p>
+                <div class="orders-form-actions">
+                  <button class="btn btn-primary" type="submit" data-cash-submit>Salvar lançamento</button>
+                  <button class="btn btn-secondary" type="button" data-cash-cancel-edit hidden>Cancelar edição</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="orders-panel cash-list-panel">
+              <div class="cash-list-heading">
+                <div>
+                  <p class="eyebrow">Movimentações</p>
+                  <h2>Histórico do caixa</h2>
+                </div>
+                <div class="cash-list-filters">
+                  <label class="orders-filter">
+                    <span class="sr-only">Buscar lançamentos</span>
+                    <input type="search" placeholder="Buscar descrição" data-cash-search />
+                  </label>
+                  <label class="orders-filter">
+                    <span class="sr-only">Filtrar tipo</span>
+                    <select data-cash-type-filter>
+                      <option value="all">Entradas e saídas</option>
+                      <option value="sale">Somente vendas</option>
+                      <option value="expense">Somente saídas</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <p class="orders-empty" data-cash-empty>Nenhum lançamento neste período.</p>
+              <div class="cash-list" data-cash-list></div>
+            </section>
+          </div>
+          </section>
+
+          <section
+            id="cash-analytics-panel"
+            class="cash-analytics"
+            role="tabpanel"
+            aria-labelledby="cash-analytics-tab"
+            data-cash-tab-panel="analytics"
+            hidden
+          >
+            <div class="cash-stats" aria-label="Resumo financeiro">
+              <article class="is-sales">
+                <span>Vendas</span>
+                <strong data-cash-sales>R$ 0,00</strong>
+                <small data-cash-sales-count>0 vendas</small>
+              </article>
+              <article class="is-expenses">
+                <span>Saídas</span>
+                <strong data-cash-expenses>R$ 0,00</strong>
+                <small data-cash-expenses-count>0 lançamentos</small>
+              </article>
+              <article class="is-balance">
+                <span>Resultado</span>
+                <strong data-cash-balance>R$ 0,00</strong>
+                <small>vendas menos saídas</small>
+              </article>
+              <article>
+                <span>Ticket médio</span>
+                <strong data-cash-average>R$ 0,00</strong>
+                <small>por venda registrada</small>
+              </article>
+            </div>
+
+            <div class="cash-insights" aria-label="Destaques das vendas">
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">★</span>
+                <div>
+                  <small>Mais vendido</small>
+                  <strong data-cash-top-product>—</strong>
+                  <span data-cash-top-product-detail>Nenhum item registrado</span>
+                </div>
+              </article>
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">#</span>
+                <div>
+                  <small>Itens vendidos</small>
+                  <strong data-cash-units>0</strong>
+                  <span data-cash-units-detail>0 tipos de produto</span>
+                </div>
+              </article>
+              <article>
+                <span class="cash-insight-icon" aria-hidden="true">↗</span>
+                <div>
+                  <small>Melhor dia</small>
+                  <strong data-cash-best-day>—</strong>
+                  <span data-cash-best-day-detail>Nenhuma venda registrada</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="cash-charts-grid">
+              <article class="orders-panel cash-chart-card cash-product-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Preferência dos clientes</p>
+                    <h2>Produtos mais vendidos</h2>
+                  </div>
+                  <span>por quantidade</span>
+                </div>
+                <p class="orders-empty" data-cash-product-empty>Nenhum produto registrado neste período.</p>
+                <div class="cash-bar-chart" data-cash-product-chart></div>
+              </article>
+
+              <article class="orders-panel cash-chart-card cash-trend-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Faturamento</p>
+                    <h2>Evolução das vendas</h2>
+                  </div>
+                  <span data-cash-trend-caption>por dia</span>
+                </div>
+                <p class="orders-empty" data-cash-trend-empty>Nenhuma venda neste período.</p>
+                <div class="cash-line-chart" data-cash-trend-chart></div>
+              </article>
+
+              <article class="orders-panel cash-chart-card cash-payment-chart-card">
+                <div class="cash-chart-heading">
+                  <div>
+                    <p class="eyebrow">Recebimentos</p>
+                    <h2>Formas de pagamento</h2>
+                  </div>
+                  <span>por valor</span>
+                </div>
+                <p class="orders-empty" data-cash-payment-empty>Nenhuma venda neste período.</p>
+                <div class="cash-donut-layout" data-cash-payment-chart hidden>
+                  <div class="cash-donut" data-cash-payment-donut aria-hidden="true">
+                    <div>
+                      <strong data-cash-payment-total>R$ 0</strong>
+                      <span>recebido</span>
+                    </div>
+                  </div>
+                  <div class="cash-donut-legend" data-cash-payment-legend></div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <aside class="cash-backup-note">
+            <strong>Importante:</strong> como este site não possui banco de dados, exporte a sessão regularmente. Ao
+            importar em outro aparelho ou navegador, o arquivo substituirá os dados locais atuais.
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="orders-toast" role="status" aria-live="polite" data-cash-toast hidden></div>
+
+    <footer class="site-footer"><div class="container"><div class="footer-inner"><div><a class="footer-logo" href="/" aria-label="DoSim — início"><img src="/assets/img/logo-escura-confeitaria.svg" alt="DoSim Confeitaria" width="155" height="80" loading="lazy"></a><p class="footer-note">Pequeno no tamanho. Grande no carinho.</p></div><div class="footer-links"><a href="/colecoes/">Nossas coleções</a><a href="/contato">Contato</a><a href="https://www.instagram.com/dosimconfeitaria/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://wa.me/5531996154698" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a></div></div><div class="footer-bottom"><span>© <span data-current-year>2026</span> DoSim Confeitaria · Contagem, MG</span><span>Cada biscoito é um passo para o nosso sim. ♡</span><a href="/area-interna">Área interna</a></div></div></footer>
+  </body>
+</html>

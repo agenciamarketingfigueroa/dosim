@@ -45,9 +45,9 @@ Projeto completo em **HTML, CSS e JavaScript puro** para a DoSim Confeitaria, co
 
 ## Identidade visual e coleções
 
-A reformulação de outubro de 2026 usa o tema compartilhado em `css/cute.css`, carregado depois dos estilos de cada página. A logo é o vetor original em `assets/img/logo-escura-confeitaria.svg`; o desenho da Giaza, o coração no i e o subtítulo permanecem no arquivo original. Nenhuma foto de `assets/img` foi alterada.
+A home e a navegação usam o tema de papel em `css/papel.css`. As vitrines e as páginas de atendimento usam também `css/caderno.css`. A logo é o vetor original em `assets/img/logo-escura-confeitaria.svg`; o desenho da Giaza, o coração no i e o subtítulo permanecem no arquivo original. Nenhuma foto de `assets/img` foi alterada.
 
-O catálogo fica em `/colecoes/`, com seis categorias e 31 temas. As páginas temáticas usam ilustrações vetoriais de referência em `assets/collections`, identificadas como sugestões, e links de orçamento com o nome do tema no WhatsApp. Os preços e os prazos são alinhados no atendimento. Páscoa e Dia dos Namorados foram mantidos junto das novas ocasiões.
+O catálogo fica em `/colecoes/`, com seis categorias e 31 temas. As páginas temáticas combinam fotos do acervo da DoSim ou referências de campanha com sugestões de desenhos e links de orçamento com o nome do tema no WhatsApp. A seleção das fotos fica em `scripts/fotos-colecoes.cjs`. Os preços e os prazos são alinhados no atendimento. Páscoa e Dia dos Namorados foram mantidos junto das novas ocasiões.
 
 Para atualizar textos, formas e frases, edite `data/colecoes.json` e execute:
 
@@ -61,22 +61,15 @@ O gerador produz o índice, as categorias, as páginas de tema e suas ilustraç�
 
 ## Rodar localmente
 
-### Opção 1 (recomendada): Live Server (VS Code)
-
-1. Instale a extensão **Live Server**.
-2. Abra a pasta do projeto no VS Code.
-3. Clique com botão direito em `index.html`.
-4. Selecione **Open with Live Server**.
-
-### Opção 2: servidor local simples
-
-Se tiver Python instalado:
+Na raiz do projeto, inicie a prévia com Python 3.9 ou superior.
 
 ```bash
-python -m http.server 5500
+python3 scripts/previa.py
 ```
 
-Depois acesse `http://localhost:5500`.
+Abra [a prévia local](http://127.0.0.1:5500/). O servidor resolve as URLs sem extensão e serve apenas as páginas, os arquivos de apresentação e os dados públicos usados pelo site. Encerre com Ctrl+C.
+
+As decisões de design, as fotos a substituir, as divergências comerciais e as capturas estão em `docs/_interno/`.
 
 ## Publicar no GitHub Pages
 
@@ -90,9 +83,9 @@ Depois acesse `http://localhost:5500`.
 
 ## URLs públicas
 
-O GitHub Pages entrega os arquivos `.html` também em URLs limpas. Use sempre os endereços sem extensão nos links,
-metadados e divulgações, por exemplo: `/produtos`, `/gramatura` e `/contato`. As versões com `.html` permanecem
-acessíveis por compatibilidade, mas os canonicals e o sitemap apontam para as URLs limpas.
+As URLs como `/corporativo`, `/produtos` e `/contato` têm um `index.html` na pasta correspondente. Um servidor estático pode acrescentar a barra final. As páginas também abrem pelo endereço com extensão, como `/corporativo.html`.
+
+Edite as páginas HTML da raiz e execute `node scripts/build-routes.cjs` para atualizar as entradas das pastas. Para as coleções, use `node scripts/build-collections.cjs`, que já inclui essa etapa. Execute `node scripts/check-site.cjs` para conferir os arquivos e os links nos dois endereços.
 
 ## Como trocar as imagens
 
